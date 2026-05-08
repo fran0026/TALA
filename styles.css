@@ -31,6 +31,8 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--green-deep);
+  overscroll-behavior-y: none;
   /* Hide visible scrollbar; page still scrolls (wheel, touch, keys, trackpad). */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* legacy Edge */
@@ -58,7 +60,10 @@ body {
   overflow-x: hidden;
   scrollbar-width: none;
   background: transparent;
-  min-height: 100vh;
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+  padding-bottom: env(safe-area-inset-bottom, 0);
   -webkit-font-smoothing: antialiased;
   hyphens: none;
 }
@@ -66,6 +71,9 @@ body {
 .ambient {
   position: fixed;
   inset: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   z-index: -1;
   pointer-events: none;
   background:
@@ -84,15 +92,12 @@ body {
   width: min(820px, 92%);
 }
 
-/* Two column layout: story rail + main */
+/* Main content width (Discover lives in header dropdown) */
 .page-shell {
-  display: grid;
-  grid-template-columns: minmax(220px, 270px) minmax(0, 1fr);
-  gap: clamp(1rem, 3vw, 1.75rem);
-  width: min(1320px, 94%);
+  display: block;
+  width: min(1140px, 94%);
   margin-inline: auto;
   padding: clamp(0.75rem, 2vw, 1.25rem) 0 0;
-  align-items: start;
 }
 
 .page-main {
@@ -103,18 +108,7 @@ body {
   min-width: 0;
 }
 
-.story-rail {
-  position: sticky;
-  top: 88px;
-  z-index: 5;
-  padding: 1rem 1rem 1.25rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--glass-edge);
-  background: linear-gradient(165deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  box-shadow: var(--shadow-soft);
-}
+/* Legacy story-rail removed from layout; rail-card styles reused in Discover dropdown */
 
 .rail-eyebrow {
   margin: 0 0 0.35rem;
@@ -138,12 +132,6 @@ body {
   font-size: 0.82rem;
   line-height: 1.55;
   color: var(--muted-2);
-}
-
-.rail-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .rail-card {
@@ -206,38 +194,38 @@ body {
   line-height: 1.4;
 }
 
-@keyframes railPopIn {
+@keyframes discoverCardIn {
   from {
     opacity: 0;
-    transform: translateX(-12px) scale(0.98);
+    transform: translateY(14px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
-.rail-cards .rail-card {
-  animation: railPopIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+.site-header.discover-open .discover-grid .rail-card {
+  animation: discoverCardIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
-.rail-cards .rail-card:nth-child(1) {
+.site-header.discover-open .discover-grid .rail-card:nth-child(1) {
   animation-delay: 0.04s;
 }
-.rail-cards .rail-card:nth-child(2) {
-  animation-delay: 0.09s;
+.site-header.discover-open .discover-grid .rail-card:nth-child(2) {
+  animation-delay: 0.08s;
 }
-.rail-cards .rail-card:nth-child(3) {
-  animation-delay: 0.14s;
+.site-header.discover-open .discover-grid .rail-card:nth-child(3) {
+  animation-delay: 0.12s;
 }
-.rail-cards .rail-card:nth-child(4) {
-  animation-delay: 0.19s;
+.site-header.discover-open .discover-grid .rail-card:nth-child(4) {
+  animation-delay: 0.16s;
 }
-.rail-cards .rail-card:nth-child(5) {
+.site-header.discover-open .discover-grid .rail-card:nth-child(5) {
+  animation-delay: 0.2s;
+}
+.site-header.discover-open .discover-grid .rail-card:nth-child(6) {
   animation-delay: 0.24s;
-}
-.rail-cards .rail-card:nth-child(6) {
-  animation-delay: 0.29s;
 }
 
 .rail-card:focus-visible {
@@ -268,6 +256,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
+  isolation: isolate;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   background: linear-gradient(180deg, rgba(12, 48, 38, 0.78) 0%, rgba(12, 48, 38, 0.52) 100%);
   backdrop-filter: blur(16px) saturate(140%);
@@ -379,6 +368,61 @@ body {
   transform: translateY(-1px);
 }
 
+.nav-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.discover-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0;
+}
+
+.discover-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.site-header.discover-open .discover-toggle {
+  background: rgba(232, 196, 108, 0.22);
+  border-color: rgba(232, 196, 108, 0.55);
+  box-shadow: 0 0 0 1px rgba(232, 196, 108, 0.25);
+}
+
+.discover-toggle-chevron {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid currentColor;
+  opacity: 0.85;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header.discover-open .discover-toggle-chevron {
+  transform: rotate(180deg);
+}
+
 .menu-btn {
   display: none;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -395,6 +439,86 @@ body {
 
 .menu-btn:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.discover-dropdown {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  background: linear-gradient(180deg, rgba(14, 52, 42, 0.96) 0%, rgba(10, 44, 34, 0.92) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.site-header.discover-open .discover-dropdown {
+  grid-template-rows: 1fr;
+}
+
+.discover-dropdown-measure {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.discover-dropdown-inner {
+  padding: 0.85rem 0 1.15rem;
+  opacity: 0;
+  transform: translateY(-7px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header.discover-open .discover-dropdown-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.discover-dropdown-head {
+  margin-bottom: 0.65rem;
+}
+
+.discover-dropdown-head .rail-title {
+  margin-bottom: 0;
+}
+
+.discover-dropdown-scroll {
+  max-height: min(70dvh, 560px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 12px;
+}
+
+.discover-grid .rail-card {
+  min-width: 0;
+}
+
+.discover-grid .rail-card-ic {
+  width: 44px;
+  height: 44px;
+  font-size: 1.12rem;
+  border-radius: 12px;
+}
+
+.discover-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(4, 24, 30, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.discover-scrim.is-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Sections */
@@ -1096,10 +1220,12 @@ h3 {
 
 .foot {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 0.75rem;
+  text-align: center;
+  gap: 0.35rem 0.75rem;
   font-size: 0.88rem;
   color: var(--muted);
 }
@@ -1121,28 +1247,6 @@ h3 {
   transition:
     opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (max-width: 1100px) {
-  .page-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .story-rail {
-    position: relative;
-    top: 0;
-    display: block;
-  }
-
-  .rail-cards {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .rail-card {
-    flex: 1 1 calc(50% - 10px);
-    min-width: 140px;
-  }
 }
 
 @media (max-width: 980px) {
@@ -1168,12 +1272,41 @@ h3 {
     display: inline-flex;
   }
 
+  .nav-toolbar {
+    flex: 0 0 auto;
+    gap: 6px;
+  }
+
+  .discover-toggle {
+    padding: 8px 12px;
+    font-size: 0.72rem;
+  }
+
+  .discover-dropdown-scroll {
+    max-height: min(65dvh, 480px);
+  }
+
+  .discover-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .discover-grid .rail-card-ic {
+    width: 48px;
+    height: 48px;
+    font-size: 1.22rem;
+  }
+
   .main-nav {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
     left: auto;
-    width: min(280px, 88vw);
+    width: min(340px, 92vw);
+    max-height: min(82dvh, 560px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     flex-direction: column;
     align-items: stretch;
     padding: 10px;
@@ -1206,11 +1339,6 @@ h3 {
   .cards {
     grid-template-columns: 1fr;
   }
-
-  .foot {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1218,11 +1346,18 @@ h3 {
     scroll-behavior: auto;
   }
 
-  .note-hook-star {
+  .site-header.discover-open .discover-grid .rail-card {
     animation: none;
   }
 
-  .rail-cards .rail-card {
+  .discover-dropdown,
+  .discover-dropdown-inner,
+  .discover-scrim,
+  .discover-toggle-chevron {
+    transition: none;
+  }
+
+  .note-hook-star {
     animation: none;
   }
 
