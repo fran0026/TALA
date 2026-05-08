@@ -381,41 +381,44 @@ body {
 .discover-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   padding: 9px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  border: none;
+  background: transparent;
+  color: var(--muted);
   font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+  text-transform: none;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .discover-toggle:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
 }
 
 .site-header.discover-open .discover-toggle {
-  background: rgba(232, 196, 108, 0.22);
-  border-color: rgba(232, 196, 108, 0.55);
-  box-shadow: 0 0 0 1px rgba(232, 196, 108, 0.25);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: none;
 }
 
 .discover-toggle-chevron {
   display: inline-block;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid currentColor;
-  opacity: 0.85;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.75;
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -442,43 +445,40 @@ body {
 }
 
 .discover-dropdown {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  display: block;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.42s cubic-bezier(0.22, 1, 0.36, 1);
   background: linear-gradient(180deg, rgba(14, 52, 42, 0.96) 0%, rgba(10, 44, 34, 0.92) 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-top: 1px solid transparent;
+  pointer-events: none;
 }
 
 .site-header.discover-open .discover-dropdown {
-  grid-template-rows: 1fr;
+  max-height: min(85dvh, 820px);
+  border-top-color: rgba(255, 255, 255, 0.1);
+  pointer-events: auto;
 }
 
 .discover-dropdown-measure {
   overflow: hidden;
-  min-height: 0;
 }
 
 .discover-dropdown-inner {
   padding: 0.85rem 0 1.15rem;
-  opacity: 0;
-  transform: translateY(-7px);
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.site-header.discover-open .discover-dropdown-inner {
-  opacity: 1;
-  transform: translateY(0);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .discover-dropdown-head {
   margin-bottom: 0.65rem;
 }
 
-.discover-dropdown-head .rail-title {
-  margin-bottom: 0;
+.discover-dropdown-lead {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
 }
 
 .discover-dropdown-scroll {
@@ -487,6 +487,14 @@ body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.discover-dropdown-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .discover-grid {
@@ -1351,7 +1359,6 @@ h3 {
   }
 
   .discover-dropdown,
-  .discover-dropdown-inner,
   .discover-scrim,
   .discover-toggle-chevron {
     transition: none;

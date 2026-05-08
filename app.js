@@ -42,6 +42,14 @@ function syncDiscoverActive() {
 
 syncDiscoverActive();
 
+setDiscoverOpen(false);
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    setDiscoverOpen(false);
+  }
+});
+
 if (discoverToggle && siteHeader) {
   discoverToggle.addEventListener("click", (e) => {
     e.stopPropagation();
