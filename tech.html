@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tech | TALA SYSTEMS</title>
+    <meta
+      name="description"
+      content="How Francis Majisu integrates faith, morals, security, and technology at TALA SYSTEMS."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"></div>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-mark"><img src="tala_plain.png" alt="" width="40" height="40" /></span>
+          <div class="brand-text">
+            <div class="brand-lock">
+              <strong class="brand-title">TALA SYSTEMS</strong>
+              <small class="brand-line" aria-label="Tech, Faith, Morals, Security">
+                <span>Tech</span><span class="brand-sep" aria-hidden="true">·</span><span>Faith</span
+                ><span class="brand-sep" aria-hidden="true">·</span><span>Morals</span
+                ><span class="brand-sep" aria-hidden="true">·</span><span>Security</span>
+              </small>
+            </div>
+          </div>
+        </a>
+        <button id="menuBtn" class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">Menu</button>
+        <nav id="mainNav" class="main-nav" aria-label="Primary">
+          <a href="index.html#home">Home</a>
+          <a href="index.html#about">About</a>
+          <a href="index.html#services">Services</a>
+          <a href="index.html#ceo">CEO</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page-shell">
+      <aside class="story-rail" aria-label="Personal stories">
+        <p class="rail-eyebrow">Discover</p>
+        <p class="rail-title">Stories that shape TALA</p>
+        
+        <nav class="rail-cards">
+          <a href="my-tech-journey.html" class="rail-card" data-tone="journey">
+            <span class="rail-card-ic" aria-hidden="true">◆</span>
+            <span class="rail-card-t">My Tech Journey</span>
+            <span class="rail-card-d">From curiosity to builders mindset</span>
+          </a>
+          <a href="leadership.html" class="rail-card" data-tone="lead">
+            <span class="rail-card-ic" aria-hidden="true">◇</span>
+            <span class="rail-card-t">Leadership</span>
+            <span class="rail-card-d">Serving teams and communities</span>
+          </a>
+          <a href="morals.html" class="rail-card" data-tone="morals">
+            <span class="rail-card-ic" aria-hidden="true">○</span>
+            <span class="rail-card-t">Morals</span>
+            <span class="rail-card-d">Why ethics must lead innovation</span>
+          </a>
+          <a href="security.html" class="rail-card" data-tone="security">
+            <span class="rail-card-ic" aria-hidden="true">◎</span>
+            <span class="rail-card-t">Security</span>
+            <span class="rail-card-d">Protecting people and systems</span>
+          </a>
+          <a href="faith.html" class="rail-card" data-tone="faith">
+            <span class="rail-card-ic" aria-hidden="true">✦</span>
+            <span class="rail-card-t">Faith</span>
+            <span class="rail-card-d">Purpose beneath the work</span>
+          </a>
+          <a href="tech.html" class="rail-card is-active" data-tone="tech">
+            <span class="rail-card-ic" aria-hidden="true">▸</span>
+            <span class="rail-card-t">Tech</span>
+            <span class="rail-card-d">Where all pillars meet</span>
+          </a>
+        </nav>
+      </aside>
+      <div class="page-main">
+        <main class="main-inner section">
+          <article class="story-article reveal">
+            <header class="story-header">
+              <p class="eyebrow">Tech</p>
+              <h1>One integrated mission</h1>
+              <p class="story-lead">
+                Technology is the visible layer. Under it sit faith, morals, security, and leadership. I do not separate
+                them when I build.
+              </p>
+            </header>
+            <div class="prose glass-panel" style="padding: 1.5rem 1.75rem; border-radius: var(--radius-lg)">
+              <h2>How the pillars fit together</h2>
+              <p>
+                <strong>Faith</strong> anchors why we exist. <strong>Morals</strong> decide what we will and will not do.
+                <strong>Security</strong> protects people when systems fail or adversaries appear.
+                <strong>Leadership</strong> keeps teams aligned when pressure rises. <strong>Tech</strong> is the craft that
+                turns those commitments into working software and infrastructure.
+              </p>
+              <h2>Integration in practice</h2>
+              <ul>
+                <li>Design reviews ask ethical questions before UI polish.</li>
+                <li>Architecture assumes breach scenarios and data minimization.</li>
+                <li>Roadmaps refuse features that break promises to users.</li>
+                <li>Communication with clients is direct about limits and tradeoffs.</li>
+              </ul>
+              <h2>An invitation</h2>
+              <p>
+                If you want a vendor who treats technology as neutral paint, we may not be your fit. If you want a partner
+                who builds with conscience, discipline, and long term security, welcome. The other pages in this rail explain
+                each pillar in the words I would use in person.
+              </p>
+            </div>
+            <p class="story-back"><a class="btn btn-ghost" href="index.html">← Back to home</a></p>
+          </article>
+        </main>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container foot">
+        <span>© <span id="year"></span> TALA SYSTEMS</span>
+        <span class="foot-tagline">Lighting the future of technology</span>
+      </div>
+    </footer>
+    <script src="app.js"></script>
+  </body>
+</html>
