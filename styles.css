@@ -1288,16 +1288,53 @@ h3 {
 
 @media (max-width: 760px) {
   .nav-wrap {
-    min-height: 68px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 10px 12px;
+    padding-block: 10px;
   }
 
   .brand {
-    flex: 1 1 auto;
+    grid-column: 1 / -1;
+    flex: unset;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
     gap: 10px;
     align-items: center;
+  }
+
+  .nav-toolbar {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 6px;
+  }
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .brand-title {
+    font-size: clamp(0.86rem, 3.4vw + 0.5rem, 1.2rem);
+    letter-spacing: 0.06em;
+    overflow-wrap: normal;
+    word-break: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .brand-line {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0.1rem;
+    font-size: clamp(0.48rem, 2.5vw + 0.35rem, 0.62rem);
+    letter-spacing: 0.08em;
+    column-gap: 0.22em;
   }
 
   .brand-mark {
@@ -1313,11 +1350,6 @@ h3 {
 
   .menu-btn {
     display: inline-flex;
-  }
-
-  .nav-toolbar {
-    flex: 0 0 auto;
-    gap: 6px;
   }
 
   .discover-toggle {
@@ -1396,13 +1428,6 @@ h3 {
 
   .brand-line {
     column-gap: 0.22em;
-  }
-
-  .discover-toggle-label {
-    max-width: 4.2rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .hero-copy .eyebrow {

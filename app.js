@@ -79,6 +79,13 @@ function fitBrandBlock() {
   const lock = document.querySelector(".brand-lock");
   if (!title || !line || !lock) return;
 
+  if (window.matchMedia("(max-width: 760px)").matches) {
+    title.style.removeProperty("font-size");
+    line.style.removeProperty("font-size");
+    lock.style.removeProperty("width");
+    return;
+  }
+
   title.style.removeProperty("font-size");
   line.style.removeProperty("font-size");
   lock.style.removeProperty("width");
