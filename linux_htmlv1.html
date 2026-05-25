@@ -20,27 +20,49 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        html, body { background-color: var(--bg-deep); }
+
         body {
-            background-color: var(--bg-deep);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 12px;
             color: var(--text-light);
             font-family: 'Afacad Flux', sans-serif;
-            overflow: hidden;
             user-select: none;
+            overflow-x: hidden;
         }
 
-        /* PRESENTATION VIEWPORT CANVAS */
-        #viewport-wrapper {
+        /* Outer flex container — keeps the scaled canvas centered */
+        .stage-frame {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Reserves the *scaled* footprint in document flow so the
+           transformed canvas doesn't overflow or leave dead space. */
+        .stage-shell {
             position: relative;
+            width: calc(1280px * var(--pres-scale, 1));
+            height: calc(720px * var(--pres-scale, 1));
+        }
+
+        /* PRESENTATION VIEWPORT CANVAS — stays 1280x720, just transforms */
+        #viewport-wrapper {
+            position: absolute;
+            top: 0; left: 0;
             width: 1280px;
             height: 720px;
             background-color: var(--slide-surface);
             border-radius: 24px;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
             overflow: hidden;
+            transform-origin: top left;
+            transform: scale(var(--pres-scale, 1));
         }
 
         /* DYNAMIC BUBBLING BACKGROUND AESTHETIC */
@@ -253,23 +275,81 @@
             border-color: var(--blue-bubble);
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
         }
+
+        /* MOBILE FLOATING NAV — readable tap targets at any scale */
+        .mobile-nav-bar {
+            display: none;
+            position: fixed;
+            left: 50%;
+            bottom: max(12px, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            z-index: 50;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.86);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+        .mobile-nav-bar button {
+            min-width: 88px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            background: rgba(56, 189, 248, 0.08);
+            color: var(--blue-bubble);
+            font-family: 'Comfortaa', cursive;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-nav-bar button:active {
+            background: var(--blue-bubble);
+            color: var(--bg-deep);
+        }
+        .mobile-nav-pageinfo {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 6px;
+            font-family: 'Comfortaa', cursive;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 720px) {
+            .mobile-nav-bar { display: inline-flex; align-items: center; }
+            .presentation-navigation-bar { display: none; }
+            body { padding: 6px; padding-bottom: 76px; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="viewport-wrapper">
-        <div class="bubble-generator-space"></div>
-        <div id="dynamic-bubble-box"></div>
-        
-        <div class="brand-header-label">COMMUNITY DISCUSSION</div>
-        <div id="slides-delivery-stage"></div>
-        <div class="brand-footer-label">FRMAJISU</div>
-        <div class="slide-pagination-index" id="pagination-tracker">1 / 77</div>
+    <div class="stage-frame">
+      <div class="stage-shell">
+        <div id="viewport-wrapper">
+            <div class="bubble-generator-space"></div>
+            <div id="dynamic-bubble-box"></div>
 
-        <div class="presentation-navigation-bar">
-            <button class="nav-control-btn" onclick="travelToPreviousSlide()">&#8592; PREV</button>
-            <button class="nav-control-btn" onclick="travelToNextSlide()">NEXT &#8594;</button>
+            <div class="brand-header-label">COMMUNITY DISCUSSION</div>
+            <div id="slides-delivery-stage"></div>
+            <div class="brand-footer-label">FRMAJISU</div>
+            <div class="slide-pagination-index" id="pagination-tracker">1 / 77</div>
+
+            <div class="presentation-navigation-bar">
+                <button class="nav-control-btn" onclick="travelToPreviousSlide()">&#8592; PREV</button>
+                <button class="nav-control-btn" onclick="travelToNextSlide()">NEXT &#8594;</button>
+            </div>
         </div>
+      </div>
+    </div>
+
+    <div class="mobile-nav-bar" role="navigation" aria-label="Slide navigation">
+        <button type="button" onclick="travelToPreviousSlide()" aria-label="Previous slide">&#8592; Prev</button>
+        <span class="mobile-nav-pageinfo" id="mobile-pageinfo">1 / 77</span>
+        <button type="button" onclick="travelToNextSlide()" aria-label="Next slide">Next &#8594;</button>
     </div>
 
     <script>
@@ -463,12 +543,13 @@
         }
 
         // VIEWPORT ANIMATION AND STATE SYNCHRONIZATION
+        const mobilePageInfo = document.getElementById('mobile-pageinfo');
         function synchronizepresentationState() {
             document.querySelectorAll('.slide-frame').forEach((slide, index) => {
                 slide.classList.remove('active-view');
                 if (index === trackCurrentIndex) {
                     slide.classList.add('active-view');
-                    
+
                     // Reset visibility states of internal components whenever changing slides
                     const targetHiddenZone = slide.querySelector('.instruction-reveal-zone');
                     const targetBoxElement = slide.querySelector('.interactive-question-box');
@@ -478,7 +559,9 @@
                     }
                 }
             });
-            indexTracker.innerText = `${trackCurrentIndex + 1} / ${absoluteSlideCap}`;
+            const label = `${trackCurrentIndex + 1} / ${absoluteSlideCap}`;
+            indexTracker.innerText = label;
+            if (mobilePageInfo) mobilePageInfo.innerText = label;
         }
 
         function travelToNextSlide() {
@@ -522,6 +605,45 @@
         
         // Initial pagination string update
         indexTracker.innerText = `1 / ${absoluteSlideCap}`;
+        if (mobilePageInfo) mobilePageInfo.innerText = `1 / ${absoluteSlideCap}`;
+
+        // RESPONSIVE FIT — scale the 1280x720 canvas to any viewport
+        function fitPresentationToViewport() {
+            const isSmall = window.innerWidth <= 720;
+            // Reserve space for the floating mobile nav on small screens
+            const vPad = isSmall ? 88 : 24;
+            const hPad = isSmall ? 12 : 24;
+            const availW = Math.max(240, window.innerWidth - hPad * 2);
+            const availH = Math.max(240, window.innerHeight - vPad);
+            const scale = Math.min(availW / 1280, availH / 720, 1);
+            document.documentElement.style.setProperty('--pres-scale', String(scale));
+        }
+        fitPresentationToViewport();
+        window.addEventListener('resize', fitPresentationToViewport);
+        window.addEventListener('orientationchange', fitPresentationToViewport);
+
+        // Swipe gestures for touch users
+        (function enableSwipe() {
+            let startX = 0, startY = 0, tracking = false;
+            const target = document.body;
+            target.addEventListener('touchstart', (e) => {
+                if (!e.touches || e.touches.length !== 1) return;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                tracking = true;
+            }, { passive: true });
+            target.addEventListener('touchend', (e) => {
+                if (!tracking) return;
+                tracking = false;
+                const t = e.changedTouches && e.changedTouches[0];
+                if (!t) return;
+                const dx = t.clientX - startX;
+                const dy = t.clientY - startY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+                    if (dx < 0) travelToNextSlide(); else travelToPreviousSlide();
+                }
+            }, { passive: true });
+        })();
     </script>
 </body>
 </html>
