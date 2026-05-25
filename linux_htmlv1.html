@@ -1,649 +1,1011 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COMMUNITY DISCUSSION - Practical Linux OS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Afacad+Flux:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        /* GLOBAL RESET & DESIGN THEME */
-        :root {
-            --bg-deep: #0f172a;
-            --slide-surface: #1e293b;
-            --blue-bubble: #38bdf8;
-            --blue-ocean: #0ea5e9;
-            --text-light: #f8fafc;
-            --text-dim: #cbd5e1;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>COMMUNITY DISCUSSION - Practical Linux OS</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/tala_maskable_192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/tala_maskable.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/tala_maskable.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Afacad+Flux:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #0f172a;
+      --bg-2: #0b1224;
+      --slide-surface: #1e293b;
+      --blue: #38bdf8;
+      --blue-2: #0ea5e9;
+      --blue-deep: #0369a1;
+      --green-go: #22c55e;
+      --gold: #fbbf24;
+      --text: #f8fafc;
+      --text-dim: #cbd5e1;
+      --muted: #94a3b8;
+      --line: rgba(56, 189, 248, 0.22);
+      --topbar-h: clamp(46px, 8vh, 64px);
+      --bottom-h: clamp(76px, 14vh, 110px);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg-deep); }
+    body {
+      color: var(--text);
+      font-family: "Afacad Flux", system-ui, -apple-system, sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      overscroll-behavior: contain;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: pan-y;
+    }
+    .ambient {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 22%, rgba(56,189,248,0.10) 0%, transparent 35%),
+        radial-gradient(circle at 88% 18%, rgba(14,165,233,0.10) 0%, transparent 38%),
+        radial-gradient(circle at 50% 92%, rgba(3,105,161,0.12) 0%, transparent 45%);
+    }
+    .bubble {
+      position: absolute;
+      bottom: -120px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.14);
+      box-shadow: inset -3px -3px 0 rgba(255, 255, 255, 0.05);
+      animation: riseUp 14s linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes riseUp {
+      0%   { transform: translateY(0) scale(0.7); opacity: 0; }
+      15%  { opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bubble { display: none; }
+    }
+    .topbar {
+      position: relative; z-index: 5;
+      height: var(--topbar-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(8px, 2vw, 18px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      gap: 8px;
+    }
+    .brand-tag {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(11px, 2.6vw, 16px);
+      letter-spacing: 0.18em;
+      color: var(--blue);
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      text-align: center;
+    }
+    .icon-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: rgba(56, 189, 248, 0.06);
+      color: var(--blue);
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(11px, 2.4vw, 13px);
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+    .icon-btn:hover, .icon-btn:active {
+      background: var(--blue);
+      color: var(--bg-deep);
+    }
+    .icon-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+    .icon-btn .ic { width: 16px; height: 16px; line-height: 1; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    .stage {
+      position: relative; z-index: 1;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding: clamp(10px, 2.4vw, 22px);
+    }
+    .screen {
+      position: absolute;
+      inset: clamp(10px, 2.4vw, 22px);
+      display: none;
+      flex-direction: column;
+    }
+    .screen.is-active { display: flex; }
 
-        html, body { background-color: var(--bg-deep); }
+    /* HOME SCREEN */
+    .home-head { text-align: center; padding: 4px 0 10px; }
+    .home-title {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 4.4vw, 2rem);
+      color: var(--blue);
+      line-height: 1.2;
+    }
+    .home-sub {
+      margin-top: 4px;
+      font-size: clamp(0.8rem, 2.6vw, 1rem);
+      color: var(--text-dim);
+    }
+    .home-prepared {
+      margin-top: 6px;
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+      color: var(--muted);
+    }
+    .home-prepared b {
+      color: var(--blue);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .chapter-grid {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+      gap: clamp(8px, 2vw, 14px);
+      padding: 6px 2px 16px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56,189,248,0.5) transparent;
+    }
+    @media (max-width: 480px) {
+      .chapter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 340px) {
+      .chapter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .chapter-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: clamp(12px, 2.4vw, 18px);
+      border-radius: 14px;
+      background: linear-gradient(160deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
+      border: 1px solid rgba(56,189,248,0.25);
+      color: var(--text);
+      font-family: "Comfortaa", sans-serif;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      overflow: hidden;
+    }
+    .chapter-card::before {
+      content: "";
+      position: absolute; top: 0; left: 14px; right: 14px; height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-deep));
+      opacity: 0.85;
+    }
+    .chapter-card:hover, .chapter-card:active {
+      transform: translateY(-2px);
+      border-color: var(--blue);
+      box-shadow: 0 14px 32px -18px rgba(56,189,248,0.45);
+    }
+    .chapter-card .ch-num {
+      font-size: clamp(10px, 2.2vw, 12px);
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .chapter-card .ch-title {
+      font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+      color: var(--blue);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .chapter-card .ch-meta {
+      margin-top: auto;
+      font-family: "Afacad Flux", sans-serif;
+      font-size: clamp(0.78rem, 2.2vw, 0.88rem);
+      color: var(--text-dim);
+    }
+    .chapter-card.is-special::before {
+      background: linear-gradient(90deg, var(--gold), #f97316);
+    }
+    .chapter-card.is-special {
+      border-color: rgba(251, 191, 36, 0.55);
+      box-shadow: 0 10px 26px -18px rgba(239, 68, 68, 0.55);
+    }
+    /* "New" badge — popping red-gold */
+    .badge-new {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(9px, 2.2vw, 11px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff7c8;
+      background: linear-gradient(135deg, #ef4444 0%, #f97316 45%, #fbbf24 100%);
+      border: 1px solid rgba(255, 247, 200, 0.55);
+      box-shadow:
+        0 0 0 0 rgba(251, 191, 36, 0.55),
+        0 6px 16px -6px rgba(239, 68, 68, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      text-shadow: 0 1px 0 rgba(120, 22, 0, 0.35);
+      animation: badge-pop 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      transform-origin: center;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .badge-new::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 6px #fff7c8, 0 0 10px #fbbf24;
+    }
+    @keyframes badge-pop {
+      0%   { transform: scale(0.94) rotate(-3deg); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55), 0 6px 16px -6px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+      50%  { transform: scale(1.08) rotate(3deg);  box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.0),  0 8px 20px -6px rgba(239, 68, 68, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+      100% { transform: scale(0.94) rotate(-3deg); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55), 0 6px 16px -6px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .badge-new { animation: none; }
+    }
+    .chapter-card.is-special { padding-top: clamp(28px, 5.5vw, 36px); }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            min-height: 100dvh;
-            padding: 12px;
-            color: var(--text-light);
-            font-family: 'Afacad Flux', sans-serif;
-            user-select: none;
-            overflow-x: hidden;
-        }
+    /* SLIDE SCREEN */
+    .slide-card {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: clamp(12px, 2.6vw, 22px);
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--line);
+    }
+    .slide-chapter {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.78rem, 2.2vw, 0.95rem);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+      padding-bottom: 6px;
+    }
+    .slide-body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .qbox {
+      background: rgba(30, 41, 59, 0.78);
+      border: 2px solid rgba(56, 189, 248, 0.22);
+      border-left: 6px solid var(--blue);
+      padding: clamp(12px, 2.6vw, 22px);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.18s ease;
+      max-height: 100%;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56,189,248,0.45) transparent;
+    }
+    .qbox:hover { border-color: var(--blue); background: rgba(56,189,248,0.04); }
+    .qbox.is-revealed { background: rgba(56, 189, 248, 0.05); }
+    .qbox .ex-label {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.82rem, 2.4vw, 1rem);
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .qbox .prompt {
+      font-size: clamp(1rem, 3.2vw, 1.45rem);
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .reveal-zone {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
+      display: none;
+      animation: dropFade 0.25s ease forwards;
+    }
+    .reveal-zone.show { display: block; }
+    @keyframes dropFade {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .exec-label {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.74rem, 2vw, 0.85rem);
+      letter-spacing: 0.16em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .term {
+      display: block;
+      width: 100%;
+      padding: clamp(8px, 1.8vw, 12px) clamp(10px, 2vw, 16px);
+      border-radius: 8px;
+      background: #090d16;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.7);
+      font-family: "Courier New", Courier, monospace;
+      font-size: clamp(0.88rem, 2.6vw, 1.2rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: 0.5px;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .hint {
+      margin-top: 8px;
+      font-size: clamp(0.74rem, 2.1vw, 0.85rem);
+      color: var(--muted);
+      text-align: center;
+    }
+    .alt-label {
+      margin-top: 12px;
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.74rem, 2vw, 0.85rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .term + .term { margin-top: 6px; }
+    .tip {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--gold);
+      background: rgba(251, 191, 36, 0.08);
+      border-radius: 6px;
+      font-size: clamp(0.82rem, 2.3vw, 0.95rem);
+      color: #fde7a8;
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .tip b { color: var(--gold); font-style: normal; font-weight: 700; }
 
-        /* Outer flex container — keeps the scaled canvas centered */
-        .stage-frame {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
+    /* INTRO/OUTRO */
+    .intro-block, .outro-block {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 2vw, 16px);
+      text-align: center;
+      padding: 6px;
+    }
+    .intro-eyebrow, .outro-eyebrow {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .intro-title {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(1.4rem, 5.5vw, 2.4rem);
+      color: var(--blue);
+      line-height: 1.2;
+      max-width: 18ch;
+    }
+    .outro-title {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+      color: var(--blue);
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      width: 100%;
+      max-width: 520px;
+    }
+    .summary-tile {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1.5px solid rgba(56, 189, 248, 0.25);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: "Comfortaa", sans-serif;
+      color: var(--blue);
+      font-size: clamp(0.86rem, 2.6vw, 1.05rem);
+      font-weight: 700;
+    }
 
-        /* Reserves the *scaled* footprint in document flow so the
-           transformed canvas doesn't overflow or leave dead space. */
-        .stage-shell {
-            position: relative;
-            width: calc(1280px * var(--pres-scale, 1));
-            height: calc(720px * var(--pres-scale, 1));
-        }
+    /* BOTTOM BAR + PROGRESS */
+    .bottombar {
+      position: relative; z-index: 5;
+      height: var(--bottom-h);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px clamp(8px, 2vw, 18px) max(8px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+    }
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .progress-bar {
+      flex: 1;
+      display: flex;
+      gap: 3px;
+      height: 8px;
+      padding: 2px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      background: rgba(15, 23, 42, 0.5);
+      overflow: hidden;
+    }
+    .progress-seg {
+      flex: 1;
+      min-width: 4px;
+      border-radius: 2px;
+      background: rgba(56, 189, 248, 0.18);
+      transition: background 0.25s ease;
+    }
+    .progress-seg.is-done {
+      background: linear-gradient(90deg, var(--blue), var(--green-go));
+      box-shadow: 0 0 6px rgba(56, 189, 248, 0.55);
+    }
+    .progress-seg.is-current {
+      background: linear-gradient(90deg, var(--gold), var(--blue));
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.55);
+    }
+    .progress-pos {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.72rem, 2vw, 0.85rem);
+      color: var(--text-dim);
+      min-width: 56px;
+      text-align: right;
+    }
+    .center-brand {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      font-size: clamp(0.72rem, 2.1vw, 0.88rem);
+      color: rgba(56, 189, 248, 0.78);
+      text-align: center;
+    }
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .nav-btn {
+      flex: 1 1 auto;
+      max-width: 240px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--blue);
+      background: rgba(56,189,248,0.08);
+      color: var(--blue);
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.84rem, 2.4vw, 0.98rem);
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+    .nav-btn:hover, .nav-btn:active { background: var(--blue); color: var(--bg-deep); }
+    .nav-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+    .nav-btn.primary {
+      background: linear-gradient(120deg, var(--blue) 0%, var(--blue-deep) 100%);
+      color: var(--bg-deep);
+    }
 
-        /* PRESENTATION VIEWPORT CANVAS — stays 1280x720, just transforms */
-        #viewport-wrapper {
-            position: absolute;
-            top: 0; left: 0;
-            width: 1280px;
-            height: 720px;
-            background-color: var(--slide-surface);
-            border-radius: 24px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-            overflow: hidden;
-            transform-origin: top left;
-            transform: scale(var(--pres-scale, 1));
-        }
+    /* HOME SCREEN BIG START BUTTON (intro card) */
+    .start-cta {
+      align-self: center;
+      margin-top: 6px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1.5px solid var(--blue);
+      background: rgba(56,189,248,0.1);
+      color: var(--blue);
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 2.6vw, 1rem);
+      cursor: pointer;
+    }
 
-        /* DYNAMIC BUBBLING BACKGROUND AESTHETIC */
-        .bubble-generator-space {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 25%, rgba(56, 189, 248, 0.12) 0%, transparent 25%),
-                radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 30%),
-                radial-gradient(circle at 45% 85%, rgba(3, 105, 161, 0.12) 0%, transparent 35%);
-            z-index: 1;
-        }
-
-        .ambient-bubble {
-            position: absolute;
-            background: rgba(56, 189, 248, 0.14);
-            border-radius: 50%;
-            bottom: -120px;
-            animation: riseUp 14s infinite ease-in;
-            z-index: 1;
-        }
-
-        @keyframes riseUp {
-            0% { transform: translateY(0) scale(0.7); opacity: 0; }
-            15% { opacity: 1; }
-            100% { transform: translateY(-880px) scale(1.3); opacity: 0; }
-        }
-
-        /* SLIDE ANIMATION STAGE */
-        .slide-frame {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            padding: 80px 70px;
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            transform: scale(0.96) translateY(10px);
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .slide-frame.active-view {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            pointer-events: all;
-            z-index: 3;
-        }
-
-        /* BRANDING HEADER AND FOOTER DEFINITIONS */
-        .brand-header-label {
-            position: absolute;
-            top: 35px; left: 70px;
-            font-family: 'Comfortaa', cursive;
-            font-weight: 700;
-            font-size: 22px;
-            color: var(--blue-bubble);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            z-index: 5;
-        }
-
-        .brand-footer-label {
-            position: absolute;
-            bottom: 35px; left: 70px;
-            font-size: 18px;
-            color: #576b85;
-            letter-spacing: 2px;
-            font-weight: 600;
-            z-index: 5;
-        }
-
-        .slide-pagination-index {
-            position: absolute;
-            bottom: 35px; right: 70px;
-            font-size: 18px;
-            color: #576b85;
-            font-weight: 600;
-            z-index: 5;
-        }
-
-        /* CONTENT CARDS & CLICKS */
-        h1, .section-heading {
-            font-family: 'Comfortaa', cursive;
-            color: var(--blue-bubble);
-        }
-
-        h1 { font-size: 68px; text-align: center; line-height: 1.25; }
-        .section-heading { font-size: 42px; border-bottom: 2px solid rgba(56, 189, 248, 0.2); padding-bottom: 12px; margin-top: 20px; }
-
-        .course-title-sub {
-            font-size: 26px;
-            color: var(--blue-bubble);
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .interactive-question-box {
-            background: rgba(30, 41, 59, 0.75);
-            border: 2px solid rgba(56, 189, 248, 0.2);
-            border-left: 8px solid var(--blue-bubble);
-            padding: 40px;
-            border-radius: 12px;
-            margin-top: 35px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        .interactive-question-box:hover {
-            border-color: var(--blue-bubble);
-            background: rgba(56, 189, 248, 0.04);
-            transform: translateY(-2px);
-        }
-
-        .interactive-question-box h3 {
-            font-size: 28px;
-            color: #94a3b8;
-            margin-bottom: 15px;
-            font-family: 'Comfortaa', cursive;
-        }
-
-        .challenge-prompt-text {
-            font-size: 42px;
-            line-height: 1.4;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        /* REVEAL STATES */
-        .instruction-reveal-zone {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-            animation: dropDownFade 0.4s ease forwards;
-        }
-
-        @keyframes dropDownFade {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .terminal-syntax {
-            color: #f1f5f9;
-            font-weight: 700;
-            background: #090d16;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            display: inline-block;
-            margin-top: 5px;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
-            font-size: 38px;
-            letter-spacing: 1px;
-        }
-
-        /* OUTRO DECK TILES FROM INTERFACE SPEC */
-        .summary-grid {
-            display: flex;
-            gap: 25px;
-            width: 100%;
-            margin-top: 40px;
-        }
-
-        .summary-tile-item {
-            background: rgba(15, 23, 42, 0.6);
-            border: 2px solid rgba(56, 189, 248, 0.2);
-            border-radius: 16px;
-            padding: 30px;
-            flex: 1;
-            text-align: center;
-            font-size: 32px;
-            font-family: 'Comfortaa', cursive;
-            color: var(--blue-bubble);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        /* BUTTON BAR NAVIGATION CONTROLS */
-        .presentation-navigation-bar {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            z-index: 20;
-        }
-
-        .nav-control-btn {
-            background: transparent;
-            border: 2px solid rgba(56, 189, 248, 0.5);
-            color: var(--blue-bubble);
-            padding: 8px 22px;
-            border-radius: 20px;
-            font-size: 16px;
-            cursor: pointer;
-            font-family: 'Comfortaa', cursive;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-
-        .nav-control-btn:hover {
-            background: var(--blue-bubble);
-            color: var(--bg-deep);
-            border-color: var(--blue-bubble);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-        }
-
-        /* MOBILE FLOATING NAV — readable tap targets at any scale */
-        .mobile-nav-bar {
-            display: none;
-            position: fixed;
-            left: 50%;
-            bottom: max(12px, env(safe-area-inset-bottom));
-            transform: translateX(-50%);
-            z-index: 50;
-            gap: 10px;
-            padding: 8px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.86);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-        }
-        .mobile-nav-bar button {
-            min-width: 88px;
-            padding: 10px 18px;
-            border-radius: 999px;
-            border: 1px solid rgba(56, 189, 248, 0.45);
-            background: rgba(56, 189, 248, 0.08);
-            color: var(--blue-bubble);
-            font-family: 'Comfortaa', cursive;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .mobile-nav-bar button:active {
-            background: var(--blue-bubble);
-            color: var(--bg-deep);
-        }
-        .mobile-nav-pageinfo {
-            display: inline-flex;
-            align-items: center;
-            padding: 0 6px;
-            font-family: 'Comfortaa', cursive;
-            font-size: 13px;
-            color: #94a3b8;
-        }
-
-        @media (max-width: 720px) {
-            .mobile-nav-bar { display: inline-flex; align-items: center; }
-            .presentation-navigation-bar { display: none; }
-            body { padding: 6px; padding-bottom: 76px; }
-        }
-    </style>
+    @media (max-height: 520px) {
+      .home-head { padding: 0; }
+      .home-title { font-size: clamp(1rem, 4vw, 1.4rem); }
+      .home-sub { display: none; }
+    }
+  </style>
 </head>
 <body>
+  <div class="ambient" aria-hidden="true">
+    <div id="bubbleField" aria-hidden="true"></div>
+  </div>
 
-    <div class="stage-frame">
-      <div class="stage-shell">
-        <div id="viewport-wrapper">
-            <div class="bubble-generator-space"></div>
-            <div id="dynamic-bubble-box"></div>
+  <header class="topbar">
+    <button id="homeBtn" class="icon-btn" type="button" aria-label="Back to chapters">
+      <span class="ic" aria-hidden="true">&#8962;</span><span class="lbl">Home</span>
+    </button>
+    <div class="brand-tag" id="brandTag">COMMUNITY DISCUSSION</div>
+    <button id="revealBtn" class="icon-btn" type="button" aria-label="Show command" style="visibility:hidden">
+      <span class="ic" aria-hidden="true">&#9654;</span><span class="lbl">Show</span>
+    </button>
+  </header>
 
-            <div class="brand-header-label">COMMUNITY DISCUSSION</div>
-            <div id="slides-delivery-stage"></div>
-            <div class="brand-footer-label">FRMAJISU</div>
-            <div class="slide-pagination-index" id="pagination-tracker">1 / 77</div>
-
-            <div class="presentation-navigation-bar">
-                <button class="nav-control-btn" onclick="travelToPreviousSlide()">&#8592; PREV</button>
-                <button class="nav-control-btn" onclick="travelToNextSlide()">NEXT &#8594;</button>
-            </div>
-        </div>
+  <main class="stage">
+    <section class="screen is-active" id="screenHome" aria-label="Chapter selection">
+      <div class="home-head">
+        <h1 class="home-title">Practical Linux OS Workshop</h1>
+        <p class="home-sub">IT 1201 Open Source System Analysis &amp; Design &middot; Pick a chapter to practice.</p>
+        <p class="home-prepared">Prepared by <b>Francis Majisu</b></p>
       </div>
+      <div class="chapter-grid" id="chapterGrid"></div>
+      <p class="center-brand" style="padding:6px 0 2px">FRMAJISU</p>
+    </section>
+
+    <section class="screen" id="screenSlide" aria-label="Slide">
+      <div class="slide-card">
+        <div class="slide-chapter" id="slideChapter">Chapter</div>
+        <div class="slide-body" id="slideBody"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottombar" id="bottombar" hidden>
+    <div class="progress-row">
+      <div class="progress-bar" id="progressBar" aria-label="Chapter progress"></div>
+      <div class="progress-pos" id="progressPos">1 / 1</div>
     </div>
-
-    <div class="mobile-nav-bar" role="navigation" aria-label="Slide navigation">
-        <button type="button" onclick="travelToPreviousSlide()" aria-label="Previous slide">&#8592; Prev</button>
-        <span class="mobile-nav-pageinfo" id="mobile-pageinfo">1 / 77</span>
-        <button type="button" onclick="travelToNextSlide()" aria-label="Next slide">Next &#8594;</button>
+    <div class="nav-row">
+      <button id="prevBtn" class="nav-btn" type="button">&#8592; Prev</button>
+      <button id="nextBtn" class="nav-btn primary" type="button">Next &#8594;</button>
     </div>
+    <div class="center-brand" aria-hidden="true">FRMAJISU</div>
+  </footer>
+  <script>
+    // ====== CONTENT ======================================================
+    // Each chapter: { name, label (card label), prefix (slide title), items: [{q, r}] }
+    var SYLLABUS = [
+      {
+        name: "Chapter 1: The Big Picture",
+        label: "Chapter 1",
+        prefix: "Chapter 1: The Big Picture",
+        intro: "The Big Picture",
+        items: [
+          { q: "Show the kernel version and the machine type.", r: "uname -a" },
+          { q: "Print the folder you are in right now.", r: "pwd", tip: "pwd means \"print working directory\" — it tells you where you are." },
+          { q: "Show the CPU's architecture name.", r: "arch" },
+          { q: "Clear everything from the screen.", r: "clear" },
+          { q: "Show today's date and time.", r: "date" },
+          { q: "Show this month on a calendar.", r: "cal" },
+          { q: "Print your username.", r: "whoami" },
+          { q: "Open the help (manual) page for the ls command.", r: "man ls", tip: "Press q to leave the manual." },
+          { q: "Print the word Hello on the screen.", r: "echo Hello" },
+          { q: "Show the list of commands you typed before in this terminal.", r: "history" }
+        ]
+      },
+      {
+        name: "Chapter 2: Commands & Hierarchy",
+        label: "Chapter 2",
+        prefix: "Chapter 2: Commands & Hierarchy",
+        intro: "Commands & Hierarchy",
+        items: [
+          { q: "Go to your home folder.", r: "cd ~", tip: "~ (tilde) is a shortcut that means \"my home folder\". So cd ~ is the same as cd /home/yourname." },
+          { q: "Make a new folder called FOLDER1 here.", r: "mkdir FOLDER1" },
+          { q: "List the files in your current folder.", r: "ls" },
+          { q: "List files with details (sizes and permissions).", r: "ls -l" },
+          { q: "List ALL files, including hidden ones.", r: "ls -a", tip: "-a means \"all\". Hidden files in Linux start with a dot, like .bashrc." },
+          { q: "Move into FOLDER1.", r: "cd FOLDER1", tip: "FOLDER1 here is a relative path — it starts from where you are now (your home)." },
+          { q: "Make an empty file called FILE1 inside FOLDER1.", r: "touch FILE1" },
+          { q: "Copy FILE1 into a new file called FILE2.", r: "cp FILE1 FILE2" },
+          { q: "Rename FILE2 to FILE3.", r: "mv FILE2 FILE3", tip: "mv is also used for renaming, not just moving." },
+          { q: "Delete FILE3.", r: "rm FILE3" },
+          { q: "Go back up one level (to your home).", r: "cd ..", tip: ".. means \"the folder one step up\". So if you are in /home/me/FOLDER1, cd .. goes to /home/me." },
+          { q: "Remove the empty folder FOLDER1.", r: "rmdir FOLDER1", tip: "rmdir only removes empty folders. Use rm -r FOLDER1 if it has files inside (be careful!)." },
+          { q: "Find every .txt file inside the current folder.", r: "find . -name \"*.txt\"", tip: ". (a single dot) means \"this folder, right here\"." }
+        ]
+      },
+      {
+        name: "Chapter 3: Devices",
+        label: "Chapter 3",
+        prefix: "Chapter 3: Devices",
+        intro: "Devices",
+        items: [
+          { q: "List all storage drives and partitions on the machine.", r: "lsblk" },
+          { q: "List the USB devices plugged in.", r: "lsusb" },
+          { q: "List the PCI devices on the motherboard.", r: "lspci" },
+          { q: "Show CPU details (cores, speed, model).", r: "lscpu" },
+          { q: "Show a short summary of the whole machine's hardware.", r: "lshw -short", tip: "lshw usually needs sudo to see everything." },
+          { q: "Show RAM usage in megabytes.", r: "free -m" },
+          { q: "Show the first lines of the kernel boot log.", r: "dmesg | head", tip: "The | symbol is called a \"pipe\". It sends the output of one command into another. Here, dmesg's output flows into head, which shows the top lines." },
+          { q: "List the kernel modules (drivers) currently loaded.", r: "lsmod" },
+          { q: "Show CPU info from the kernel's view.", r: "cat /proc/cpuinfo" },
+          { q: "Show how long the system has been running since boot.", r: "uptime" }
+        ]
+      },
+      {
+        name: "Chapter 4: Users, Groups & Permissions",
+        label: "Chapter 4",
+        prefix: "Chapter 4: Users, Groups & Permissions",
+        intro: "Users, Groups & Permissions",
+        items: [
+          { q: "Create a new user called USER1 (no home folder yet).", r: "sudo useradd USER1" },
+          { q: "Create USER2 WITH a home folder.", r: "sudo useradd -m USER2", tip: "-m means \"make a home folder\" so USER2 gets /home/USER2." },
+          { q: "Set USER1's password.", r: "sudo passwd USER1" },
+          { q: "Delete USER1, but keep their home folder.", r: "sudo userdel USER1" },
+          { q: "Delete USER2 AND their home folder.", r: "sudo userdel -r USER2", tip: "-r means \"remove\" — it also deletes the home folder and the mail file." },
+          { q: "Make a group called GROUP1.", r: "sudo groupadd GROUP1" },
+          { q: "Add yourself to GROUP1.", r: "sudo usermod -aG GROUP1 $USER", tip: "$USER is a placeholder — Linux replaces it with the user logged in right now. -aG means \"add to group\"; the \"a\" is important — without it you would erase your other groups." },
+          { q: "Remove USER2 from GROUP1.", r: "sudo gpasswd -d USER2 GROUP1" },
+          { q: "Delete GROUP1.", r: "sudo groupdel GROUP1" },
+          { q: "Make a file called FILE1.", r: "touch FILE1" },
+          { q: "With letters: rwx for owner, read-only for group and others on FILE1.", r: "chmod u=rwx,go=r FILE1", tip: "u = user (owner), g = group, o = others. Putting g and o together (\"go\") applies to both at once." },
+          { q: "Remove all access for \"others\" from FILE1.", r: "chmod o-rwx FILE1" },
+          { q: "With numbers: full access for everyone on FILE1.", r: "chmod 777 FILE1", tip: "Three digits = owner, group, others. 7=rwx, 6=rw-, 5=r-x, 4=r--, 0=---. So 777 means rwx rwx rwx." },
+          { q: "With numbers: rw for owner and group, nothing for others on FILE1.", r: "chmod 660 FILE1" },
+          { q: "Make a folder FOLDER1, then change its owner to USER1.", r: ["mkdir FOLDER1", "sudo chown USER1 FOLDER1"], tip: "These are two separate steps — easier to read than joining them with &&." },
+          { q: "Set BOTH the owner (USER1) and group (GROUP1) of FOLDER1 in one command.", r: "sudo chown USER1:GROUP1 FOLDER1", tip: "user:group is the format — owner before the colon, group after." }
+        ]
+      },
+      {
+        name: "Chapter 5: Kernel Booting",
+        label: "Chapter 5",
+        prefix: "Chapter 5: Kernel Booting",
+        intro: "Kernel Booting",
+        items: [
+          { q: "Look in the boot log for messages about disks (sata or scsi).", r: "dmesg | grep -E -i \"sata|scsi\"", tip: "grep finds lines that match a pattern. -i means \"ignore upper/lower case\"." },
+          { q: "Show the logs from the current boot session.", r: "journalctl -b" },
+          { q: "Show how long booting took.", r: "systemd-analyze" },
+          { q: "List the slowest startup services first.", r: "systemd-analyze blame" },
+          { q: "Show the kernel boot options that were used.", r: "cat /proc/cmdline" },
+          { q: "Check the current runlevel of the system.", r: "runlevel" },
+          { q: "Show the default startup target.", r: "systemctl get-default" },
+          { q: "Show when the machine was last booted.", r: "who -b" },
+          { q: "Reboot the machine.", r: "sudo reboot" },
+          { q: "List all entries in the GRUB boot menu.", r: "cat /boot/grub/grub.cfg | grep menuentry", tip: "grep filters lines containing the word \"menuentry\"." }
+        ]
+      },
+      {
+        name: "Chapter 6: User Space Starts",
+        label: "Chapter 6",
+        prefix: "Chapter 6: User Space Starts",
+        intro: "User Space Starts",
+        items: [
+          { q: "List the active systemd units (background services).", r: "systemctl list-units --state=active" },
+          { q: "Show every running process on the system.", r: "ps aux" },
+          { q: "Open the live process monitor.", r: "top", tip: "Press q to quit the live monitor." },
+          { q: "List background jobs in this terminal.", r: "jobs" },
+          { q: "Check if the cron service is running.", r: "systemctl status cron" },
+          { q: "Show what groups you belong to.", r: "groups" },
+          { q: "Set FILE1 to rwx for owner and r-x for group and others (using numbers).", r: "chmod 755 FILE1", tip: "755 = rwxr-xr-x. Owner can do everything; everyone else can read and execute." },
+          { q: "Take ownership of FILE1 yourself.", r: "chown $USER FILE1", tip: "$USER is replaced with your own username automatically." },
+          { q: "Show your user ID and group IDs.", r: "id" },
+          { q: "Show the recent login history on this machine.", r: "last" }
+        ]
+      },
+      {
+        name: "Chapter 7: Disks & Filesystems",
+        label: "Chapter 7",
+        prefix: "Chapter 7: Disks & Filesystems",
+        intro: "Disks & Filesystems",
+        items: [
+          { q: "Show free disk space in human-readable form.", r: "df -h", tip: "-h means \"human readable\" — shows MB and GB instead of raw bytes." },
+          { q: "Show how much space each item in the current folder uses.", r: "du -sh *", tip: "* means \"everything in here\". -s = summary, -h = human readable." },
+          { q: "List the disks that are currently mounted.", r: "mount" },
+          { q: "Make an uncompressed archive (tar) of FILE1.", r: "tar -cvf ARCHIVE1.tar FILE1", tip: "c = create, v = verbose (show what is happening), f = file name. tar groups files together into one bundle." },
+          { q: "Compress ARCHIVE1.tar to make it smaller.", r: "gzip ARCHIVE1.tar", tip: "After gzip, the file becomes ARCHIVE1.tar.gz." },
+          { q: "Tell what kind of file FILE1 actually is.", r: "file FILE1" },
+          { q: "Show the file system table on disk.", r: "cat /etc/fstab" },
+          { q: "Show full info about FILE1 (size, dates, inode).", r: "stat FILE1" },
+          { q: "List files in the current folder with their inode numbers.", r: "ls -i" },
+          { q: "Show the first 5 lines of the user list.", r: "head -n 5 /etc/passwd", tip: "head shows the top of a file. -n 5 means \"first 5 lines\"." }
+        ]
+      },
+      {
+        name: "Special Permissions (sticky bit, SUID & SGID)",
+        label: "Special Permissions",
+        prefix: "Special Permissions: sticky bit, SUID & SGID",
+        intro: "Special Permissions",
+        special: true,
+        items: [
+          { q: "Make a new group called GROUP1.", r: "sudo groupadd GROUP1", tip: "A group lets many users share the same files and permissions." },
+          { q: "Create USER1 and give them a home folder.", r: "sudo useradd -m USER1", tip: "-m means \"make a home folder\". USER1 gets /home/USER1." },
+          { q: "Create USER2 with a home folder too.", r: "sudo useradd -m USER2" },
+          { q: "Set USER1's password.", r: "sudo passwd USER1" },
+          { q: "Set USER2's password.", r: "sudo passwd USER2" },
+          { q: "Add USER1 to GROUP1.", r: "sudo usermod -aG GROUP1 USER1", tip: "-aG means \"add to group\". The \"a\" is important — without it, USER1 would be removed from their other groups by mistake." },
+          { q: "Add USER2 to GROUP1.", r: "sudo usermod -aG GROUP1 USER2" },
+          { q: "Check that USER1 is now a member of GROUP1.", r: "groups USER1" },
+          { q: "Switch into a login session as USER1.", r: "su - USER1", tip: "su = \"switch user\". The dash (-) gives you a fresh login as that user, starting in their home." },
+          { q: "Now you are USER1. Make a folder called FOLDER1 inside your home.", r: "mkdir ~/FOLDER1", tip: "~ (tilde) is a shortcut that means \"my home folder\". So ~/FOLDER1 is the same as /home/USER1/FOLDER1." },
+          { q: "Inside FOLDER1, create a file called FILE1.", r: "touch ~/FOLDER1/FILE1" },
+          { q: "List the contents of FOLDER1 using a relative path (no ~ this time).", r: "ls FOLDER1", tip: "A relative path starts from where you are NOW. USER1's session starts in their home, so \"FOLDER1\" finds it without needing the full path." },
+          { q: "Leave USER1's session and go back to your admin user.", r: "exit" },
+          { q: "Make a shared team folder at /srv/share. This is an absolute path.", r: "sudo mkdir /srv/share", tip: "An absolute path starts with / and always points to the same place no matter where you are. A relative path depends on your current folder." },
+          { q: "Set the owner of /srv/share to root and the group to GROUP1.", r: "sudo chown root:GROUP1 /srv/share", tip: "user:group is the format — owner before the colon, group after." },
+          { q: "Using letters: give the owner and the group full access, and remove access for others.", r: "sudo chmod ug=rwx,o= /srv/share", tip: "u=user(owner), g=group, o=others. r=read, w=write, x=execute. For folders, x means \"can enter\"." },
+          { q: "Same step using numbers: owner=7, group=7, others=0.", r: "sudo chmod 770 /srv/share", tip: "Three digits = owner, group, others. 7 = rwx, 0 = nothing. So 770 = rwx rwx ---." },
+          { q: "As USER1, create FILE2 inside the shared folder.", r: "su - USER1 -c \"touch /srv/share/FILE2\"", tip: "The -c \"...\" runs ONE command in the new session and exits. Useful when you don't want to stay logged in.", alt: ["su - USER1", "touch /srv/share/FILE2", "exit"] },
+          { q: "List the shared folder. Notice FILE2 belongs to USER1's group, not GROUP1 — we will fix that next.", r: "ls -l /srv/share" },
+          { q: "Set the SGID bit on the folder using letters, so new files inherit GROUP1.", r: "sudo chmod g+s /srv/share", tip: "SGID on a folder means: any new file made inside automatically belongs to the folder's group." },
+          { q: "Set the SGID bit using numbers — 2 in front means SGID.", r: "sudo chmod 2770 /srv/share", tip: "2770 reads as: 2 = SGID; 770 = rwx for owner and group, nothing for others." },
+          { q: "As USER1, create FILE3 in the shared folder.", r: "su - USER1 -c \"touch /srv/share/FILE3\"" },
+          { q: "List the folder again — FILE3 now belongs to GROUP1, thanks to SGID.", r: "ls -l /srv/share" },
+          { q: "As USER2, write a line into FILE3 to prove the team can edit each other's files.", r: "su - USER2 -c \"echo hello-from-USER2 >> /srv/share/FILE3\"", tip: ">> means \"add to the end of this file\". A single > would overwrite it instead." },
+          { q: "Set the sticky bit on /srv/share using letters.", r: "sudo chmod +t /srv/share", tip: "Sticky bit means: only the OWNER of a file can delete that file in this folder. Others can still read or edit it, but not erase it." },
+          { q: "Set the sticky bit using numbers — 1 in front means sticky.", r: "sudo chmod 1770 /srv/share" },
+          { q: "Set BOTH SGID and sticky together using numbers (3 = 2 + 1).", r: "sudo chmod 3770 /srv/share", tip: "Special bits are added: SUID=4, SGID=2, sticky=1. So 3 = SGID + sticky." },
+          { q: "As USER2, try to delete FILE3 (which USER1 owns). The sticky bit should block this.", r: "su - USER2 -c \"rm /srv/share/FILE3\"" },
+          { q: "As USER2, create FILE4 then delete it. This works because USER2 owns FILE4.", r: ["su - USER2 -c \"touch /srv/share/FILE4\"", "su - USER2 -c \"rm /srv/share/FILE4\""], tip: "Two short commands instead of one long one — easier to read while learning." },
+          { q: "Find programs in /usr/bin that already use SUID.", r: "find /usr/bin -perm -4000 -type f", tip: "SUID makes a program run with the OWNER's powers, not yours. /usr/bin/passwd uses SUID so you can change your password without being root." },
+          { q: "Add the SUID bit on a script using letters.", r: "sudo chmod u+s /usr/local/bin/myscript" },
+          { q: "Same step using numbers — 4 in front means SUID.", r: "sudo chmod 4755 /usr/local/bin/myscript", tip: "4755 reads as: 4 = SUID; 755 = rwx for owner, r-x for group and others." },
+          { q: "Combine SUID + SGID + sticky in one number (4 + 2 + 1 = 7).", r: "sudo chmod 7770 /srv/share" },
+          { q: "Remove SUID, SGID and the sticky bit from /srv/share using letters, all at once.", r: "sudo chmod u-s,g-s,-t /srv/share", tip: "u-s removes SUID, g-s removes SGID, -t removes the sticky bit. Commas let you combine many changes in one command." }
+        ]
+      }
+    ];
+    // ====== STATE & ELEMENTS ============================================
+    var state = { chapter: -1, idx: 0 };
+    var elHome = document.getElementById("screenHome");
+    var elSlide = document.getElementById("screenSlide");
+    var elGrid = document.getElementById("chapterGrid");
+    var elBrand = document.getElementById("brandTag");
+    var elBottom = document.getElementById("bottombar");
+    var elProgress = document.getElementById("progressBar");
+    var elProgressPos = document.getElementById("progressPos");
+    var elSlideChapter = document.getElementById("slideChapter");
+    var elSlideBody = document.getElementById("slideBody");
+    var elPrev = document.getElementById("prevBtn");
+    var elNext = document.getElementById("nextBtn");
+    var elHomeBtn = document.getElementById("homeBtn");
+    var elReveal = document.getElementById("revealBtn");
 
-    <script>
-        // EXECUTIVE OFFICIAL LINUX INSTRUCTIONS COLLECTION
-        const syllabusStructure = [
-            {
-                chapterName: "Chapter 1: The Big Picture",
-                items: [
-                    { q: "Display the running kernel version and hardware architecture.", r: "<span class='terminal-syntax'>uname -a</span>" },
-                    { q: "Print the current working directory path.", r: "<span class='terminal-syntax'>pwd</span>" },
-                    { q: "Show the hardware architecture blueprint of the system cpu.", r: "<span class='terminal-syntax'>arch</span>" },
-                    { q: "Clear all data from the active terminal window screen.", r: "<span class='terminal-syntax'>clear</span>" },
-                    { q: "Display the current system date, time, and timezone parameters.", r: "<span class='terminal-syntax'>date</span>" },
-                    { q: "Show the calendar map grid for the current active month.", r: "<span class='terminal-syntax'>cal</span>" },
-                    { q: "Print the username string of the current active session account.", r: "<span class='terminal-syntax'>whoami</span>" },
-                    { q: "Open the manual documentation reference page for the file listing tool.", r: "<span class='terminal-syntax'>man ls</span>" },
-                    { q: "Print the text string 'Hello Class' directly to the terminal output console.", r: "<span class='terminal-syntax'>echo \"Hello Class\"</span>" },
-                    { q: "List all previous interactive commands executed in this terminal session.", r: "<span class='terminal-syntax'>history</span>" }
-                ]
-            },
-            {
-                chapterName: "Chapter 2: Commands & Hierarchy",
-                items: [
-                    { q: "Navigate to your home directory, create a folder named IT1201, and list all hidden files inside your current location.", r: "<span class='terminal-syntax'>cd ~ && mkdir IT1201 && ls -a</span>" },
-                    { q: "List files in the current folder along with detailed security permissions and sizing metrics.", r: "<span class='terminal-syntax'>ls -l</span>" },
-                    { q: "Create a blank file named practice.txt inside the current path.", r: "<span class='terminal-syntax'>touch practice.txt</span>" },
-                    { q: "Change your working location directly into the IT1201 folder.", r: "<span class='terminal-syntax'>cd IT1201</span>" },
-                    { q: "Copy the content of practice.txt into a separate document named backup.txt.", r: "<span class='terminal-syntax'>cp practice.txt backup.txt</span>" },
-                    { q: "Rename the document backup.txt to alternate.txt within the working index.", r: "<span class='terminal-syntax'>mv backup.txt alternate.txt</span>" },
-                    { q: "Remove the file alternate.txt permanently from storage allocation tables.", r: "<span class='terminal-syntax'>rm alternate.txt</span>" },
-                    { q: "Move your shell position backward exactly one tier up into the parent folder configuration.", r: "<span class='terminal-syntax'>cd ..</span>" },
-                    { q: "Delete the empty folder workspace catalog target named IT1201.", r: "<span class='terminal-syntax'>rmdir IT1201</span>" },
-                    { q: "Search your working root folder to locate every file entry matching the text extension pattern.", r: "<span class='terminal-syntax'>find . -name \"*.txt\"</span>" }
-                ]
-            },
-            {
-                chapterName: "Chapter 3: Devices",
-                items: [
-                    { q: "Use the lsblk command to identify all block devices and their mount points currently attached to your system.", r: "<span class='terminal-syntax'>lsblk</span>" },
-                    { q: "List all hardware controllers dynamically linked over the usb system buses.", r: "<span class='terminal-syntax'>lsusb</span>" },
-                    { q: "Display every pci express slot link interface entry connected to the system motherboard board.", r: "<span class='terminal-syntax'>lspci</span>" },
-                    { q: "Print complete technical capabilities data and cores configuration of the physical CPU.", r: "<span class='terminal-syntax'>lscpu</span>" },
-                    { q: "Generate a summary record detailing all active physical hardware items component blocks on the platform.", r: "<span class='terminal-syntax'>lshw -short</span>" },
-                    { q: "Output system volatile random access memory allocation metrics explicitly formatted in megabytes.", r: "<span class='terminal-syntax'>free -m</span>" },
-                    { q: "Read the top entries inside the log stream detailing early boot step execution tasks.", r: "<span class='terminal-syntax'>dmesg | head</span>" },
-                    { q: "List all low level expansion drivers and modular features injected into the running kernel core layer.", r: "<span class='terminal-syntax'>lsmod</span>" },
-                    { q: "Stream the specific system configuration file detailing raw hardware parameters per execution core.", r: "<span class='terminal-syntax'>cat /proc/cpuinfo</span>" },
-                    { q: "Output the absolute uptime metric recording how long the operating system kernel has run continuously.", r: "<span class='terminal-syntax'>uptime</span>" }
-                ]
-            },
-            {
-                chapterName: "LINUX USERS, GROUPS, OTHERS AND PERMISSIONS",
-                items: [
-                    { q: "Create a new user account named student1.", r: "<span class='terminal-syntax'>sudo useradd student1</span>" },
-                    { q: "Add a new user named student2 with a custom home directory automatically created.", r: "<span class='terminal-syntax'>sudo useradd -m student2</span>" },
-                    { q: "Set or update the password string for user student1.", r: "<span class='terminal-syntax'>sudo passwd student1</span>" },
-                    { q: "Delete the user account student1 without removing their home directory.", r: "<span class='terminal-syntax'>sudo userdel student1</span>" },
-                    { q: "Delete the user account student2 along with their home directory and mail spool.", r: "<span class='terminal-syntax'>sudo userdel -r student2</span>" },
-                    { q: "Create a new system group named developers.", r: "<span class='terminal-syntax'>sudo groupadd developers</span>" },
-                    { q: "Add the current active user to the developers group.", r: "<span class='terminal-syntax'>sudo usermod -aG developers $USER</span>" },
-                    { q: "Remove user student2 from the developers group.", r: "<span class='terminal-syntax'>sudo gpasswd -d student2 developers</span>" },
-                    { q: "Delete the group named developers from the system files.", r: "<span class='terminal-syntax'>sudo groupdel developers</span>" },
-                    { q: "Set read, write, and execute permissions for the owner, and read-only for group and others on file.txt using text style.", r: "<span class='terminal-syntax'>chmod u=rwx,go=r file.txt</span>" },
-                    { q: "Remove all access permissions for others on the file.txt using symbolic text style.", r: "<span class='terminal-syntax'>chmod o-rwx file.txt</span>" },
-                    { q: "Set absolute permissions to read, write, and execute for everyone on direct.txt using octal style.", r: "<span class='terminal-syntax'>chmod 777 direct.txt</span>" },
-                    { q: "Configure read and write permissions for the owner and group, but no access for others using octal notation on file.txt.", r: "<span class='terminal-syntax'>chmod 660 file.txt</span>" },
-                    { q: "Change the owner of directory1 to user student2.", r: "<span class='terminal-syntax'>sudo chown student2 directory1</span>" },
-                    { q: "Change both the owner to student2 and group to developers for directory1.", r: "<span class='terminal-syntax'>sudo chown student2:developers directory1</span>" }
-                ]
-            },
-            {
-                chapterName: "Chapter 5: Kernel Booting",
-                items: [
-                    { q: "View the kernel's boot-up logs and search for any messages related to 'SATA' or 'SCSI' using the dmesg command.", r: "<span class='terminal-syntax'>dmesg | grep -E -i \"sata|scsi\"</span>" },
-                    { q: "Query system tracking logs to view diagnostic metrics isolated specifically to events on the current runtime instance boot cycle.", r: "<span class='terminal-syntax'>journalctl -b</span>" },
-                    { q: "Calculate execution speed summaries tracking the absolute initialization overhead of core systems at platform load.", r: "<span class='terminal-syntax'>systemd-analyze</span>" },
-                    { q: "List every system startup worker sorted explicitly by how long each component delayed initialization stages.", r: "<span class='terminal-syntax'>systemd-analyze blame</span>" },
-                    { q: "Stream the specific command configuration string arguments injected into the core kernel at the boot step sequence.", r: "<span class='terminal-syntax'>cat /proc/cmdline</span>" },
-                    { q: "Check the active system initialization target mode tier step value configuration.", r: "<span class='terminal-syntax'>runlevel</span>" },
-                    { q: "Identify the default startup environment profile target configuration layer active at system load.", r: "<span class='terminal-syntax'>systemctl get-default</span>" },
-                    { q: "Extract the precise timing timestamp of the last hardware system boot execution sequence.", r: "<span class='terminal-syntax'>who -b</span>" },
-                    { q: "Force immediate termination of operational spaces and recycle the physical motherboard loop.", r: "<span class='terminal-syntax'>sudo reboot</span>" },
-                    { q: "Parse your central grub configuration interface array mapping to view every system selection item.", r: "<span class='terminal-syntax'>cat /boot/grub/grub.cfg | grep menuentry</span>" }
-                ]
-            },
-            {
-                chapterName: "Chapter 6: User Space Starts",
-                items: [
-                    { q: "List all currently active systemd units on your machine to see which background services are running.", r: "<span class='terminal-syntax'>systemctl list-units --state=active</span>" },
-                    { q: "Generate a universal comprehensive list logging every execution thread active on the environment processing table.", r: "<span class='terminal-syntax'>ps aux</span>" },
-                    { q: "Launch an interactive terminal metrics console tracing dynamic core utilization shifts in real time.", r: "<span class='terminal-syntax'>top</span>" },
-                    { q: "Show the tracking index record array of background jobs running under the current terminal shell instance scope.", r: "<span class='terminal-syntax'>jobs</span>" },
-                    { q: "Query the configuration settings verifying the active process status state of the background scheduling agent daemon.", r: "<span class='terminal-syntax'>systemctl status cron</span>" },
-                    { q: "Print all security grouping configurations and access privileges assigned to your current execution role profile.", r: "<span class='terminal-syntax'>groups</span>" },
-                    { q: "Modify permissions flags on a document file target to permit reading execution and editing access rules to the owner.", r: "<span class='terminal-syntax'>chmod 755 practice.txt</span>" },
-                    { q: "Reassign the master security user owner token property over an item record using environmental identity parameters.", r: "<span class='terminal-syntax'>chown $USER practice.txt</span>" },
-                    { q: "Display the exact numerical user id tag and primary group identifier numbers verified by internal authorization engines.", r: "<span class='terminal-syntax'>id</span>" },
-                    { q: "Review history logs tracking every historic authentication login event registered on this platform server framework.", r: "<span class='terminal-syntax'>last</span>" }
-                ]
-            },
-            {
-                chapterName: "Chapter 7: Disks & Filesystems",
-                items: [
-                    { q: "Check the available free space and usage percentage of your root filesystem using the df -h command.", r: "<span class='terminal-syntax'>df -h</span>" },
-                    { q: "Calculate the exact physical space configuration metrics consumed by each directory item inside the folder path.", r: "<span class='terminal-syntax'>du -sh *</span>" },
-                    { q: "Enumerate all mounted data partitions alongside their corresponding access read write states.", r: "<span class='terminal-syntax'>mount</span>" },
-                    { q: "Create an uncompressed tarball archive backup package containing the specified document path.", r: "<span class='terminal-syntax'>tar -cvf archive.tar practice.txt</span>" },
-                    { q: "Compress the tar archive target utilizing structural stream reduction routines.", r: "<span class='terminal-syntax'>gzip archive.tar</span>" },
-                    { q: "Inspect file internal metadata properties to classify the true format of data blocks without referencing extensions.", r: "<span class='terminal-syntax'>file practice.txt</span>" },
-                    { q: "Read the full contents of the permanent static filesystem filesystem allocation reference document table.", r: "<span class='terminal-syntax'>cat /etc/fstab</span>" },
-                    { q: "Output full inode information metrics, dimension limits, and timing records of the designated file target.", r: "<span class='terminal-syntax'>stat practice.txt</span>" },
-                    { q: "List directory files explicitly displaying the low-level unique numerical inode pointers alongside file labels.", r: "<span class='terminal-syntax'>ls -i</span>" },
-                    { q: "View the first 5 account configurations stored inside the core user authorization parameters file.", r: "<span class='terminal-syntax'>head -n 5 /etc/passwd</span>" }
-                ]
-            }
-        ];
+    // ====== HOME / CHAPTERS ==============================================
+    function renderHome() {
+      elGrid.innerHTML = "";
+      SYLLABUS.forEach(function (ch, i) {
+        var card = document.createElement("button");
+        card.type = "button";
+        card.className = "chapter-card" + (ch.special ? " is-special" : "");
+        card.setAttribute("aria-label", ch.name);
+        var num = ch.special ? "" : "<span class=\"ch-num\">" + ch.label + "</span>";
+        var badge = ch.special ? "<span class=\"badge-new\" aria-label=\"New chapter\">New</span>" : "";
+        card.innerHTML =
+          badge +
+          num +
+          "<span class=\"ch-title\">" + ch.intro + "</span>" +
+          "<span class=\"ch-meta\">" + ch.items.length + " practicals &middot; tap to start</span>";
+        card.addEventListener("click", function () { openChapter(i); });
+        elGrid.appendChild(card);
+      });
+    }
 
-        // RENDER PIPELINE INFRASTRUCTURE
-        const deliveryStage = document.getElementById('slides-delivery-stage');
-        const indexTracker = document.getElementById('pagination-tracker');
-        let trackCurrentIndex = 0;
+    function openChapter(i) {
+      state.chapter = i;
+      state.idx = 0;
+      elHome.classList.remove("is-active");
+      elSlide.classList.add("is-active");
+      elBottom.hidden = false;
+      elBrand.textContent = SYLLABUS[i].prefix;
+      renderSlide();
+    }
 
-        // SLIDE 01: TITLE INTERFACE
-        let structuralMarkupDeck = `
-            <div class="slide-frame active-view" id="presentation-slide-0">
-                <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; align-items: center; text-align: center; z-index:3;">
-                    <p class="course-title-sub">IT 1201 OPEN SOURCE SYSTEM ANALYSIS & DESIGN</p>
-                    <h1>Practical Linux OS<br>Workshop</h1>
-                    <p style="margin-top: 40px; font-size: 32px; color: var(--text-dim);">Prepared by <span style="color:var(--blue-bubble); font-weight:700;">FRANCIS MAJISU</span></p>
-                </div>
-            </div>
-        `;
+    function goHome() {
+      state.chapter = -1;
+      state.idx = 0;
+      elSlide.classList.remove("is-active");
+      elHome.classList.add("is-active");
+      elBottom.hidden = true;
+      elBrand.textContent = "COMMUNITY DISCUSSION";
+      elReveal.style.visibility = "hidden";
+    }
 
-        // GENERATING 65 CHALLENGE SLIDES (10 + 10 + 10 + 15 + 10 + 10 + 10 = 75 questions)
-        let iterativeIndex = 1;
-        syllabusStructure.forEach((block) => {
-            block.items.forEach((element, localOffset) => {
-                structuralMarkupDeck += `
-                    <div class="slide-frame" id="presentation-slide-${iterativeIndex}">
-                        <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; z-index:3;">
-                            <h2 class="section-heading">${block.chapterName}</h2>
-                            <div class="interactive-question-box" onclick="revealInstructionBlock(this)">
-                                <h3>Practical Exercise ${localOffset + 1} of ${block.items.length}</h3>
-                                <p class="challenge-prompt-text">${element.q}</p>
-                                <div class="instruction-reveal-zone">
-                                    <div style="margin-bottom:10px; font-size:22px; color:var(--blue-bubble); font-family:'Comfortaa', cursive; font-weight:700; text-transform:uppercase; letter-spacing:1px;">Execute Command:</div>
-                                    <p class="instruction-action-text">${element.r}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                iterativeIndex++;
-            });
+    // ====== SLIDE RENDER =================================================
+    function renderSlide() {
+      var ch = SYLLABUS[state.chapter];
+      var item = ch.items[state.idx];
+      elSlideChapter.textContent = ch.prefix;
+
+      // Build the command block — supports a single string OR an array of steps
+      var cmdHtml = "";
+      if (Array.isArray(item.r)) {
+        cmdHtml += "<div class=\"exec-label\">Try this step by step</div>";
+        item.r.forEach(function (line) {
+          cmdHtml += "<code class=\"term\">" + escapeHtml(line) + "</code>";
         });
+      } else {
+        cmdHtml += "<div class=\"exec-label\">Try this</div>";
+        cmdHtml += "<code class=\"term\">" + escapeHtml(item.r) + "</code>";
+      }
 
-        // SLIDE 77: OUTRO INTERFACE (Matching user specification document design elements exactly)
-        structuralMarkupDeck += `
-            <div class="slide-frame" id="presentation-slide-${iterativeIndex}">
-                <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; align-items: center; text-align: center; z-index:3;">
-                    <h1 style="font-size: 64px; color: var(--blue-bubble); margin-bottom: 10px;">Any Questions?</h1>
-                    <p style="font-size: 42px; font-family: monospace; color: #64748b; margin-bottom: 30px;">>_</p>
-                    <div class="summary-grid">
-                        <div class="summary-tile-item">Practical Linux</div>
-                        <div class="summary-tile-item">Open Source</div>
-                        <div class="summary-tile-item">Community</div>
-                    </div>
-                    <p style="margin-top: 50px; font-size: 26px; color: var(--text-dim); font-weight: 600;">
-                        Course: IT 1201 | Lead: FRANCIS MAJISU
-                    </p>
-                </div>
-            </div>
-        `;
-
-        deliveryStage.innerHTML = structuralMarkupDeck;
-
-        // CALCULATE MAXIMUM CAPACITY
-        const absoluteSlideCap = document.querySelectorAll('.slide-frame').length;
-
-        // DYNAMIC HIDDEN COMMAND TOGGLE FUNCTIONALITY
-        function revealInstructionBlock(targetBox) {
-            const displayZone = targetBox.querySelector('.instruction-reveal-zone');
-            
-            if (displayZone.style.display === "block") {
-                displayZone.style.display = "none";
-                targetBox.style.background = "rgba(30, 41, 59, 0.75)";
-            } else {
-                displayZone.style.display = "block";
-                targetBox.style.background = "rgba(56, 189, 248, 0.03)";
-            }
-        }
-
-        // VIEWPORT ANIMATION AND STATE SYNCHRONIZATION
-        const mobilePageInfo = document.getElementById('mobile-pageinfo');
-        function synchronizepresentationState() {
-            document.querySelectorAll('.slide-frame').forEach((slide, index) => {
-                slide.classList.remove('active-view');
-                if (index === trackCurrentIndex) {
-                    slide.classList.add('active-view');
-
-                    // Reset visibility states of internal components whenever changing slides
-                    const targetHiddenZone = slide.querySelector('.instruction-reveal-zone');
-                    const targetBoxElement = slide.querySelector('.interactive-question-box');
-                    if (targetHiddenZone && targetBoxElement) {
-                        targetHiddenZone.style.display = "none";
-                        targetBoxElement.style.background = "rgba(30, 41, 59, 0.75)";
-                    }
-                }
-            });
-            const label = `${trackCurrentIndex + 1} / ${absoluteSlideCap}`;
-            indexTracker.innerText = label;
-            if (mobilePageInfo) mobilePageInfo.innerText = label;
-        }
-
-        function travelToNextSlide() {
-            if (trackCurrentIndex < absoluteSlideCap - 1) {
-                trackCurrentIndex++;
-                synchronizepresentationState();
-            }
-        }
-
-        function travelToPreviousSlide() {
-            if (trackCurrentIndex > 0) {
-                trackCurrentIndex--;
-                synchronizepresentationState();
-            }
-        }
-
-        // PHYSICAL KEYBOARD NAVIGATION ROUTINES
-        document.addEventListener('keydown', (inputSignal) => {
-            if (inputSignal.key === 'ArrowRight' || inputSignal.key === ' ') {
-                inputSignal.preventDefault();
-                travelToNextSlide();
-            } else if (inputSignal.key === 'ArrowLeft') {
-                inputSignal.preventDefault();
-                travelToPreviousSlide();
-            }
+      // Optional alternative form (e.g. when the main command uses && and you also want a split version)
+      if (item.alt) {
+        cmdHtml += "<div class=\"alt-label\">Or step by step</div>";
+        var alts = Array.isArray(item.alt) ? item.alt : [item.alt];
+        alts.forEach(function (line) {
+          cmdHtml += "<code class=\"term\">" + escapeHtml(line) + "</code>";
         });
+      }
 
-        // GENERATING AMBIENT FLOATING BACKGROUND BUBBLES
-        const bubbleBox = document.getElementById('dynamic-bubble-box');
-        for (let idx = 0; idx < 16; idx++) {
-            let containerBubble = document.createElement('div');
-            containerBubble.classList.add('ambient-bubble');
-            let dimensionalWeight = Math.random() * 90 + 30; 
-            containerBubble.style.width = `${dimensionalWeight}px`;
-            containerBubble.style.height = `${dimensionalWeight}px`;
-            containerBubble.style.left = `${Math.random() * 100}%`;
-            containerBubble.style.animationDuration = `${Math.random() * 8 + 10}s`; 
-            containerBubble.style.animationDelay = `${Math.random() * 6}s`;
-            bubbleBox.appendChild(containerBubble);
+      // Optional teaching tip
+      var tipHtml = item.tip
+        ? "<p class=\"tip\"><b>Tip:</b> " + escapeHtml(item.tip) + "</p>"
+        : "";
+
+      elSlideBody.innerHTML =
+        "<div class=\"qbox\" id=\"qbox\">" +
+        "<div class=\"ex-label\">Practical Exercise " + (state.idx + 1) + " of " + ch.items.length + "</div>" +
+        "<div class=\"prompt\">" + escapeHtml(item.q) + "</div>" +
+        "<div class=\"reveal-zone\" id=\"revealZone\">" +
+        cmdHtml +
+        tipHtml +
+        "<div class=\"hint\">Tap the box again to hide.</div>" +
+        "</div>" +
+        "</div>";
+
+      var qbox = document.getElementById("qbox");
+      qbox.addEventListener("click", toggleReveal);
+
+      elReveal.style.visibility = "visible";
+      elReveal.querySelector(".lbl").textContent = "Show";
+
+      elPrev.disabled = state.idx === 0;
+      elNext.disabled = false;
+      elNext.textContent = state.idx === ch.items.length - 1 ? "Finish" : "Next \u2192";
+      renderProgress();
+    }
+
+    function toggleReveal() {
+      var zone = document.getElementById("revealZone");
+      var qbox = document.getElementById("qbox");
+      if (!zone) return;
+      var open = !zone.classList.contains("show");
+      zone.classList.toggle("show", open);
+      qbox.classList.toggle("is-revealed", open);
+      elReveal.querySelector(".lbl").textContent = open ? "Hide" : "Show";
+    }
+
+    function renderProgress() {
+      var ch = SYLLABUS[state.chapter];
+      elProgress.innerHTML = "";
+      for (var i = 0; i < ch.items.length; i++) {
+        var s = document.createElement("span");
+        s.className = "progress-seg";
+        if (i < state.idx) s.classList.add("is-done");
+        else if (i === state.idx) s.classList.add("is-current");
+        elProgress.appendChild(s);
+      }
+      elProgressPos.textContent = (state.idx + 1) + " / " + ch.items.length;
+    }
+
+    function nextSlide() {
+      if (state.chapter < 0) return;
+      var ch = SYLLABUS[state.chapter];
+      if (state.idx < ch.items.length - 1) {
+        state.idx++;
+        renderSlide();
+      } else {
+        // Chapter complete — flash all segments done, then go home
+        elProgress.querySelectorAll(".progress-seg").forEach(function (s) {
+          s.classList.remove("is-current");
+          s.classList.add("is-done");
+        });
+        elProgressPos.textContent = ch.items.length + " / " + ch.items.length;
+        setTimeout(goHome, 600);
+      }
+    }
+    function prevSlide() {
+      if (state.chapter < 0) return;
+      if (state.idx > 0) {
+        state.idx--;
+        renderSlide();
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // ====== EVENT WIRING ================================================
+    elHomeBtn.addEventListener("click", goHome);
+    elPrev.addEventListener("click", prevSlide);
+    elNext.addEventListener("click", nextSlide);
+    elReveal.addEventListener("click", toggleReveal);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        if (state.chapter >= 0) { e.preventDefault(); nextSlide(); }
+      } else if (e.key === "ArrowLeft") {
+        if (state.chapter >= 0) { e.preventDefault(); prevSlide(); }
+      } else if (e.key === "Escape" || e.key === "h" || e.key === "H") {
+        if (state.chapter >= 0) goHome();
+      }
+    });
+    // Swipe gestures
+    (function () {
+      var sx = 0, sy = 0, tracking = false;
+      document.body.addEventListener("touchstart", function (e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY; tracking = true;
+      }, { passive: true });
+      document.body.addEventListener("touchend", function (e) {
+        if (!tracking) return; tracking = false;
+        var t = e.changedTouches && e.changedTouches[0]; if (!t) return;
+        var dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4 && state.chapter >= 0) {
+          if (dx < 0) nextSlide(); else prevSlide();
         }
-        
-        // Initial pagination string update
-        indexTracker.innerText = `1 / ${absoluteSlideCap}`;
-        if (mobilePageInfo) mobilePageInfo.innerText = `1 / ${absoluteSlideCap}`;
+      }, { passive: true });
+    })();
 
-        // RESPONSIVE FIT — scale the 1280x720 canvas to any viewport
-        function fitPresentationToViewport() {
-            const isSmall = window.innerWidth <= 720;
-            // Reserve space for the floating mobile nav on small screens
-            const vPad = isSmall ? 88 : 24;
-            const hPad = isSmall ? 12 : 24;
-            const availW = Math.max(240, window.innerWidth - hPad * 2);
-            const availH = Math.max(240, window.innerHeight - vPad);
-            const scale = Math.min(availW / 1280, availH / 720, 1);
-            document.documentElement.style.setProperty('--pres-scale', String(scale));
-        }
-        fitPresentationToViewport();
-        window.addEventListener('resize', fitPresentationToViewport);
-        window.addEventListener('orientationchange', fitPresentationToViewport);
+    // BUBBLES — gentle ambient animation
+    (function spawnBubbles() {
+      var field = document.getElementById("bubbleField");
+      if (!field) return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var n = window.innerWidth < 480 ? 10 : 18;
+      for (var i = 0; i < n; i++) {
+        var b = document.createElement("div");
+        b.className = "bubble";
+        var size = 30 + Math.random() * 90;
+        b.style.width = size + "px";
+        b.style.height = size + "px";
+        b.style.left = Math.random() * 100 + "%";
+        b.style.animationDuration = (10 + Math.random() * 8).toFixed(2) + "s";
+        b.style.animationDelay = (-Math.random() * 12).toFixed(2) + "s";
+        b.style.background = "rgba(56, 189, 248, " + (0.07 + Math.random() * 0.1).toFixed(2) + ")";
+        field.appendChild(b);
+      }
+    })();
 
-        // Swipe gestures for touch users
-        (function enableSwipe() {
-            let startX = 0, startY = 0, tracking = false;
-            const target = document.body;
-            target.addEventListener('touchstart', (e) => {
-                if (!e.touches || e.touches.length !== 1) return;
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                tracking = true;
-            }, { passive: true });
-            target.addEventListener('touchend', (e) => {
-                if (!tracking) return;
-                tracking = false;
-                const t = e.changedTouches && e.changedTouches[0];
-                if (!t) return;
-                const dx = t.clientX - startX;
-                const dy = t.clientY - startY;
-                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-                    if (dx < 0) travelToNextSlide(); else travelToPreviousSlide();
-                }
-            }, { passive: true });
-        })();
-    </script>
+    // BOOT
+    renderHome();
+  </script>
 </body>
 </html>
