@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <title>Education | TALA SYSTEMS</title>
+    <meta
+      name="description"
+      content="Education at TALA SYSTEMS (TALAIZA): curated learning resources, presentations, and open knowledge — built for students, teams, and communities. Linux operating systems, security, and more."
+    />
+    <meta
+      name="keywords"
+      content="TALA SYSTEMS education, TALAIZA learning, Linux operating systems, ICT learning resources, Francis Majisu education, open knowledge, technology training"
+    />
+    <meta name="theme-color" content="#0d5c45" />
+    <link rel="icon" href="https://www.talaiza.com/favicon.ico" sizes="any" />
+    <link rel="icon" href="https://www.talaiza.com/tala_plain.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="https://www.talaiza.com/tala_plain.png" sizes="180x180" />
+    <link rel="canonical" href="https://www.talaiza.com/education.html" />
+    <meta property="og:site_name" content="TALA SYSTEMS" />
+    <meta property="og:title" content="Education | TALA SYSTEMS" />
+    <meta
+      property="og:description"
+      content="Education at TALA SYSTEMS (TALAIZA): curated learning resources, presentations, and open knowledge."
+    />
+    <meta property="og:url" content="https://www.talaiza.com/education.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.talaiza.com/tala_plain.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Education | TALA SYSTEMS" />
+    <meta
+      name="twitter:description"
+      content="TALA SYSTEMS education hub: curated learning resources and presentations."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Education-specific accents — kept inline so styles.css stays untouched */
+      .edu-hero {
+        position: relative;
+        padding: clamp(2rem, 4vw, 3rem) 0 clamp(1rem, 2vw, 1.5rem);
+      }
+      .edu-hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4.4vw + 0.4rem, 3.4rem);
+        line-height: 1.08;
+        letter-spacing: 0.005em;
+        margin: 0.25rem 0 0.6rem;
+      }
+      .edu-hero h1 .accent {
+        background: linear-gradient(90deg, var(--gold) 0%, var(--green-mist) 60%, #cfe6ff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .edu-hero .lead-narrow {
+        max-width: 720px;
+        font-size: 1.04rem;
+        color: var(--muted);
+      }
+
+      .featured-resource {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        gap: clamp(1.25rem, 3vw, 2.25rem);
+        padding: clamp(1.4rem, 2.6vw, 2rem);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--glass-edge);
+        background:
+          radial-gradient(ellipse 70% 80% at 110% -10%, rgba(56, 189, 248, 0.28) 0%, transparent 55%),
+          radial-gradient(ellipse 80% 90% at -10% 110%, rgba(46, 184, 138, 0.32) 0%, transparent 55%),
+          rgba(12, 36, 30, 0.55);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+      }
+      .featured-resource::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 35%);
+      }
+      .featured-resource > * { position: relative; z-index: 1; }
+
+      .featured-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.32rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        background: rgba(232, 196, 108, 0.14);
+        border: 1px solid rgba(232, 196, 108, 0.45);
+      }
+      .featured-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.45rem, 2.2vw + 0.4rem, 2rem);
+        line-height: 1.18;
+        margin: 0.75rem 0 0.65rem;
+      }
+      .featured-desc {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .featured-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.95rem;
+        margin: 0 0 1.2rem;
+        font-size: 0.82rem;
+        color: var(--muted-2);
+      }
+      .featured-meta b { color: var(--ink-soft); font-weight: 700; }
+
+      .featured-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .featured-preview {
+        position: relative;
+        min-height: 220px;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background:
+          radial-gradient(circle at 15% 25%, rgba(56, 189, 248, 0.28) 0%, transparent 50%),
+          radial-gradient(circle at 85% 70%, rgba(46, 184, 138, 0.28) 0%, transparent 55%),
+          linear-gradient(160deg, #0b1e2a 0%, #0e2b35 55%, #0b3b2e 100%);
+        display: grid;
+        place-items: center;
+      }
+      .featured-preview .term {
+        width: min(86%, 360px);
+        padding: 0.75rem 0.95rem;
+        border-radius: 12px;
+        background: rgba(8, 18, 24, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.55);
+        font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.78rem;
+        line-height: 1.5;
+        color: #cfe6e0;
+      }
+      .featured-preview .term-head {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      .featured-preview .term-head span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .featured-preview .term-head span:nth-child(1) { background: #ff6b6b; }
+      .featured-preview .term-head span:nth-child(2) { background: #ffcf6b; }
+      .featured-preview .term-head span:nth-child(3) { background: #6bff9d; }
+      .featured-preview .term .prompt { color: var(--green-mist); }
+      .featured-preview .term .cmd { color: #f4faf7; }
+      .featured-preview .term .out { color: var(--muted-2); }
+
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.1rem;
+        margin-top: 1.25rem;
+      }
+      .resource-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        padding: 1.35rem 1.3rem 1.4rem;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+      }
+      .resource-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 1.25rem;
+        right: 1.25rem;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), var(--green-mist), transparent);
+        opacity: 0.65;
+      }
+      .resource-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: var(--shadow-soft);
+      }
+      .resource-card .rc-eyebrow {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+      .resource-card h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 1.08rem;
+        line-height: 1.3;
+      }
+      .resource-card p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--muted-2);
+        line-height: 1.6;
+      }
+      .resource-card .rc-cta {
+        margin-top: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--ink-soft);
+      }
+      .resource-card .rc-cta::after {
+        content: "→";
+        transition: transform 0.2s ease;
+      }
+      .resource-card:hover .rc-cta::after { transform: translateX(4px); }
+      .resource-card.is-coming {
+        background:
+          repeating-linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.06) 0px,
+            rgba(255, 255, 255, 0.06) 8px,
+            rgba(255, 255, 255, 0.02) 8px,
+            rgba(255, 255, 255, 0.02) 16px
+          );
+        color: var(--muted);
+      }
+      .resource-card.is-coming h3 { color: var(--ink-soft); }
+      .resource-card.is-coming .rc-cta { color: var(--muted-2); }
+      .resource-card.is-coming .rc-cta::after { content: "·"; }
+
+      .edu-note {
+        margin-top: 1.25rem;
+        font-size: 0.92rem;
+        color: var(--muted-2);
+      }
+
+      @media (max-width: 760px) {
+        .featured-resource {
+          grid-template-columns: 1fr;
+        }
+        .featured-preview {
+          min-height: 180px;
+          order: -1;
+        }
+      }
+      @media (max-width: 480px) {
+        .edu-hero h1 { font-size: clamp(1.7rem, 7vw + 0.4rem, 2.2rem); }
+        .edu-hero .lead-narrow { font-size: 0.98rem; }
+        .featured-resource { padding: 1.1rem; }
+        .featured-title { font-size: 1.25rem; }
+        .featured-actions { width: 100%; }
+        .featured-actions .btn { flex: 1 1 auto; text-align: center; }
+        .featured-preview { min-height: 150px; }
+        .featured-preview .term { width: 92%; font-size: 0.72rem; padding: 0.65rem 0.75rem; }
+        .resource-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+        .resource-card { padding: 1.15rem 1.1rem 1.2rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"></div>
+    <header class="site-header" id="siteHeader">
+      <div class="container nav-wrap">
+        <a class="brand" href="/">
+          <span class="brand-mark"><img src="tala_plain.png" alt="" width="40" height="40" /></span>
+          <div class="brand-text">
+            <div class="brand-lock">
+              <strong class="brand-title">TALA SYSTEMS</strong>
+              <small class="brand-line" aria-label="Tech, Faith, Morals, Security">
+                <span>Tech</span><span class="brand-sep" aria-hidden="true">·</span><span>Faith</span
+                ><span class="brand-sep" aria-hidden="true">·</span><span>Morals</span
+                ><span class="brand-sep" aria-hidden="true">·</span><span>Security</span>
+              </small>
+            </div>
+          </div>
+        </a>
+        <div class="nav-toolbar">
+          <nav id="mainNav" class="main-nav" aria-label="Primary">
+            <a href="/#home">Home</a>
+            <a href="/#about">About</a>
+            <a href="/#services">Services</a>
+            <a href="education.html" aria-current="page">Education</a>
+            <a href="/#ceo">CEO</a>
+            <a href="/#contact">Contact</a>
+          </nav>
+          <button
+            type="button"
+            id="discoverToggle"
+            class="discover-toggle"
+            aria-expanded="false"
+            aria-controls="discoverPanel"
+            aria-haspopup="true"
+          >
+            <span class="discover-toggle-label">Discover</span>
+            <span class="discover-toggle-chevron" aria-hidden="true"></span>
+          </button>
+          <button id="menuBtn" class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">
+            Menu
+          </button>
+        </div>
+      </div>
+      <div class="discover-dropdown" id="discoverDropdown" aria-hidden="true">
+        <div class="discover-dropdown-measure">
+          <div class="container discover-dropdown-inner">
+            <div class="discover-dropdown-head">
+              <p class="discover-dropdown-lead">Stories that shape TALA</p>
+            </div>
+            <div class="discover-dropdown-scroll">
+              <div class="discover-grid" id="discoverPanel">
+                <a href="my-tech-journey.html" class="rail-card" data-tone="journey">
+                  <span class="rail-card-ic" aria-hidden="true">◆</span>
+                  <span class="rail-card-t">My Tech Journey</span>
+                  <span class="rail-card-d">From curiosity to builders mindset</span>
+                </a>
+                <a href="leadership.html" class="rail-card" data-tone="lead">
+                  <span class="rail-card-ic" aria-hidden="true">◇</span>
+                  <span class="rail-card-t">Leadership</span>
+                  <span class="rail-card-d">Serving teams and communities</span>
+                </a>
+                <a href="morals.html" class="rail-card" data-tone="morals">
+                  <span class="rail-card-ic" aria-hidden="true">○</span>
+                  <span class="rail-card-t">Morals</span>
+                  <span class="rail-card-d">Why ethics must lead innovation</span>
+                </a>
+                <a href="security.html" class="rail-card" data-tone="security">
+                  <span class="rail-card-ic" aria-hidden="true">◎</span>
+                  <span class="rail-card-t">Security</span>
+                  <span class="rail-card-d">Protecting people and systems</span>
+                </a>
+                <a href="faith.html" class="rail-card" data-tone="faith">
+                  <span class="rail-card-ic" aria-hidden="true">✦</span>
+                  <span class="rail-card-t">Faith</span>
+                  <span class="rail-card-d">Purpose beneath the work</span>
+                </a>
+                <a href="tech.html" class="rail-card" data-tone="tech">
+                  <span class="rail-card-ic" aria-hidden="true">▸</span>
+                  <span class="rail-card-t">Tech</span>
+                  <span class="rail-card-d">Where all pillars meet</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="discover-scrim" id="discoverScrim" hidden aria-hidden="true"></div>
+
+    <div class="page-shell">
+      <div class="page-main">
+        <main class="main-inner">
+          <section class="section edu-hero">
+            <div class="container">
+              <p class="eyebrow">Education</p>
+              <h1>Knowledge that <span class="accent">builds people</span>.</h1>
+              <p class="lead-narrow">
+                Learning resources we publish and share at TALA SYSTEMS.
+              </p>
+            </div>
+          </section>
+
+          <section class="section section-band">
+            <div class="container">
+              <div class="section-head">
+                <p class="eyebrow">Featured Resource</p>
+                <h2>Practical Linux Operating Systems</h2>
+              </div>
+
+              <article class="featured-resource reveal" aria-labelledby="featuredLinuxTitle">
+                <div class="featured-body">
+                  <span class="featured-tag">Presentation · Linux</span>
+                  <h3 id="featuredLinuxTitle" class="featured-title">
+                    Community Discussion — Practical Linux OS
+                  </h3>
+                  <p class="featured-desc">
+                    A quick recap of basic Linux commands for students taking Open Source System Analysis and related
+                    courses.
+                  </p>
+                  <div class="featured-actions">
+                    <a class="btn btn-primary" href="linux_htmlv1.html" target="_blank" rel="noopener">
+                      Open Presentation
+                    </a>
+                    <a class="btn btn-ghost" href="linux_htmlv1.html">Open Here</a>
+                  </div>
+                </div>
+
+                <div class="featured-preview" aria-hidden="true">
+                  <div class="term">
+                    <div class="term-head"><span></span><span></span><span></span></div>
+                    <div><span class="prompt">tala@learn:~$</span> <span class="cmd">uname -a</span></div>
+                    <div class="out">Linux learn 6.x · GNU/Linux · open by design</div>
+                    <div><span class="prompt">tala@learn:~$</span> <span class="cmd">whoami</span></div>
+                    <div class="out">a student of faith, morals, security, and tech.</div>
+                    <div><span class="prompt">tala@learn:~$</span> <span class="cmd">echo "let's learn together"</span></div>
+                    <div class="out">let's learn together</div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="container">
+              <div class="section-head">
+                <p class="eyebrow">All Resources</p>
+                <h2>Learning library</h2>
+              </div>
+
+              <div class="resource-grid">
+                <a class="resource-card reveal" href="linux_htmlv1.html" target="_blank" rel="noopener">
+                  <span class="rc-eyebrow">Linux · Presentation</span>
+                  <h3>Practical Linux OS</h3>
+                  <p>Basic Linux commands recap.</p>
+                  <span class="rc-cta">Open resource</span>
+                </a>
+
+                <div class="resource-card is-coming reveal" aria-label="Coming soon">
+                  <span class="rc-eyebrow">Cybersecurity · Coming soon</span>
+                  <h3>Security fundamentals</h3>
+                  <p>Staying safe online.</p>
+                  <span class="rc-cta">In preparation</span>
+                </div>
+
+                <div class="resource-card is-coming reveal" aria-label="Coming soon">
+                  <span class="rc-eyebrow">Cloud &amp; DevOps · Coming soon</span>
+                  <h3>From localhost to production</h3>
+                  <p>Version control, environments, and deployment.</p>
+                  <span class="rc-cta">In preparation</span>
+                </div>
+              </div>
+
+              <p class="edu-note">
+                Want a topic published next? Email
+                <a class="inline-link" href="mailto:info.talasystems@talaiza.com">info.talasystems@talaiza.com</a>.
+              </p>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="container">
+              <p class="story-back"><a class="btn btn-ghost" href="/">← Back to home</a></p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="container foot">
+        <span>© <span id="year"></span> TALA SYSTEMS</span>
+        <span class="foot-tagline">Lighting the future of technology</span>
+      </div>
+    </footer>
+    <script src="app.js"></script>
+  </body>
+</html>
