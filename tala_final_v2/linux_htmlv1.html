@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="#0f172a" name="theme-color"/>
+<title>COMMUNITY DISCUSSION - Practical Linux OS</title>
+<link href="/favicon.ico" rel="icon" sizes="any"/>
+<link href="/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/tala_maskable_192.png" rel="icon" sizes="192x192" type="image/png"/>
+<link href="/tala_maskable.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/tala_maskable.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&amp;family=Afacad+Flux:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root {
+      --bg-deep: #0f172a;
+      --bg-2: #0b1224;
+      --slide-surface: #1e293b;
+      --blue: #38bdf8;
+      --blue-2: #0ea5e9;
+      --blue-deep: #0369a1;
+      --green-go: #22c55e;
+      --gold: #fbbf24;
+      --text: #f8fafc;
+      --text-dim: #cbd5e1;
+      --muted: #94a3b8;
+      --line: rgba(56, 189, 248, 0.22);
+      --topbar-h: clamp(46px, 8vh, 64px);
+      --bottom-h: clamp(76px, 14vh, 110px);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg-deep); }
+    body {
+      color: var(--text);
+      font-family: "Afacad Flux", system-ui, -apple-system, sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      overscroll-behavior: contain;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: pan-y;
+    }
+    .ambient {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 12% 22%, rgba(56,189,248,0.10) 0%, transparent 35%),
+        radial-gradient(circle at 88% 18%, rgba(14,165,233,0.10) 0%, transparent 38%),
+        radial-gradient(circle at 50% 92%, rgba(3,105,161,0.12) 0%, transparent 45%);
+    }
+    .bubble {
+      position: absolute;
+      bottom: -120px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.14);
+      box-shadow: inset -3px -3px 0 rgba(255, 255, 255, 0.05);
+      animation: riseUp 14s linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes riseUp {
+      0%   { transform: translateY(0) scale(0.7); opacity: 0; }
+      15%  { opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bubble { display: none; }
+    }
+    .topbar {
+      position: relative; z-index: 5;
+      height: var(--topbar-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(8px, 2vw, 18px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+      gap: 8px;
+    }
+    .brand-tag {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(11px, 2.6vw, 16px);
+      letter-spacing: 0.18em;
+      color: var(--blue);
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      text-align: center;
+    }
+    .icon-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: rgba(56, 189, 248, 0.06);
+      color: var(--blue);
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(11px, 2.4vw, 13px);
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+    .icon-btn:hover, .icon-btn:active {
+      background: var(--blue);
+      color: var(--bg-deep);
+    }
+    .icon-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+    .icon-btn .ic { width: 16px; height: 16px; line-height: 1; }
+
+    .stage {
+      position: relative; z-index: 1;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding: clamp(10px, 2.4vw, 22px);
+    }
+    .screen {
+      position: absolute;
+      inset: clamp(10px, 2.4vw, 22px);
+      display: none;
+      flex-direction: column;
+    }
+    .screen.is-active { display: flex; }
+
+    /* HOME SCREEN */
+    .home-head { text-align: center; padding: 4px 0 10px; }
+    .home-title {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 4.4vw, 2rem);
+      color: var(--blue);
+      line-height: 1.2;
+    }
+    .home-sub {
+      margin-top: 4px;
+      font-size: clamp(0.8rem, 2.6vw, 1rem);
+      color: var(--text-dim);
+    }
+    .home-prepared {
+      margin-top: 6px;
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+      color: var(--muted);
+    }
+    .home-prepared b {
+      color: var(--blue);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .chapter-grid {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+      gap: clamp(8px, 2vw, 14px);
+      padding: 6px 2px 16px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56,189,248,0.5) transparent;
+    }
+    @media (max-width: 480px) {
+      .chapter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 340px) {
+      .chapter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .chapter-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: clamp(12px, 2.4vw, 18px);
+      border-radius: 14px;
+      background: linear-gradient(160deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
+      border: 1px solid rgba(56,189,248,0.25);
+      color: var(--text);
+      font-family: "Comfortaa", sans-serif;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      overflow: hidden;
+    }
+    .chapter-card::before {
+      content: "";
+      position: absolute; top: 0; left: 14px; right: 14px; height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-deep));
+      opacity: 0.85;
+    }
+    .chapter-card:hover, .chapter-card:active {
+      transform: translateY(-2px);
+      border-color: var(--blue);
+      box-shadow: 0 14px 32px -18px rgba(56,189,248,0.45);
+    }
+    .chapter-card .ch-num {
+      font-size: clamp(10px, 2.2vw, 12px);
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .chapter-card .ch-title {
+      font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+      color: var(--blue);
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .chapter-card .ch-meta {
+      margin-top: auto;
+      font-family: "Afacad Flux", sans-serif;
+      font-size: clamp(0.78rem, 2.2vw, 0.88rem);
+      color: var(--text-dim);
+    }
+    .chapter-card.is-special::before {
+      background: linear-gradient(90deg, var(--gold), #f97316);
+    }
+    .chapter-card.is-special {
+      border-color: rgba(251, 191, 36, 0.55);
+      box-shadow: 0 10px 26px -18px rgba(239, 68, 68, 0.55);
+    }
+    /* "New" badge — popping red-gold */
+    .badge-new {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(9px, 2.2vw, 11px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff7c8;
+      background: linear-gradient(135deg, #ef4444 0%, #f97316 45%, #fbbf24 100%);
+      border: 1px solid rgba(255, 247, 200, 0.55);
+      box-shadow:
+        0 0 0 0 rgba(251, 191, 36, 0.55),
+        0 6px 16px -6px rgba(239, 68, 68, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      text-shadow: 0 1px 0 rgba(120, 22, 0, 0.35);
+      animation: badge-pop 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      transform-origin: center;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .badge-new::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 6px #fff7c8, 0 0 10px #fbbf24;
+    }
+    @keyframes badge-pop {
+      0%   { transform: scale(0.94) rotate(-3deg); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55), 0 6px 16px -6px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+      50%  { transform: scale(1.08) rotate(3deg);  box-shadow: 0 0 0 8px rgba(251, 191, 36, 0.0),  0 8px 20px -6px rgba(239, 68, 68, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+      100% { transform: scale(0.94) rotate(-3deg); box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55), 0 6px 16px -6px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .badge-new { animation: none; }
+    }
+    .chapter-card.is-special { padding-top: clamp(28px, 5.5vw, 36px); }
+
+    /* SLIDE SCREEN */
+    .slide-card {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: clamp(12px, 2.6vw, 22px);
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--line);
+    }
+    .slide-chapter {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.78rem, 2.2vw, 0.95rem);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+      padding-bottom: 6px;
+    }
+    .slide-body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .qbox {
+      background: rgba(30, 41, 59, 0.78);
+      border: 2px solid rgba(56, 189, 248, 0.22);
+      border-left: 6px solid var(--blue);
+      padding: clamp(12px, 2.6vw, 22px);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.18s ease;
+      max-height: 100%;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56,189,248,0.45) transparent;
+    }
+    .qbox:hover { border-color: var(--blue); background: rgba(56,189,248,0.04); }
+    .qbox.is-revealed { background: rgba(56, 189, 248, 0.05); }
+    .qbox .ex-label {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.82rem, 2.4vw, 1rem);
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .qbox .prompt {
+      font-size: clamp(1rem, 3.2vw, 1.45rem);
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .reveal-zone {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
+      display: none;
+      animation: dropFade 0.25s ease forwards;
+    }
+    .reveal-zone.show { display: block; }
+    @keyframes dropFade {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .exec-label {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.74rem, 2vw, 0.85rem);
+      letter-spacing: 0.16em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .term {
+      display: block;
+      width: 100%;
+      padding: clamp(8px, 1.8vw, 12px) clamp(10px, 2vw, 16px);
+      border-radius: 8px;
+      background: #090d16;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.7);
+      font-family: "Courier New", Courier, monospace;
+      font-size: clamp(0.88rem, 2.6vw, 1.2rem);
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: 0.5px;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .hint {
+      margin-top: 8px;
+      font-size: clamp(0.74rem, 2.1vw, 0.85rem);
+      color: var(--muted);
+      text-align: center;
+    }
+    .alt-label {
+      margin-top: 12px;
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.74rem, 2vw, 0.85rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .term + .term { margin-top: 6px; }
+    .tip {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--gold);
+      background: rgba(251, 191, 36, 0.08);
+      border-radius: 6px;
+      font-size: clamp(0.82rem, 2.3vw, 0.95rem);
+      color: #fde7a8;
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .tip b { color: var(--gold); font-style: normal; font-weight: 700; }
+
+    /* INTRO/OUTRO */
+    .intro-block, .outro-block {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 2vw, 16px);
+      text-align: center;
+      padding: 6px;
+    }
+    .intro-eyebrow, .outro-eyebrow {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(0.78rem, 2.4vw, 0.95rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .intro-title {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(1.4rem, 5.5vw, 2.4rem);
+      color: var(--blue);
+      line-height: 1.2;
+      max-width: 18ch;
+    }
+    .outro-title {
+      font-family: "Comfortaa", sans-serif;
+      font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+      color: var(--blue);
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      width: 100%;
+      max-width: 520px;
+    }
+    .summary-tile {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1.5px solid rgba(56, 189, 248, 0.25);
+      border-radius: 14px;
+      padding: 14px;
+      font-family: "Comfortaa", sans-serif;
+      color: var(--blue);
+      font-size: clamp(0.86rem, 2.6vw, 1.05rem);
+      font-weight: 700;
+    }
+
+    /* BOTTOM BAR + PROGRESS */
+    .bottombar {
+      position: relative; z-index: 5;
+      height: var(--bottom-h);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px clamp(8px, 2vw, 18px) max(8px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+    }
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .progress-bar {
+      flex: 1;
+      display: flex;
+      gap: 3px;
+      height: 8px;
+      padding: 2px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      background: rgba(15, 23, 42, 0.5);
+      overflow: hidden;
+    }
+    .progress-seg {
+      flex: 1;
+      min-width: 4px;
+      border-radius: 2px;
+      background: rgba(56, 189, 248, 0.18);
+      transition: background 0.25s ease;
+    }
+    .progress-seg.is-done {
+      background: linear-gradient(90deg, var(--blue), var(--green-go));
+      box-shadow: 0 0 6px rgba(56, 189, 248, 0.55);
+    }
+    .progress-seg.is-current {
+      background: linear-gradient(90deg, var(--gold), var(--blue));
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.55);
+    }
+    .progress-pos {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.72rem, 2vw, 0.85rem);
+      color: var(--text-dim);
+      min-width: 56px;
+      text-align: right;
+    }
+    .center-brand {
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      font-size: clamp(0.72rem, 2.1vw, 0.88rem);
+      color: rgba(56, 189, 248, 0.78);
+      text-align: center;
+    }
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .nav-btn {
+      flex: 1 1 auto;
+      max-width: 240px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--blue);
+      background: rgba(56,189,248,0.08);
+      color: var(--blue);
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.84rem, 2.4vw, 0.98rem);
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+    .nav-btn:hover, .nav-btn:active { background: var(--blue); color: var(--bg-deep); }
+    .nav-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+    .nav-btn.primary {
+      background: linear-gradient(120deg, var(--blue) 0%, var(--blue-deep) 100%);
+      color: var(--bg-deep);
+    }
+
+    /* HOME SCREEN BIG START BUTTON (intro card) */
+    .start-cta {
+      align-self: center;
+      margin-top: 6px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1.5px solid var(--blue);
+      background: rgba(56,189,248,0.1);
+      color: var(--blue);
+      font-family: "Comfortaa", sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 2.6vw, 1rem);
+      cursor: pointer;
+    }
+
+    @media (max-height: 520px) {
+      .home-head { padding: 0; }
+      .home-title { font-size: clamp(1rem, 4vw, 1.4rem); }
+      .home-sub { display: none; }
+    }
+  </style>
+<link href="css/main.css" rel="stylesheet"/><link href="css/legacy-theme.css" rel="stylesheet"/><link href="css/site-final.css" rel="stylesheet"/><link href="https://www.talaiza.com/linux_htmlv1.html" rel="canonical"/><meta content="Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech." name="description"/><meta content="Tala Systems" name="author"/><meta content="index,follow,max-image-preview:large" name="robots"/><meta content="Tala Systems, Lighting the Future of Technology, Faith, Morals, Security, Tech, #faith.moral.security.tech, Tanzania technology, digital transformation" name="keywords"/><meta content="Tala Systems" property="og:site_name"/><meta content="COMMUNITY DISCUSSION - Practical Linux OS" property="og:title"/><meta content="Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech." property="og:description"/><meta content="https://www.talaiza.com/linux_htmlv1.html" property="og:url"/><meta content="website" property="og:type"/><meta content="https://www.talaiza.com/assets/branding/tala-torch.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><meta content="COMMUNITY DISCUSSION - Practical Linux OS" name="twitter:title"/><meta content="Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech." name="twitter:description"/><meta content="https://www.talaiza.com/assets/branding/tala-torch.png" name="twitter:image"/><script data-tala-seo="1" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "COMMUNITY DISCUSSION - Practical Linux OS", "description": "Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech.", "url": "https://www.talaiza.com/linux_htmlv1.html", "isPartOf": {"@type": "WebSite", "name": "Tala Systems", "url": "https://www.talaiza.com/"}, "inLanguage": "en"}</script><meta content="Tala Systems torch and globe logo" property="og:image:alt"/></head>
+<body class="site-v3">
+<div aria-hidden="true" class="ambient">
+<div aria-hidden="true" id="bubbleField"></div>
+</div>
+<header class="topbar">
+<button aria-label="Back to chapters" class="icon-btn" id="homeBtn" type="button">
+<span aria-hidden="true" class="ic">⌂</span><span class="lbl">Home</span>
+</button>
+<div class="brand-tag" id="brandTag">COMMUNITY DISCUSSION</div>
+<button aria-label="Show command" class="icon-btn" id="revealBtn" style="visibility:hidden" type="button">
+<span aria-hidden="true" class="ic">▶</span><span class="lbl">Show</span>
+</button>
+</header>
+<main class="stage">
+<section aria-label="Chapter selection" class="screen is-active" id="screenHome">
+<div class="home-head">
+<h1 class="home-title">Practical Linux OS Workshop</h1>
+<p class="home-sub">IT 1201 Open Source System Analysis &amp; Design · Pick a chapter to practice.</p>
+<p class="home-prepared">Prepared by <b>Francis Majisu</b></p>
+</div>
+<div class="chapter-grid" id="chapterGrid"></div>
+<p class="center-brand" style="padding:6px 0 2px">FRMAJISU</p>
+</section>
+<section aria-label="Slide" class="screen" id="screenSlide">
+<div class="slide-card">
+<div class="slide-chapter" id="slideChapter">Chapter</div>
+<div class="slide-body" id="slideBody"></div>
+</div>
+</section>
+</main>
+<footer class="bottombar" hidden="" id="bottombar">
+<div class="progress-row">
+<div aria-label="Chapter progress" class="progress-bar" id="progressBar"></div>
+<div class="progress-pos" id="progressPos">1 / 1</div>
+</div>
+<div class="nav-row">
+<button class="nav-btn" id="prevBtn" type="button">← Prev</button>
+<button class="nav-btn primary" id="nextBtn" type="button">Next →</button>
+</div>
+<div aria-hidden="true" class="center-brand">FRMAJISU</div>
+<span class="seo-signature">#faith.moral.security.tech</span></footer>
+<script>
+    // ====== CONTENT ======================================================
+    // Each chapter: { name, label (card label), prefix (slide title), items: [{q, r}] }
+    var SYLLABUS = [
+      {
+        name: "Chapter 1: The Big Picture",
+        label: "Chapter 1",
+        prefix: "Chapter 1: The Big Picture",
+        intro: "The Big Picture",
+        items: [
+          { q: "Show the kernel version and the machine type.", r: "uname -a" },
+          { q: "Print the folder you are in right now.", r: "pwd", tip: "pwd means \"print working directory\" — it tells you where you are." },
+          { q: "Show the CPU's architecture name.", r: "arch" },
+          { q: "Clear everything from the screen.", r: "clear" },
+          { q: "Show today's date and time.", r: "date" },
+          { q: "Show this month on a calendar.", r: "cal" },
+          { q: "Print your username.", r: "whoami" },
+          { q: "Open the help (manual) page for the ls command.", r: "man ls", tip: "Press q to leave the manual." },
+          { q: "Print the word Hello on the screen.", r: "echo Hello" },
+          { q: "Show the list of commands you typed before in this terminal.", r: "history" }
+        ]
+      },
+      {
+        name: "Chapter 2: Commands & Hierarchy",
+        label: "Chapter 2",
+        prefix: "Chapter 2: Commands & Hierarchy",
+        intro: "Commands & Hierarchy",
+        items: [
+          { q: "Go to your home folder.", r: "cd ~", tip: "~ (tilde) is a shortcut that means \"my home folder\". So cd ~ is the same as cd /home/yourname." },
+          { q: "Make a new folder called FOLDER1 here.", r: "mkdir FOLDER1" },
+          { q: "List the files in your current folder.", r: "ls" },
+          { q: "List files with details (sizes and permissions).", r: "ls -l" },
+          { q: "List ALL files, including hidden ones.", r: "ls -a", tip: "-a means \"all\". Hidden files in Linux start with a dot, like .bashrc." },
+          { q: "Move into FOLDER1.", r: "cd FOLDER1", tip: "FOLDER1 here is a relative path — it starts from where you are now (your home)." },
+          { q: "Make an empty file called FILE1 inside FOLDER1.", r: "touch FILE1" },
+          { q: "Copy FILE1 into a new file called FILE2.", r: "cp FILE1 FILE2" },
+          { q: "Rename FILE2 to FILE3.", r: "mv FILE2 FILE3", tip: "mv is also used for renaming, not just moving." },
+          { q: "Delete FILE3.", r: "rm FILE3" },
+          { q: "Go back up one level (to your home).", r: "cd ..", tip: ".. means \"the folder one step up\". So if you are in /home/me/FOLDER1, cd .. goes to /home/me." },
+          { q: "Remove the empty folder FOLDER1.", r: "rmdir FOLDER1", tip: "rmdir only removes empty folders. Use rm -r FOLDER1 if it has files inside (be careful!)." },
+          { q: "Find every .txt file inside the current folder.", r: "find . -name \"*.txt\"", tip: ". (a single dot) means \"this folder, right here\"." }
+        ]
+      },
+      {
+        name: "Chapter 3: Devices",
+        label: "Chapter 3",
+        prefix: "Chapter 3: Devices",
+        intro: "Devices",
+        items: [
+          { q: "List all storage drives and partitions on the machine.", r: "lsblk" },
+          { q: "List the USB devices plugged in.", r: "lsusb" },
+          { q: "List the PCI devices on the motherboard.", r: "lspci" },
+          { q: "Show CPU details (cores, speed, model).", r: "lscpu" },
+          { q: "Show a short summary of the whole machine's hardware.", r: "lshw -short", tip: "lshw usually needs sudo to see everything." },
+          { q: "Show RAM usage in megabytes.", r: "free -m" },
+          { q: "Show the first lines of the kernel boot log.", r: "dmesg | head", tip: "The | symbol is called a \"pipe\". It sends the output of one command into another. Here, dmesg's output flows into head, which shows the top lines." },
+          { q: "List the kernel modules (drivers) currently loaded.", r: "lsmod" },
+          { q: "Show CPU info from the kernel's view.", r: "cat /proc/cpuinfo" },
+          { q: "Show how long the system has been running since boot.", r: "uptime" }
+        ]
+      },
+      {
+        name: "Chapter 4: Users, Groups & Permissions",
+        label: "Chapter 4",
+        prefix: "Chapter 4: Users, Groups & Permissions",
+        intro: "Users, Groups & Permissions",
+        items: [
+          { q: "Create a new user called USER1 (no home folder yet).", r: "sudo useradd USER1" },
+          { q: "Create USER2 WITH a home folder.", r: "sudo useradd -m USER2", tip: "-m means \"make a home folder\" so USER2 gets /home/USER2." },
+          { q: "Set USER1's password.", r: "sudo passwd USER1" },
+          { q: "Delete USER1, but keep their home folder.", r: "sudo userdel USER1" },
+          { q: "Delete USER2 AND their home folder.", r: "sudo userdel -r USER2", tip: "-r means \"remove\" — it also deletes the home folder and the mail file." },
+          { q: "Make a group called GROUP1.", r: "sudo groupadd GROUP1" },
+          { q: "Add yourself to GROUP1.", r: "sudo usermod -aG GROUP1 $USER", tip: "$USER is a placeholder — Linux replaces it with the user logged in right now. -aG means \"add to group\"; the \"a\" is important — without it you would erase your other groups." },
+          { q: "Remove USER2 from GROUP1.", r: "sudo gpasswd -d USER2 GROUP1" },
+          { q: "Delete GROUP1.", r: "sudo groupdel GROUP1" },
+          { q: "Make a file called FILE1.", r: "touch FILE1" },
+          { q: "With letters: rwx for owner, read-only for group and others on FILE1.", r: "chmod u=rwx,go=r FILE1", tip: "u = user (owner), g = group, o = others. Putting g and o together (\"go\") applies to both at once." },
+          { q: "Remove all access for \"others\" from FILE1.", r: "chmod o-rwx FILE1" },
+          { q: "With numbers: full access for everyone on FILE1.", r: "chmod 777 FILE1", tip: "Three digits = owner, group, others. 7=rwx, 6=rw-, 5=r-x, 4=r--, 0=---. So 777 means rwx rwx rwx." },
+          { q: "With numbers: rw for owner and group, nothing for others on FILE1.", r: "chmod 660 FILE1" },
+          { q: "Make a folder FOLDER1, then change its owner to USER1.", r: ["mkdir FOLDER1", "sudo chown USER1 FOLDER1"], tip: "These are two separate steps — easier to read than joining them with &&." },
+          { q: "Set BOTH the owner (USER1) and group (GROUP1) of FOLDER1 in one command.", r: "sudo chown USER1:GROUP1 FOLDER1", tip: "user:group is the format — owner before the colon, group after." }
+        ]
+      },
+      {
+        name: "Chapter 5: Kernel Booting",
+        label: "Chapter 5",
+        prefix: "Chapter 5: Kernel Booting",
+        intro: "Kernel Booting",
+        items: [
+          { q: "Look in the boot log for messages about disks (sata or scsi).", r: "dmesg | grep -E -i \"sata|scsi\"", tip: "grep finds lines that match a pattern. -i means \"ignore upper/lower case\"." },
+          { q: "Show the logs from the current boot session.", r: "journalctl -b" },
+          { q: "Show how long booting took.", r: "systemd-analyze" },
+          { q: "List the slowest startup services first.", r: "systemd-analyze blame" },
+          { q: "Show the kernel boot options that were used.", r: "cat /proc/cmdline" },
+          { q: "Check the current runlevel of the system.", r: "runlevel" },
+          { q: "Show the default startup target.", r: "systemctl get-default" },
+          { q: "Show when the machine was last booted.", r: "who -b" },
+          { q: "Reboot the machine.", r: "sudo reboot" },
+          { q: "List all entries in the GRUB boot menu.", r: "cat /boot/grub/grub.cfg | grep menuentry", tip: "grep filters lines containing the word \"menuentry\"." }
+        ]
+      },
+      {
+        name: "Chapter 6: User Space Starts",
+        label: "Chapter 6",
+        prefix: "Chapter 6: User Space Starts",
+        intro: "User Space Starts",
+        items: [
+          { q: "List the active systemd units (background services).", r: "systemctl list-units --state=active" },
+          { q: "Show every running process on the system.", r: "ps aux" },
+          { q: "Open the live process monitor.", r: "top", tip: "Press q to quit the live monitor." },
+          { q: "List background jobs in this terminal.", r: "jobs" },
+          { q: "Check if the cron service is running.", r: "systemctl status cron" },
+          { q: "Show what groups you belong to.", r: "groups" },
+          { q: "Set FILE1 to rwx for owner and r-x for group and others (using numbers).", r: "chmod 755 FILE1", tip: "755 = rwxr-xr-x. Owner can do everything; everyone else can read and execute." },
+          { q: "Take ownership of FILE1 yourself.", r: "chown $USER FILE1", tip: "$USER is replaced with your own username automatically." },
+          { q: "Show your user ID and group IDs.", r: "id" },
+          { q: "Show the recent login history on this machine.", r: "last" }
+        ]
+      },
+      {
+        name: "Chapter 7: Disks & Filesystems",
+        label: "Chapter 7",
+        prefix: "Chapter 7: Disks & Filesystems",
+        intro: "Disks & Filesystems",
+        items: [
+          { q: "Show free disk space in human-readable form.", r: "df -h", tip: "-h means \"human readable\" — shows MB and GB instead of raw bytes." },
+          { q: "Show how much space each item in the current folder uses.", r: "du -sh *", tip: "* means \"everything in here\". -s = summary, -h = human readable." },
+          { q: "List the disks that are currently mounted.", r: "mount" },
+          { q: "Make an uncompressed archive (tar) of FILE1.", r: "tar -cvf ARCHIVE1.tar FILE1", tip: "c = create, v = verbose (show what is happening), f = file name. tar groups files together into one bundle." },
+          { q: "Compress ARCHIVE1.tar to make it smaller.", r: "gzip ARCHIVE1.tar", tip: "After gzip, the file becomes ARCHIVE1.tar.gz." },
+          { q: "Tell what kind of file FILE1 actually is.", r: "file FILE1" },
+          { q: "Show the file system table on disk.", r: "cat /etc/fstab" },
+          { q: "Show full info about FILE1 (size, dates, inode).", r: "stat FILE1" },
+          { q: "List files in the current folder with their inode numbers.", r: "ls -i" },
+          { q: "Show the first 5 lines of the user list.", r: "head -n 5 /etc/passwd", tip: "head shows the top of a file. -n 5 means \"first 5 lines\"." }
+        ]
+      },
+      {
+        name: "Special Permissions (sticky bit, SUID & SGID)",
+        label: "Special Permissions",
+        prefix: "Special Permissions: sticky bit, SUID & SGID",
+        intro: "Special Permissions",
+        special: true,
+        items: [
+          { q: "Make a new group called GROUP1.", r: "sudo groupadd GROUP1", tip: "A group lets many users share the same files and permissions." },
+          { q: "Create USER1 and give them a home folder.", r: "sudo useradd -m USER1", tip: "-m means \"make a home folder\". USER1 gets /home/USER1." },
+          { q: "Create USER2 with a home folder too.", r: "sudo useradd -m USER2" },
+          { q: "Set USER1's password.", r: "sudo passwd USER1" },
+          { q: "Set USER2's password.", r: "sudo passwd USER2" },
+          { q: "Add USER1 to GROUP1.", r: "sudo usermod -aG GROUP1 USER1", tip: "-aG means \"add to group\". The \"a\" is important — without it, USER1 would be removed from their other groups by mistake." },
+          { q: "Add USER2 to GROUP1.", r: "sudo usermod -aG GROUP1 USER2" },
+          { q: "Check that USER1 is now a member of GROUP1.", r: "groups USER1" },
+          { q: "Switch into a login session as USER1.", r: "su - USER1", tip: "su = \"switch user\". The dash (-) gives you a fresh login as that user, starting in their home." },
+          { q: "Now you are USER1. Make a folder called FOLDER1 inside your home.", r: "mkdir ~/FOLDER1", tip: "~ (tilde) is a shortcut that means \"my home folder\". So ~/FOLDER1 is the same as /home/USER1/FOLDER1." },
+          { q: "Inside FOLDER1, create a file called FILE1.", r: "touch ~/FOLDER1/FILE1" },
+          { q: "List the contents of FOLDER1 using a relative path (no ~ this time).", r: "ls FOLDER1", tip: "A relative path starts from where you are NOW. USER1's session starts in their home, so \"FOLDER1\" finds it without needing the full path." },
+          { q: "Leave USER1's session and go back to your admin user.", r: "exit" },
+          { q: "Make a shared team folder at /srv/share. This is an absolute path.", r: "sudo mkdir /srv/share", tip: "An absolute path starts with / and always points to the same place no matter where you are. A relative path depends on your current folder." },
+          { q: "Set the owner of /srv/share to root and the group to GROUP1.", r: "sudo chown root:GROUP1 /srv/share", tip: "user:group is the format — owner before the colon, group after." },
+          { q: "Using letters: give the owner and the group full access, and remove access for others.", r: "sudo chmod ug=rwx,o= /srv/share", tip: "u=user(owner), g=group, o=others. r=read, w=write, x=execute. For folders, x means \"can enter\"." },
+          { q: "Same step using numbers: owner=7, group=7, others=0.", r: "sudo chmod 770 /srv/share", tip: "Three digits = owner, group, others. 7 = rwx, 0 = nothing. So 770 = rwx rwx ---." },
+          { q: "As USER1, create FILE2 inside the shared folder.", r: "su - USER1 -c \"touch /srv/share/FILE2\"", tip: "The -c \"...\" runs ONE command in the new session and exits. Useful when you don't want to stay logged in.", alt: ["su - USER1", "touch /srv/share/FILE2", "exit"] },
+          { q: "List the shared folder. Notice FILE2 belongs to USER1's group, not GROUP1 — we will fix that next.", r: "ls -l /srv/share" },
+          { q: "Set the SGID bit on the folder using letters, so new files inherit GROUP1.", r: "sudo chmod g+s /srv/share", tip: "SGID on a folder means: any new file made inside automatically belongs to the folder's group." },
+          { q: "Set the SGID bit using numbers — 2 in front means SGID.", r: "sudo chmod 2770 /srv/share", tip: "2770 reads as: 2 = SGID; 770 = rwx for owner and group, nothing for others." },
+          { q: "As USER1, create FILE3 in the shared folder.", r: "su - USER1 -c \"touch /srv/share/FILE3\"" },
+          { q: "List the folder again — FILE3 now belongs to GROUP1, thanks to SGID.", r: "ls -l /srv/share" },
+          { q: "As USER2, write a line into FILE3 to prove the team can edit each other's files.", r: "su - USER2 -c \"echo hello-from-USER2 >> /srv/share/FILE3\"", tip: ">> means \"add to the end of this file\". A single > would overwrite it instead." },
+          { q: "Set the sticky bit on /srv/share using letters.", r: "sudo chmod +t /srv/share", tip: "Sticky bit means: only the OWNER of a file can delete that file in this folder. Others can still read or edit it, but not erase it." },
+          { q: "Set the sticky bit using numbers — 1 in front means sticky.", r: "sudo chmod 1770 /srv/share" },
+          { q: "Set BOTH SGID and sticky together using numbers (3 = 2 + 1).", r: "sudo chmod 3770 /srv/share", tip: "Special bits are added: SUID=4, SGID=2, sticky=1. So 3 = SGID + sticky." },
+          { q: "As USER2, try to delete FILE3 (which USER1 owns). The sticky bit should block this.", r: "su - USER2 -c \"rm /srv/share/FILE3\"" },
+          { q: "As USER2, create FILE4 then delete it. This works because USER2 owns FILE4.", r: ["su - USER2 -c \"touch /srv/share/FILE4\"", "su - USER2 -c \"rm /srv/share/FILE4\""], tip: "Two short commands instead of one long one — easier to read while learning." },
+          { q: "Find programs in /usr/bin that already use SUID.", r: "find /usr/bin -perm -4000 -type f", tip: "SUID makes a program run with the OWNER's powers, not yours. /usr/bin/passwd uses SUID so you can change your password without being root." },
+          { q: "Add the SUID bit on a script using letters.", r: "sudo chmod u+s /usr/local/bin/myscript" },
+          { q: "Same step using numbers — 4 in front means SUID.", r: "sudo chmod 4755 /usr/local/bin/myscript", tip: "4755 reads as: 4 = SUID; 755 = rwx for owner, r-x for group and others." },
+          { q: "Combine SUID + SGID + sticky in one number (4 + 2 + 1 = 7).", r: "sudo chmod 7770 /srv/share" },
+          { q: "Remove SUID, SGID and the sticky bit from /srv/share using letters, all at once.", r: "sudo chmod u-s,g-s,-t /srv/share", tip: "u-s removes SUID, g-s removes SGID, -t removes the sticky bit. Commas let you combine many changes in one command." }
+        ]
+      }
+    ];
+    // ====== STATE & ELEMENTS ============================================
+    var state = { chapter: -1, idx: 0 };
+    var elHome = document.getElementById("screenHome");
+    var elSlide = document.getElementById("screenSlide");
+    var elGrid = document.getElementById("chapterGrid");
+    var elBrand = document.getElementById("brandTag");
+    var elBottom = document.getElementById("bottombar");
+    var elProgress = document.getElementById("progressBar");
+    var elProgressPos = document.getElementById("progressPos");
+    var elSlideChapter = document.getElementById("slideChapter");
+    var elSlideBody = document.getElementById("slideBody");
+    var elPrev = document.getElementById("prevBtn");
+    var elNext = document.getElementById("nextBtn");
+    var elHomeBtn = document.getElementById("homeBtn");
+    var elReveal = document.getElementById("revealBtn");
+
+    // ====== HOME / CHAPTERS ==============================================
+    function renderHome() {
+      elGrid.innerHTML = "";
+      SYLLABUS.forEach(function (ch, i) {
+        var card = document.createElement("button");
+        card.type = "button";
+        card.className = "chapter-card" + (ch.special ? " is-special" : "");
+        card.setAttribute("aria-label", ch.name);
+        var num = ch.special ? "" : "<span class=\"ch-num\">" + ch.label + "</span>";
+        var badge = ch.special ? "<span class=\"badge-new\" aria-label=\"New chapter\">New</span>" : "";
+        card.innerHTML =
+          badge +
+          num +
+          "<span class=\"ch-title\">" + ch.intro + "</span>" +
+          "<span class=\"ch-meta\">" + ch.items.length + " practicals &middot; tap to start</span>";
+        card.addEventListener("click", function () { openChapter(i); });
+        elGrid.appendChild(card);
+      });
+    }
+
+    function openChapter(i) {
+      state.chapter = i;
+      state.idx = 0;
+      elHome.classList.remove("is-active");
+      elSlide.classList.add("is-active");
+      elBottom.hidden = false;
+      elBrand.textContent = SYLLABUS[i].prefix;
+      renderSlide();
+    }
+
+    function goHome() {
+      state.chapter = -1;
+      state.idx = 0;
+      elSlide.classList.remove("is-active");
+      elHome.classList.add("is-active");
+      elBottom.hidden = true;
+      elBrand.textContent = "COMMUNITY DISCUSSION";
+      elReveal.style.visibility = "hidden";
+    }
+
+    // ====== SLIDE RENDER =================================================
+    function renderSlide() {
+      var ch = SYLLABUS[state.chapter];
+      var item = ch.items[state.idx];
+      elSlideChapter.textContent = ch.prefix;
+
+      // Build the command block — supports a single string OR an array of steps
+      var cmdHtml = "";
+      if (Array.isArray(item.r)) {
+        cmdHtml += "<div class=\"exec-label\">Try this step by step</div>";
+        item.r.forEach(function (line) {
+          cmdHtml += "<code class=\"term\">" + escapeHtml(line) + "</code>";
+        });
+      } else {
+        cmdHtml += "<div class=\"exec-label\">Try this</div>";
+        cmdHtml += "<code class=\"term\">" + escapeHtml(item.r) + "</code>";
+      }
+
+      // Optional alternative form (e.g. when the main command uses && and you also want a split version)
+      if (item.alt) {
+        cmdHtml += "<div class=\"alt-label\">Or step by step</div>";
+        var alts = Array.isArray(item.alt) ? item.alt : [item.alt];
+        alts.forEach(function (line) {
+          cmdHtml += "<code class=\"term\">" + escapeHtml(line) + "</code>";
+        });
+      }
+
+      // Optional teaching tip
+      var tipHtml = item.tip
+        ? "<p class=\"tip\"><b>Tip:</b> " + escapeHtml(item.tip) + "</p>"
+        : "";
+
+      elSlideBody.innerHTML =
+        "<div class=\"qbox\" id=\"qbox\">" +
+        "<div class=\"ex-label\">Practical Exercise " + (state.idx + 1) + " of " + ch.items.length + "</div>" +
+        "<div class=\"prompt\">" + escapeHtml(item.q) + "</div>" +
+        "<div class=\"reveal-zone\" id=\"revealZone\">" +
+        cmdHtml +
+        tipHtml +
+        "<div class=\"hint\">Tap the box again to hide.</div>" +
+        "</div>" +
+        "</div>";
+
+      var qbox = document.getElementById("qbox");
+      qbox.addEventListener("click", toggleReveal);
+
+      elReveal.style.visibility = "visible";
+      elReveal.querySelector(".lbl").textContent = "Show";
+
+      elPrev.disabled = state.idx === 0;
+      elNext.disabled = false;
+      elNext.textContent = state.idx === ch.items.length - 1 ? "Finish" : "Next \u2192";
+      renderProgress();
+    }
+
+    function toggleReveal() {
+      var zone = document.getElementById("revealZone");
+      var qbox = document.getElementById("qbox");
+      if (!zone) return;
+      var open = !zone.classList.contains("show");
+      zone.classList.toggle("show", open);
+      qbox.classList.toggle("is-revealed", open);
+      elReveal.querySelector(".lbl").textContent = open ? "Hide" : "Show";
+    }
+
+    function renderProgress() {
+      var ch = SYLLABUS[state.chapter];
+      elProgress.innerHTML = "";
+      for (var i = 0; i < ch.items.length; i++) {
+        var s = document.createElement("span");
+        s.className = "progress-seg";
+        if (i < state.idx) s.classList.add("is-done");
+        else if (i === state.idx) s.classList.add("is-current");
+        elProgress.appendChild(s);
+      }
+      elProgressPos.textContent = (state.idx + 1) + " / " + ch.items.length;
+    }
+
+    function nextSlide() {
+      if (state.chapter < 0) return;
+      var ch = SYLLABUS[state.chapter];
+      if (state.idx < ch.items.length - 1) {
+        state.idx++;
+        renderSlide();
+      } else {
+        // Chapter complete — flash all segments done, then go home
+        elProgress.querySelectorAll(".progress-seg").forEach(function (s) {
+          s.classList.remove("is-current");
+          s.classList.add("is-done");
+        });
+        elProgressPos.textContent = ch.items.length + " / " + ch.items.length;
+        setTimeout(goHome, 600);
+      }
+    }
+    function prevSlide() {
+      if (state.chapter < 0) return;
+      if (state.idx > 0) {
+        state.idx--;
+        renderSlide();
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // ====== EVENT WIRING ================================================
+    elHomeBtn.addEventListener("click", goHome);
+    elPrev.addEventListener("click", prevSlide);
+    elNext.addEventListener("click", nextSlide);
+    elReveal.addEventListener("click", toggleReveal);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        if (state.chapter >= 0) { e.preventDefault(); nextSlide(); }
+      } else if (e.key === "ArrowLeft") {
+        if (state.chapter >= 0) { e.preventDefault(); prevSlide(); }
+      } else if (e.key === "Escape" || e.key === "h" || e.key === "H") {
+        if (state.chapter >= 0) goHome();
+      }
+    });
+    // Swipe gestures
+    (function () {
+      var sx = 0, sy = 0, tracking = false;
+      document.body.addEventListener("touchstart", function (e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY; tracking = true;
+      }, { passive: true });
+      document.body.addEventListener("touchend", function (e) {
+        if (!tracking) return; tracking = false;
+        var t = e.changedTouches && e.changedTouches[0]; if (!t) return;
+        var dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4 && state.chapter >= 0) {
+          if (dx < 0) nextSlide(); else prevSlide();
+        }
+      }, { passive: true });
+    })();
+
+    // BUBBLES — gentle ambient animation
+    (function spawnBubbles() {
+      var field = document.getElementById("bubbleField");
+      if (!field) return;
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      var n = window.innerWidth < 480 ? 10 : 18;
+      for (var i = 0; i < n; i++) {
+        var b = document.createElement("div");
+        b.className = "bubble";
+        var size = 30 + Math.random() * 90;
+        b.style.width = size + "px";
+        b.style.height = size + "px";
+        b.style.left = Math.random() * 100 + "%";
+        b.style.animationDuration = (10 + Math.random() * 8).toFixed(2) + "s";
+        b.style.animationDelay = (-Math.random() * 12).toFixed(2) + "s";
+        b.style.background = "rgba(56, 189, 248, " + (0.07 + Math.random() * 0.1).toFixed(2) + ")";
+        field.appendChild(b);
+      }
+    })();
+
+    // BOOT
+    renderHome();
+  </script>
+<script defer="" src="js/main.js"></script><script defer="True" src="js/site-nav.js"></script></body>
+</html>

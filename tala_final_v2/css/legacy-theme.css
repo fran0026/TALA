@@ -1,0 +1,83 @@
+/* Tala Systems Final V2 - shared visual inheritance for legacy pages */
+:root {
+  --tala-navy: #071c2a;
+  --tala-blue: #1769aa;
+  --tala-blue-light: #3f98d2;
+  --tala-gold: #d4ad3d;
+  --tala-gold-soft: #e4cc70;
+  --tala-green: #2e8b57;
+  --tala-green-light: #72bf8f;
+  --tala-green-dark: #173f2f;
+  --tala-mint: #c8e7d4;
+  --tala-text: #e8f5ec;
+  --tala-text-muted: #b9d2c4;
+}
+body.site-v3.legacy-page {
+  background:
+    radial-gradient(circle at 10% 10%, rgba(46,139,87,.13), transparent 32%),
+    radial-gradient(circle at 90% 20%, rgba(23,105,170,.15), transparent 34%),
+    linear-gradient(180deg, #071c2a 0%, #0c2d41 42%, #173f2f 76%, #081f2e 100%);
+  color: var(--tala-text);
+}
+body.site-v3.legacy-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 22% 75%, rgba(212,173,61,.06), transparent 26%),
+    radial-gradient(circle at 78% 60%, rgba(46,139,87,.06), transparent 28%);
+}
+body.site-v3.legacy-page a { color: var(--tala-gold-soft); }
+body.site-v3.legacy-page a:hover { color: var(--tala-green-light); }
+body.site-v3.legacy-page .site-header,
+body.site-v3.legacy-page .topbar {
+  background: rgba(7,28,42,.78) !important;
+  border-color: rgba(232,245,236,.10) !important;
+  backdrop-filter: blur(18px);
+}
+body.site-v3.legacy-page .brand-title,
+body.site-v3.legacy-page .brand-wordmark,
+body.site-v3.legacy-page .main-nav a,
+body.site-v3.legacy-page .nav-links a,
+body.site-v3.legacy-page .menu-btn,
+body.site-v3.legacy-page .discover-toggle,
+body.site-v3.legacy-page .icon-btn {
+  color: #e8f5ec !important;
+}
+body.site-v3.legacy-page .brand-line,
+body.site-v3.legacy-page .brand-tag,
+body.site-v3.legacy-page .section-intro,
+body.site-v3.legacy-page .lead,
+body.site-v3.legacy-page p {
+  color: #c6dad0;
+}
+body.site-v3.legacy-page h1,
+body.site-v3.legacy-page h2,
+body.site-v3.legacy-page h3,
+body.site-v3.legacy-page .story-header h1,
+body.site-v3.legacy-page .story-header h2 {
+  color: #e8f5ec;
+}
+body.site-v3.legacy-page .brand-mark,
+body.site-v3.legacy-page .story-card,
+body.site-v3.legacy-page .panel,
+body.site-v3.legacy-page .resource-card,
+body.site-v3.legacy-page .chapter-card {
+  border-color: rgba(232,245,236,.10);
+  box-shadow: 0 18px 48px rgba(0,0,0,.18);
+}
+body.site-v3.legacy-page .brand-mark img {
+  border-radius: 14px;
+}
+body.site-v3.legacy-page footer {
+  background: linear-gradient(135deg,#071c2a 0%,#113b55 48%,#173f2f 100%) !important;
+  color: #e8f5ec !important;
+  border-color: rgba(232,245,236,.10) !important;
+}
+body.site-v3.legacy-page footer small,
+body.site-v3.legacy-page footer p,
+body.site-v3.legacy-page footer span {
+  color: #c6dad0 !important;
+}
