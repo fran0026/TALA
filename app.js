@@ -2,76 +2,6 @@ const menuBtn = document.getElementById("menuBtn");
 const mainNav = document.getElementById("mainNav");
 const yearEl = document.getElementById("year");
 const siteHeader = document.getElementById("siteHeader");
-const discoverToggle = document.getElementById("discoverToggle");
-const discoverDropdown = document.getElementById("discoverDropdown");
-const discoverScrim = document.getElementById("discoverScrim");
-const discoverPanel = document.getElementById("discoverPanel");
-
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear().toString();
-}
-
-function setDiscoverOpen(open) {
-  if (!siteHeader || !discoverToggle) return;
-  siteHeader.classList.toggle("discover-open", open);
-  discoverToggle.setAttribute("aria-expanded", open ? "true" : "false");
-  if (discoverDropdown) {
-    discoverDropdown.setAttribute("aria-hidden", open ? "false" : "true");
-  }
-  if (discoverScrim) {
-    if (open) {
-      discoverScrim.removeAttribute("hidden");
-    } else {
-      discoverScrim.setAttribute("hidden", "");
-    }
-    discoverScrim.classList.toggle("is-visible", open);
-    discoverScrim.setAttribute("aria-hidden", open ? "false" : "true");
-  }
-}
-
-function syncDiscoverActive() {
-  if (!discoverPanel) return;
-  const raw = location.pathname.split("/").filter(Boolean);
-  const file = raw.length ? raw[raw.length - 1].toLowerCase() : "";
-  const isHome = !file || file === "index.html";
-  discoverPanel.querySelectorAll(".rail-card").forEach((a) => {
-    const href = (a.getAttribute("href") || "").split("/").pop().toLowerCase();
-    a.classList.toggle("is-active", Boolean(!isHome && href === file));
-  });
-}
-
-syncDiscoverActive();
-
-setDiscoverOpen(false);
-
-window.addEventListener("pageshow", (event) => {
-  if (event.persisted) {
-    setDiscoverOpen(false);
-  }
-});
-
-if (discoverToggle && siteHeader) {
-  discoverToggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const open = !siteHeader.classList.contains("discover-open");
-    setDiscoverOpen(open);
-    if (open && mainNav && menuBtn && mainNav.classList.contains("open")) {
-      mainNav.classList.remove("open");
-      menuBtn.setAttribute("aria-expanded", "false");
-    }
-  });
-}
-
-discoverScrim?.addEventListener("click", () => setDiscoverOpen(false));
-
-discoverPanel?.querySelectorAll("a.rail-card").forEach((a) => {
-  a.addEventListener("click", () => setDiscoverOpen(false));
-});
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") setDiscoverOpen(false);
-});
-
 /** Readable tagline; grow `.brand-title` until it spans at least the tagline width. */
 function fitBrandBlock() {
   const title = document.querySelector(".brand-title");
@@ -148,8 +78,7 @@ window.addEventListener("resize", () => {
   clearTimeout(brandBlockResizeTimer);
   brandBlockResizeTimer = setTimeout(() => {
     scheduleFitBrandBlock();
-    syncDiscoverActive();
-  }, 120);
+    }, 120);
 });
 
 if (menuBtn && mainNav) {

@@ -1,20 +1,21 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" />
-  <title>COMMUNITY DISCUSSION - Practical Linux OS</title>
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/tala_maskable_192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/tala_maskable.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/tala_maskable.png" />
-  <link rel="manifest" href="/site.webmanifest" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Afacad+Flux:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="#0f172a" name="theme-color"/>
+<title>COMMUNITY DISCUSSION - Practical Linux OS</title>
+<link href="/favicon.ico" rel="icon" sizes="any"/>
+<link href="/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/tala_maskable_192.png" rel="icon" sizes="192x192" type="image/png"/>
+<link href="/tala_maskable.png" rel="icon" sizes="512x512" type="image/png"/>
+<link href="/tala_maskable.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&amp;family=Afacad+Flux:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<style>
     :root {
       --bg-deep: #0f172a;
       --bg-2: #0b1224;
@@ -557,53 +558,49 @@
       .home-sub { display: none; }
     }
   </style>
-</head>
-<body>
-  <div class="ambient" aria-hidden="true">
-    <div id="bubbleField" aria-hidden="true"></div>
-  </div>
-
-  <header class="topbar">
-    <button id="homeBtn" class="icon-btn" type="button" aria-label="Back to chapters">
-      <span class="ic" aria-hidden="true">&#8962;</span><span class="lbl">Home</span>
-    </button>
-    <div class="brand-tag" id="brandTag">COMMUNITY DISCUSSION</div>
-    <button id="revealBtn" class="icon-btn" type="button" aria-label="Show command" style="visibility:hidden">
-      <span class="ic" aria-hidden="true">&#9654;</span><span class="lbl">Show</span>
-    </button>
-  </header>
-
-  <main class="stage">
-    <section class="screen is-active" id="screenHome" aria-label="Chapter selection">
-      <div class="home-head">
-        <h1 class="home-title">Practical Linux OS Workshop</h1>
-        <p class="home-sub">IT 1201 Open Source System Analysis &amp; Design &middot; Pick a chapter to practice.</p>
-        <p class="home-prepared">Prepared by <b>Francis Majisu</b></p>
-      </div>
-      <div class="chapter-grid" id="chapterGrid"></div>
-      <p class="center-brand" style="padding:6px 0 2px">FRMAJISU</p>
-    </section>
-
-    <section class="screen" id="screenSlide" aria-label="Slide">
-      <div class="slide-card">
-        <div class="slide-chapter" id="slideChapter">Chapter</div>
-        <div class="slide-body" id="slideBody"></div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="bottombar" id="bottombar" hidden>
-    <div class="progress-row">
-      <div class="progress-bar" id="progressBar" aria-label="Chapter progress"></div>
-      <div class="progress-pos" id="progressPos">1 / 1</div>
-    </div>
-    <div class="nav-row">
-      <button id="prevBtn" class="nav-btn" type="button">&#8592; Prev</button>
-      <button id="nextBtn" class="nav-btn primary" type="button">Next &#8594;</button>
-    </div>
-    <div class="center-brand" aria-hidden="true">FRMAJISU</div>
-  </footer>
-  <script>
+<link href="css/main.css" rel="stylesheet"/><link href="css/legacy-theme.css" rel="stylesheet"/><link href="css/site-final.css" rel="stylesheet"/><link href="https://www.talaiza.com/linux_htmlv1.html" rel="canonical"/><meta content="Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech." name="description"/><meta content="Tala Systems" name="author"/><meta content="index,follow,max-image-preview:large" name="robots"/><meta content="Tala Systems, Lighting the Future of Technology, Faith, Morals, Security, Tech, #faith.moral.security.tech, Tanzania technology, digital transformation" name="keywords"/><meta content="Tala Systems" property="og:site_name"/><meta content="COMMUNITY DISCUSSION - Practical Linux OS" property="og:title"/><meta content="Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech." property="og:description"/><meta content="https://www.talaiza.com/linux_htmlv1.html" property="og:url"/><meta content="website" property="og:type"/><meta content="https://www.talaiza.com/assets/branding/tala-torch.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><meta content="COMMUNITY DISCUSSION - Practical Linux OS" name="twitter:title"/><meta content="Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech." name="twitter:description"/><meta content="https://www.talaiza.com/assets/branding/tala-torch.png" name="twitter:image"/><script data-tala-seo="1" type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "COMMUNITY DISCUSSION - Practical Linux OS", "description": "Practical Linux OS Workshop. Tala Systems — secure, intelligent and practical technology guided by Faith, Morals, Security and Tech.", "url": "https://www.talaiza.com/linux_htmlv1.html", "isPartOf": {"@type": "WebSite", "name": "Tala Systems", "url": "https://www.talaiza.com/"}, "inLanguage": "en"}</script><meta content="Tala Systems torch and globe logo" property="og:image:alt"/></head>
+<body class="site-v3">
+<div aria-hidden="true" class="ambient">
+<div aria-hidden="true" id="bubbleField"></div>
+</div>
+<header class="topbar">
+<button aria-label="Back to chapters" class="icon-btn" id="homeBtn" type="button">
+<span aria-hidden="true" class="ic">⌂</span><span class="lbl">Home</span>
+</button>
+<div class="brand-tag" id="brandTag">COMMUNITY DISCUSSION</div>
+<button aria-label="Show command" class="icon-btn" id="revealBtn" style="visibility:hidden" type="button">
+<span aria-hidden="true" class="ic">▶</span><span class="lbl">Show</span>
+</button>
+</header>
+<main class="stage">
+<section aria-label="Chapter selection" class="screen is-active" id="screenHome">
+<div class="home-head">
+<h1 class="home-title">Practical Linux OS Workshop</h1>
+<p class="home-sub">IT 1201 Open Source System Analysis &amp; Design · Pick a chapter to practice.</p>
+<p class="home-prepared">Prepared by <b>Francis Majisu</b></p>
+</div>
+<div class="chapter-grid" id="chapterGrid"></div>
+<p class="center-brand" style="padding:6px 0 2px">FRMAJISU</p>
+</section>
+<section aria-label="Slide" class="screen" id="screenSlide">
+<div class="slide-card">
+<div class="slide-chapter" id="slideChapter">Chapter</div>
+<div class="slide-body" id="slideBody"></div>
+</div>
+</section>
+</main>
+<footer class="bottombar" hidden="" id="bottombar">
+<div class="progress-row">
+<div aria-label="Chapter progress" class="progress-bar" id="progressBar"></div>
+<div class="progress-pos" id="progressPos">1 / 1</div>
+</div>
+<div class="nav-row">
+<button class="nav-btn" id="prevBtn" type="button">← Prev</button>
+<button class="nav-btn primary" id="nextBtn" type="button">Next →</button>
+</div>
+<div aria-hidden="true" class="center-brand">FRMAJISU</div>
+<span class="seo-signature">#faith.moral.security.tech</span></footer>
+<script>
     // ====== CONTENT ======================================================
     // Each chapter: { name, label (card label), prefix (slide title), items: [{q, r}] }
     var SYLLABUS = [
@@ -1007,5 +1004,5 @@
     // BOOT
     renderHome();
   </script>
-</body>
+<script defer="" src="js/main.js"></script><script defer="True" src="js/site-nav.js"></script></body>
 </html>

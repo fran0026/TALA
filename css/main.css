@@ -1,0 +1,1064 @@
+
+/* Tala Systems V3.2 — Blue / Gold / Green only */
+:root {
+  --tala-navy: #071c2a;
+  --tala-blue: #1769aa;
+  --tala-blue-light: #3f98d2;
+  --tala-gold: #d4ad3d;
+  --tala-gold-soft: #e4cc70;
+  --tala-green: #2e8b57;
+  --tala-green-light: #72bf8f;
+  --tala-green-dark: #173f2f;
+  --tala-blue-dark: #0d2f48;
+  --tala-text: #e8f5ec;
+  --tala-text-muted: #b9d2c4;
+}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --navy-950:#030815; --navy-900:#061126; --navy-800:#0a1832;
+  --blue-600:#168cff; --blue-500:#25b6ff; --blue-400:#67d6ff;
+  --gold-500:#ffb51b; --gold-400:#ffd45a; --green-500:#22c77a; --green-400:#65e7a8;
+  --white:#f7fbff; --text:#d9e5f2; --muted:#91a3b8; --line:rgba(160,195,225,.14);
+  --glass:rgba(8,22,43,.66); --shadow:0 30px 90px rgba(0,0,0,.32);
+  --radius-lg:28px; --radius-md:18px; --radius-sm:12px;
+  --font-body:'DM Sans',system-ui,sans-serif; --font-display:'Space Grotesk',system-ui,sans-serif;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--navy-950);color:var(--text);font-family:var(--font-body);line-height:1.6;overflow-x:hidden} body.is-locked{overflow:hidden}
+a{color:inherit;text-decoration:none} img{max-width:100%;display:block} button{font:inherit;color:inherit}
+.container{width:min(1180px,calc(100% - 40px));margin:auto}.narrow{width:min(760px,calc(100% - 40px));margin:auto}
+.skip-link{position:fixed;left:16px;top:12px;transform:translateY(-140%);background:#e8f5ec;color:#061126;padding:10px 14px;border-radius:10px;z-index:200}.skip-link:focus{transform:none}
+
+/* Background */
+.site-bg{position:fixed;inset:0;z-index:-3;background:radial-gradient(circle at 70% 8%,rgba(37,182,255,.13),transparent 32%),radial-gradient(circle at 20% 70%,rgba(34,199,122,.08),transparent 30%),linear-gradient(180deg,#030815,#061126 48%,#030815)}
+.site-bg::before{content:"";position:absolute;inset:0;opacity:.18;background-image:linear-gradient(rgba(103,214,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(103,214,255,.07) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to bottom,black,transparent 78%)}
+.site-bg::after{content:"";position:absolute;width:560px;height:560px;right:-180px;top:90px;border-radius:50%;background:radial-gradient(circle,rgba(255,181,27,.08),transparent 68%);filter:blur(10px)}
+
+/* Header */
+.site-header{position:fixed;inset:0 0 auto;z-index:100;padding:18px 0;transition:padding .35s ease,background .35s ease,backdrop-filter .35s ease}.site-header.scrolled{padding:10px 0;background:rgba(3,8,21,.72);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px}.brand img{width:46px;height:42px;object-fit:contain}.brand-wordmark{font:700 1rem var(--font-display);letter-spacing:.09em}.brand-tag{font-size:.62rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}.nav-links{display:flex;align-items:center;gap:28px;font-size:.88rem;color:#b9c9da}.nav-links a{transition:color .25s ease}.nav-links a:hover,.nav-links a.active{color:#e8f5ec}.nav-cta{padding:10px 16px;border:1px solid rgba(255,181,27,.45);border-radius:999px;color:#e8f5ec;background:rgba(255,181,27,.08)}.menu-toggle{display:none;border:1px solid var(--line);background:rgba(8,22,43,.72);border-radius:12px;padding:9px 12px;cursor:pointer}
+
+/* Intro */
+.intro{position:fixed;inset:0;z-index:150;display:grid;place-items:center;background:#020611;transition:opacity .65s ease,visibility .65s ease}.intro.done{opacity:0;visibility:hidden;pointer-events:none}.intro-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(37,182,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(37,182,255,.07) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at center,black,transparent 70%);opacity:0;animation:gridIn 1.2s ease .15s forwards}.intro-orb{position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(37,182,255,.14),transparent 68%);filter:blur(3px);opacity:0;animation:orbIn 1.1s ease .2s forwards}.intro-logo{position:relative;width:min(330px,58vw);filter:drop-shadow(0 0 0 rgba(255,181,27,0));opacity:0;transform:translateY(16px) scale(.92);animation:torchIgnite 1.45s cubic-bezier(.22,1,.36,1) .45s forwards}.intro-title{position:absolute;top:calc(50% + 190px);left:50%;transform:translateX(-50%);white-space:nowrap;font:700 clamp(1rem,2.2vw,1.45rem) var(--font-display);letter-spacing:.25em;color:#e8f5ec;opacity:0;animation:titleIn .7s ease 1.5s forwards}.intro-line{position:absolute;top:calc(50% + 232px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-400);opacity:0;animation:titleIn .7s ease 1.7s forwards}
+@keyframes gridIn{to{opacity:1}}@keyframes orbIn{to{opacity:1}}@keyframes torchIgnite{0%{opacity:0;transform:translateY(18px) scale(.88);filter:drop-shadow(0 0 0 rgba(255,181,27,0))}45%{opacity:1;transform:translateY(-5px) scale(1.03);filter:drop-shadow(0 0 38px rgba(255,181,27,.55))}62%{transform:translateY(1px) rotate(-1.2deg) scale(1.01);filter:drop-shadow(0 0 55px rgba(37,182,255,.42))}72%{transform:translateY(-1px) rotate(1deg) scale(1.015)}82%{transform:translateY(0) rotate(-.35deg) scale(1)}100%{opacity:1;transform:none;filter:drop-shadow(0 0 25px rgba(37,182,255,.24))}}@keyframes titleIn{to{opacity:1}}
+
+/* Hero */
+.hero{min-height:100vh;display:grid;align-items:center;padding:150px 0 90px;position:relative}.hero::after{content:"";position:absolute;inset:auto 0 0;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:60px}.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-400)}.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold-500)}h1,h2,h3{font-family:var(--font-display);color:var(--white);line-height:1.04;margin:0}h1{font-size:clamp(3.3rem,7vw,6.7rem);letter-spacing:-.055em;max-width:850px;margin-top:20px}.gradient-text{background:linear-gradient(100deg,#e8f5ec 20%,#70d9ff 62%,#ffd45a 92%);-webkit-background-clip:text;background-clip:text;color:transparent}.hero-copy .lead{font-size:clamp(1rem,1.7vw,1.25rem);color:#b4c7da;max-width:640px;margin:26px 0 0}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:999px;padding:13px 19px;font-weight:700;font-size:.88rem;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background .25s ease}.btn:hover{transform:translateY(-2px)}.btn-primary{color:#07101e;background:linear-gradient(135deg,#ffd45a,#ffae0b);box-shadow:0 14px 40px rgba(255,181,27,.2)}.btn-secondary{border:1px solid rgba(37,182,255,.35);background:rgba(37,182,255,.07);color:#dff5ff}.hero-stage{position:relative;min-height:520px;display:grid;place-items:center}.hero-stage::before{content:"";position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(37,182,255,.13),transparent 67%)}.hero-stage::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(37,182,255,.12);box-shadow:0 0 0 35px rgba(37,182,255,.025),0 0 0 70px rgba(37,182,255,.018)}.hero-logo{position:relative;width:min(430px,88%);z-index:2;filter:drop-shadow(0 20px 55px rgba(0,0,0,.5));animation:floatTorch 7s ease-in-out infinite}.hero-logo::after{content:""}@keyframes floatTorch{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(.35deg)}}.hero-chip{position:absolute;z-index:3;padding:10px 13px;border:1px solid var(--line);background:rgba(5,15,30,.78);backdrop-filter:blur(14px);border-radius:13px;box-shadow:var(--shadow);font-size:.72rem;color:#cfe0ef}.chip-one{top:15%;right:0}.chip-two{bottom:13%;left:2%;}.chip-three{bottom:27%;right:4%;color:#9df0c5}
+
+/* Sections */
+.section{padding:120px 0;position:relative}.section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:45px}.kicker{font-size:.68rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold-400);font-weight:700;margin:0 0 12px}.section-title{font-size:clamp(2.2rem,4.5vw,4.4rem);letter-spacing:-.045em}.section-intro{max-width:500px;color:var(--muted);margin:0}.statement{font:600 clamp(2.3rem,5vw,5.2rem)/1.05 var(--font-display);letter-spacing:-.05em;max-width:1050px;color:#eef7ff}.statement span{color:var(--blue-400)}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.panel{border:1px solid var(--line);background:linear-gradient(145deg,rgba(11,27,52,.75),rgba(5,14,28,.58));border-radius:var(--radius-lg);padding:30px;box-shadow:0 20px 70px rgba(0,0,0,.16)}.panel p{color:#aebfd1}.panel h3{font-size:1.3rem;margin-bottom:12px}.mini-stat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.stat{padding:18px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.025)}.stat strong{display:block;font:700 1.35rem var(--font-display);color:#e8f5ec}.stat span{font-size:.72rem;color:var(--muted)}
+
+.solutions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.solution{position:relative;overflow:hidden;min-height:230px;padding:25px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,rgba(11,29,55,.86),rgba(5,13,27,.8));transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .35s ease,box-shadow .35s ease}.solution::before{content:"";position:absolute;width:180px;height:180px;right:-90px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(37,182,255,.18),transparent 65%);transition:transform .45s ease}.solution:hover{transform:translateY(-8px);border-color:rgba(37,182,255,.4);box-shadow:0 30px 70px rgba(0,0,0,.25)}.solution:hover::before{transform:scale(1.5)}.solution-index{font:600 .72rem var(--font-display);color:var(--gold-400)}.solution h3{font-size:1.45rem;margin:42px 0 8px}.solution p{color:var(--muted);font-size:.9rem;margin:0}.solution a{display:inline-block;margin-top:20px;color:#9be3ff;font-size:.8rem;font-weight:700}
+
+.projects-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:18px}.project{position:relative;overflow:hidden;min-height:430px;padding:32px;border-radius:26px;border:1px solid var(--line);background:linear-gradient(145deg,#0a2142,#05101f)}.project::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(37,182,255,.18),transparent 30%),radial-gradient(circle at 30% 90%,rgba(34,199,122,.09),transparent 35%)}.project>*{position:relative;z-index:1}.project.large{min-height:520px}.project.small{min-height:250px}.project-stack{display:grid;gap:18px}.project-label{font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-400);font-weight:700}.project h3{font-size:clamp(1.8rem,3vw,3.2rem);margin-top:18px}.project p{max-width:520px;color:#a9bfd3}.project-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}.tag{font-size:.68rem;border:1px solid var(--line);background:rgba(255,255,255,.035);padding:7px 10px;border-radius:999px;color:#c5d6e7}.project-visual{position:absolute;right:4%;bottom:4%;width:42%;height:52%;border-radius:22px;border:1px solid rgba(103,214,255,.18);background:radial-gradient(circle at 50% 40%,rgba(37,182,255,.24),transparent 42%),linear-gradient(145deg,rgba(14,55,92,.8),rgba(4,15,28,.7));transform:perspective(800px) rotateY(-12deg) rotateX(4deg);box-shadow:0 35px 80px rgba(0,0,0,.32)}.project-visual::before,.project-visual::after{content:"";position:absolute;inset:18px;border:1px solid rgba(103,214,255,.15);border-radius:16px}.project-visual::after{inset:42px;border-color:rgba(255,181,27,.12)}
+
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.pillar{padding:28px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .3s ease,transform .3s ease}.pillar:hover{background:linear-gradient(180deg,rgba(37,182,255,.06),transparent);transform:translateY(-4px)}.pillar strong{font:700 1.35rem var(--font-display);letter-spacing:.04em;color:#e8f5ec}.pillar span{display:block;margin-top:8px;color:var(--muted);font-size:.82rem}.pillar:nth-child(2) strong{color:#ffe08a}.pillar:nth-child(3) strong{color:#8fe3ff}.pillar:nth-child(4) strong{color:#82e8b5}
+
+.vision{overflow:hidden;border:1px solid var(--line);border-radius:32px;padding:50px;background:linear-gradient(135deg,rgba(13,39,70,.95),rgba(5,13,27,.95));position:relative}.vision::before{content:"2035";position:absolute;right:-20px;top:-80px;font:700 18rem/.8 var(--font-display);color:rgba(103,214,255,.035);letter-spacing:-.08em}.vision h2{font-size:clamp(3rem,7vw,7rem);letter-spacing:-.07em}.vision p{max-width:650px;color:#b3c5d8;font-size:1.05rem}.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:45px}.timeline-item{position:relative;padding-top:18px;border-top:1px solid rgba(103,214,255,.2)}.timeline-item::before{content:"";position:absolute;top:-4px;left:0;width:8px;height:8px;border-radius:50%;background:var(--blue-500);box-shadow:0 0 18px rgba(37,182,255,.6)}.timeline-item strong{display:block;color:#e8f5ec;font:600 1rem var(--font-display)}.timeline-item span{display:block;color:var(--muted);font-size:.76rem;margin-top:5px}
+
+.leader-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:50px;align-items:center}.leader-photo{border-radius:28px;border:1px solid var(--line);overflow:hidden;background:#0a1830}.leader-photo img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center top;filter:saturate(.92)}.leader-copy h2{font-size:clamp(2.6rem,5vw,5rem)}.leader-role{color:var(--gold-400);font-weight:700;margin:10px 0 20px}.leader-copy p{color:var(--muted);max-width:620px}.leader-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
+
+.cta{padding:130px 0}.cta-box{position:relative;overflow:hidden;border:1px solid rgba(37,182,255,.22);border-radius:34px;padding:70px 50px;text-align:center;background:radial-gradient(circle at 50% 10%,rgba(37,182,255,.14),transparent 42%),linear-gradient(145deg,rgba(11,30,57,.92),rgba(4,11,24,.96))}.cta-box h2{font-size:clamp(2.8rem,6vw,6rem);letter-spacing:-.06em}.cta-box p{color:var(--muted);max-width:620px;margin:18px auto 28px}
+
+.footer{padding:30px 0 40px;border-top:1px solid var(--line)}.footer-grid{display:flex;justify-content:space-between;gap:30px;align-items:end}.footer-brand p{color:var(--muted);font-size:.78rem;margin:8px 0 0}.footer-links{display:flex;gap:18px;flex-wrap:wrap;font-size:.78rem;color:#9fb1c4}.footer-bottom{display:flex;justify-content:space-between;gap:20px;margin-top:25px;color:#6e8298;font-size:.7rem}.footer-pillars{color:#90d9ff}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(24px);filter:blur(4px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1),filter .8s ease}.reveal.in{opacity:1;transform:none;filter:none}.delay-1{transition-delay:.08s}.delay-2{transition-delay:.16s}.delay-3{transition-delay:.24s}
+
+/* Responsive */
+@media(max-width:900px){.nav-links{display:none}.menu-toggle{display:block}.nav-links.open{position:absolute;top:78px;left:20px;right:20px;display:grid;gap:0;background:rgba(3,8,21,.95);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;padding:10px}.nav-links.open a{padding:13px 12px}.nav-links.open .nav-cta{border-radius:12px;text-align:center}.hero-grid,.leader-grid,.about-grid,.projects-grid{grid-template-columns:1fr}.hero-stage{min-height:440px;order:-1}.solutions-grid{grid-template-columns:repeat(2,1fr)}.pillars{grid-template-columns:repeat(2,1fr)}.project.large{min-height:450px}.project-visual{width:38%;height:46%}}
+@media(max-width:620px){.container,.narrow{width:min(100% - 28px,1180px)}.site-header{padding:12px 0}.brand img{width:40px;height:38px}.brand-tag{display:none}.hero{padding-top:125px}.hero-grid{gap:10px}.hero-stage{min-height:350px}.hero-stage::before{width:330px;height:330px}.hero-logo{width:min(330px,86vw)}.chip-one{top:5%;right:-3%}.chip-two{bottom:5%;left:0}.chip-three{display:none}.section{padding:80px 0}.section-head{display:block;margin-bottom:30px}.section-intro{margin-top:14px}.solutions-grid{grid-template-columns:1fr}.pillars{grid-template-columns:1fr 1fr}.pillar{padding:22px 14px}.projects-grid{gap:12px}.project,.project.large{min-height:390px;padding:24px}.project-visual{opacity:.42;width:48%;height:42%}.vision{padding:30px}.timeline{grid-template-columns:1fr 1fr;gap:20px}.timeline-item{border-top:0;padding-top:15px}.timeline-item::before{top:4px}.cta-box{padding:50px 22px}.footer-grid,.footer-bottom{display:block}.footer-links{margin-top:18px}.footer-bottom span{display:block;margin-top:8px}.intro-logo{width:270px}.intro-title{top:calc(50% + 165px)}.intro-line{top:calc(50% + 202px);font-size:.58rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-logo{animation:none}.reveal{opacity:1;transform:none;filter:none;transition:none}.intro-grid,.intro-orb,.intro-logo,.intro-title,.intro-line{animation:none}.intro-logo{opacity:1;transform:none;filter:none}.intro-title,.intro-line{opacity:1}}
+
+
+/* V3.2 — balanced brand rhythm and readability */
+:root{
+  --navy-950:#07111f;
+  --navy-900:#0b1d31;
+  --navy-800:#12304a;
+  --blue-600:#197fc8;
+  --blue-500:#2f9ed4;
+  --blue-400:#62bfe5;
+  --gold-500:#d89a22;
+  --gold-400:#e8b94f;
+  --green-500:#2a9a67;
+  --green-400:#55bf8b;
+  --white:#fdfefe;
+  --text:#dce7ee;
+  --muted:#708396;
+  --line:rgba(24,66,94,.16);
+}
+body{background:#f7fafc;color:#263746}
+.site-bg{background:linear-gradient(180deg,#07111f 0%,#0b1d31 24%,#eef4f6 48%,#f8fafb 73%,#0b1d31 100%)}
+.site-bg::before{opacity:.10;background-image:linear-gradient(rgba(98,191,229,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(98,191,229,.09) 1px,transparent 1px);background-size:76px 76px;mask-image:linear-gradient(to bottom,black 0 25%,transparent 72%)}
+.site-bg::after{background:radial-gradient(circle,rgba(216,154,34,.07),transparent 68%)}
+.site-header.scrolled{background:rgba(7,17,31,.84)}
+.nav-links{color:#c4d1dc}
+.nav-links a:hover,.nav-links a.active{color:#e8f5ec}
+.nav-cta{border-color:rgba(42,154,103,.45);background:rgba(42,154,103,.10)}
+
+/* Light sections create breathing room between brand colors. */
+.section-light,.section-soft{background:#f8fafb;color:#263746}
+.section-soft{background:#eef4f6}
+.section-green{background:linear-gradient(180deg,#eef7f2 0%,#214f3b 100%);color:#243b31}
+.section-light h2,.section-soft h2,.section-green h2,.section-light h3,.section-soft h3,.section-green h3{color:#13283a}
+.section-light .section-intro,.section-soft .section-intro,.section-green .section-intro{color:#607384}
+.section-light .kicker,.section-soft .kicker,.section-green .kicker{color:#277d5b}
+.section-light .statement,.section-soft .statement,.section-green .statement{color:#173046}
+.section-light .statement span,.section-soft .statement span{color:#197fc8}
+.section-light .panel,.section-soft .panel,.section-green .panel{background:rgba(255,255,255,.88);border-color:rgba(26,65,91,.12);box-shadow:0 18px 50px rgba(19,45,64,.08)}
+.section-light .panel p,.section-soft .panel p,.section-green .panel p{color:#607384}
+.section-light .stat,.section-soft .stat,.section-green .stat{background:#f4f7f9;border-color:rgba(26,65,91,.10)}
+.section-light .stat strong,.section-soft .stat strong,.section-green .stat strong{color:#173046}
+.section-light .stat span,.section-soft .stat span,.section-green .stat span{color:#708396}
+.section-light .solution,.section-soft .solution{background:rgba(255,255,255,.92);border-color:rgba(26,65,91,.12);box-shadow:0 12px 38px rgba(19,45,64,.06)}
+.section-light .solution h3,.section-soft .solution h3{color:#173046}
+.section-light .solution p,.section-soft .solution p{color:#637789}
+.section-light .solution a,.section-soft .solution a{color:#197fc8}
+.section-light .solution-index,.section-soft .solution-index{color:#9a6a12}
+.section-light .project,.section-soft .project{background:linear-gradient(145deg,#e8f5ec,#eef5f8);border-color:rgba(26,65,91,.12);box-shadow:0 18px 55px rgba(19,45,64,.08)}
+.section-light .project h3,.section-soft .project h3{color:#13283a}
+.section-light .project p,.section-soft .project p{color:#637789}
+.section-light .project-label,.section-soft .project-label{color:#277d5b}
+.section-light .tag,.section-soft .tag{color:#426074;border-color:rgba(25,127,200,.18);background:rgba(25,127,200,.05)}
+.section-green .pillar{background:rgba(255,255,255,.72);border-color:rgba(42,154,103,.18);box-shadow:0 14px 40px rgba(31,91,62,.08)}
+.section-green .pillar strong{color:#174936}
+.section-green .pillar span{color:#628070}
+
+/* Typing headline */
+.typing-heading{min-height:1.12em;display:flex;align-items:center;flex-wrap:wrap}
+.typing-text{display:inline}
+.typing-cursor{display:inline-block;width:.07em;height:.82em;margin-left:.08em;background:var(--gold-500);border-radius:2px;animation:typingBlink .85s step-end infinite;vertical-align:-.04em}
+@keyframes typingBlink{0%,45%{opacity:1}46%,100%{opacity:0}}
+
+/* Softer hero colors on the navy stage. */
+.hero{color:#eaf3f8}
+.hero .gradient-text{background:linear-gradient(100deg,#e8f5ec 18%,#79cce8 60%,#e8b94f 94%);-webkit-background-clip:text;background-clip:text}
+.hero-copy .lead{color:#c4d2dc}
+.hero-stage::before{background:radial-gradient(circle,rgba(47,158,212,.11),transparent 67%)}
+.hero-stage::after{border-color:rgba(47,158,212,.11);box-shadow:0 0 0 35px rgba(47,158,212,.02),0 0 0 70px rgba(42,154,103,.018)}
+.hero-chip{background:rgba(13,34,53,.78);color:#d7e4eb}
+.btn-primary{background:linear-gradient(135deg,#e8b94f,#d89a22);box-shadow:0 12px 34px rgba(216,154,34,.16)}
+.btn-secondary{border-color:rgba(47,158,212,.32);background:rgba(47,158,212,.08);color:#dff2f8}
+
+@media(prefers-reduced-motion:reduce){.typing-cursor{animation:none;opacity:1}}
+
+/* V3.3 — Tala Systems balanced green rhythm
+   Reduce stark white surfaces, restore green as a core brand color,
+   and keep contrast calm and readable. */
+:root{
+  --tala-light-green:#183d30;
+  --tala-pale-green:#1f543e;
+  --tala-soft-teal:#e7f1ef;
+  --tala-deep-green:#164936;
+  --tala-green-text:#2b654e;
+  --tala-blue-text:#1f5f80;
+}
+
+/* Section rhythm: mostly tinted surfaces, white reserved for typography and tiny highlights. */
+.section-light{
+  background:linear-gradient(180deg,#183d30 0%,#e4f1e9 100%);
+  color:#18392e;
+}
+.section-soft{
+  background:linear-gradient(180deg,#e7f1ef 0%,#dfece9 100%);
+  color:#173742;
+}
+.section-green{
+  background:linear-gradient(180deg,#1f543e 0%,#d4e9dc 100%);
+  color:#153e2e;
+}
+
+.section-light h2,.section-soft h2,.section-green h2,
+.section-light h3,.section-soft h3,.section-green h3{
+  color:#14382d;
+}
+.section-light .section-intro,.section-soft .section-intro,.section-green .section-intro{
+  color:#4e6b61;
+}
+.section-light .kicker,.section-soft .kicker,.section-green .kicker{
+  color:#2d7d5d;
+}
+.section-light .statement,.section-soft .statement,.section-green .statement{
+  color:#173b30;
+}
+.section-light .statement span,.section-soft .statement span{
+  color:#247ba6;
+}
+
+/* Cards: tinted, slightly translucent, and less stark than white. */
+.section-light .panel,
+.section-soft .panel,
+.section-green .panel{
+  background:linear-gradient(145deg,rgba(244,250,247,.72),rgba(226,241,233,.78));
+  border-color:rgba(30,94,72,.14);
+  box-shadow:0 18px 50px rgba(24,67,51,.08);
+}
+.section-light .panel p,.section-soft .panel p,.section-green .panel p{
+  color:#516d63;
+}
+.section-light .stat,.section-soft .stat,.section-green .stat{
+  background:rgba(239,248,243,.78);
+  border-color:rgba(35,103,78,.12);
+}
+.section-light .stat strong,.section-soft .stat strong,.section-green .stat strong{
+  color:#173c30;
+}
+.section-light .stat span,.section-soft .stat span,.section-green .stat span{
+  color:#607b70;
+}
+
+.section-light .solution,
+.section-soft .solution{
+  background:linear-gradient(145deg,rgba(238,247,242,.82),rgba(224,239,233,.74));
+  border-color:rgba(30,94,72,.13);
+  box-shadow:0 14px 38px rgba(24,67,51,.07);
+}
+.section-light .solution h3,.section-soft .solution h3{color:#163d31}
+.section-light .solution p,.section-soft .solution p{color:#5b756b}
+.section-light .solution a,.section-soft .solution a{color:#247ba6}
+.section-light .solution-index,.section-soft .solution-index{color:#9a6a12}
+
+.section-light .project,.section-soft .project{
+  background:linear-gradient(145deg,#183d30 0%,#dcebe4 100%);
+  border-color:rgba(30,94,72,.13);
+  box-shadow:0 18px 55px rgba(24,67,51,.08);
+}
+.section-light .project h3,.section-soft .project h3{color:#14382d}
+.section-light .project p,.section-soft .project p{color:#587268}
+.section-light .project-label,.section-soft .project-label{color:#2d7d5d}
+.section-light .tag,.section-soft .tag{
+  color:#416a5b;
+  border-color:rgba(42,154,103,.20);
+  background:rgba(42,154,103,.07);
+}
+
+.section-green .pillar{
+  background:rgba(234,245,238,.76);
+  border-color:rgba(42,128,91,.20);
+  box-shadow:0 14px 40px rgba(31,91,62,.08);
+}
+.section-green .pillar:hover{
+  background:rgba(241,249,244,.84);
+  border-color:rgba(42,128,91,.30);
+}
+.section-green .pillar strong{color:#174936}
+.section-green .pillar span{color:#5f7a6d}
+
+/* Keep the Vision section distinct without bringing back a stark white card. */
+.vision{
+  background:linear-gradient(135deg,#e0f0e6 0%,#d9ebe5 48%,#d7e8ef 100%);
+  border-color:rgba(39,125,91,.18);
+  box-shadow:0 22px 65px rgba(21,73,54,.10);
+}
+.vision h2{color:#123b2d}
+.vision p{color:#526f63}
+.vision::before{color:rgba(36,123,166,.055)}
+.timeline-item{border-top-color:rgba(39,125,91,.22)}
+.timeline-item::before{
+  background:#2a9a67;
+  box-shadow:0 0 18px rgba(42,154,103,.34);
+}
+.timeline-item strong{color:#173c30}
+.timeline-item span{color:#617b71}
+
+/* Leadership: green-tinted surface with blue/gold brand accents retained. */
+.leader-photo{background:#dfeee6;border-color:rgba(30,94,72,.14)}
+.leader-photo img{filter:saturate(.92) contrast(1.01)}
+.leader-role{color:#9a6a12}
+
+/* Lighten the visual transition without introducing pure white blocks. */
+.section-light::before,.section-soft::before,.section-green::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 88% 15%,rgba(42,154,103,.08),transparent 28%),radial-gradient(circle at 8% 80%,rgba(36,123,166,.05),transparent 26%);
+}
+
+@media(max-width:620px){
+  .section-light,.section-soft,.section-green{background-attachment:scroll}
+}
+
+
+/* Tala Systems V3 balanced green/blue/gold rhythm */
+.section-light,
+.light-section,
+.section-white {
+  background: linear-gradient(180deg, #183d30 0%, #1f543e 100%);
+  color: #0b2030;
+}
+.section-green,
+.green-section {
+  background: linear-gradient(135deg, #174b37 0%, #205f46 100%);
+  color: #e8f5ec;
+}
+.section-blue,
+.blue-section {
+  background: linear-gradient(135deg, #103651 0%, #1769aa 100%);
+  color: #e8f5ec;
+}
+.section-dark,
+.dark-section {
+  background: linear-gradient(135deg, #081923 0%, #0f2b3f 100%);
+  color: #e8f5ec;
+}
+.section-light h1,
+.section-light h2,
+.section-light h3,
+.section-white h1,
+.section-white h2,
+.section-white h3 {
+  color: #0b2030;
+}
+.section-light p,
+.section-white p {
+  color: #24483a;
+}
+.tala-green-accent {
+  color: #72b88a;
+}
+.tala-gold-accent {
+  color: #e3c968;
+}
+
+
+/* Remove clinical white surfaces and keep the three-color Tala rhythm */
+body {
+  background: var(--tala-navy);
+  color: var(--tala-text);
+}
+.section-light, .light-section, .section-white, .section-light-green {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(46,139,87,.18), transparent 34%),
+    linear-gradient(135deg, #173f2f 0%, #214f3b 55%, #12344c 100%);
+  color: var(--tala-text);
+}
+.section-green, .green-section {
+  background:
+    radial-gradient(circle at 85% 15%, rgba(23,105,170,.26), transparent 35%),
+    linear-gradient(135deg, #0f3d2c 0%, #2e8b57 58%, #1f6c49 100%);
+  color: var(--tala-text);
+}
+.section-blue, .blue-section {
+  background:
+    radial-gradient(circle at 10% 15%, rgba(212,173,61,.12), transparent 28%),
+    linear-gradient(135deg, #071c2a 0%, #103b5a 52%, #1769aa 100%);
+  color: var(--tala-text);
+}
+.section-dark, .dark-section {
+  background:
+    radial-gradient(circle at 80% 10%, rgba(46,139,87,.18), transparent 30%),
+    linear-gradient(135deg, #061721 0%, #0b2a3e 55%, #071c2a 100%);
+  color: var(--tala-text);
+}
+
+/* Text contrast */
+.section-light h1,.section-light h2,.section-light h3,
+.section-green h1,.section-green h2,.section-green h3,
+.section-blue h1,.section-blue h2,.section-blue h3,
+.section-dark h1,.section-dark h2,.section-dark h3 {
+  color: #e8f5ec;
+}
+.section-light p,.section-green p,.section-blue p,.section-dark p {
+  color: #c8ddd1;
+}
+a { color: var(--tala-gold-soft); }
+a:hover { color: var(--tala-green-light); }
+
+/* More satisfying scroll transitions */
+.reveal {
+  opacity: 0;
+  transform: translateY(42px) scale(.985);
+  filter: blur(6px);
+  transition:
+    opacity .85s cubic-bezier(.22,1,.36,1),
+    transform .85s cubic-bezier(.22,1,.36,1),
+    filter .85s cubic-bezier(.22,1,.36,1);
+  will-change: opacity, transform, filter;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-56px);
+  filter: blur(5px);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1),
+              transform .9s cubic-bezier(.22,1,.36,1),
+              filter .9s cubic-bezier(.22,1,.36,1);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(56px);
+  filter: blur(5px);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1),
+              transform .9s cubic-bezier(.22,1,.36,1),
+              filter .9s cubic-bezier(.22,1,.36,1);
+}
+.reveal-left.is-visible,
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+  filter: blur(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(.88);
+  filter: blur(7px);
+  transition: opacity .9s cubic-bezier(.22,1,.36,1),
+              transform .9s cubic-bezier(.22,1,.36,1),
+              filter .9s cubic-bezier(.22,1,.36,1);
+}
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* Stagger utility */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .7s cubic-bezier(.22,1,.36,1),
+              transform .7s cubic-bezier(.22,1,.36,1);
+}
+.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: .05s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: .12s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: .19s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: .26s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: .33s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: .40s; }
+
+/* Subtle brand motion on cards */
+.card, .project-card, .service-card, .pillar-card {
+  transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    box-shadow .45s ease,
+    border-color .45s ease;
+}
+.card:hover, .project-card:hover, .service-card:hover, .pillar-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(0,0,0,.22), 0 0 24px rgba(23,105,170,.10);
+}
+
+/* Gold is special, green is identity, blue is technology */
+.gold-accent { color: var(--tala-gold); }
+.green-accent { color: var(--tala-green-light); }
+.blue-accent { color: var(--tala-blue-light); }
+
+/* Honor reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale,
+  .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* =========================================================
+   TALA SYSTEMS V3.4 — CONTINUOUS BRAND FIELD
+   Blue + Green + Gold. No white section blocks.
+   ========================================================= */
+:root{
+  --tala-bg:#071a2a;
+  --tala-blue:#1769aa;
+  --tala-blue-light:#5fb7e2;
+  --tala-green:#2e8b57;
+  --tala-green-light:#76c79a;
+  --tala-gold:#d4ad3d;
+  --tala-gold-soft:#ebce70;
+  --tala-text:#eef6f2;
+  --tala-muted:#c5d7cf;
+  --tala-line:rgba(238,246,242,.13);
+}
+
+body{
+  background:var(--tala-bg) !important;
+  color:var(--tala-text) !important;
+}
+
+/* Hero stays blue-dominant, then melts into green instead of cutting to another color. */
+.hero{
+  background:
+    radial-gradient(circle at 52% 16%, rgba(212,173,61,.14), transparent 25%),
+    radial-gradient(circle at 80% 72%, rgba(46,139,87,.30), transparent 31%),
+    linear-gradient(160deg,#061828 0%,#0b2c48 42%,#14516a 74%,#1e623f 100%) !important;
+  color:var(--tala-text) !important;
+}
+
+/* Every content section is a blended field, not a separate block. */
+.section,
+.section-light,
+.section-soft,
+.section-green,
+.cta{
+  position:relative;
+  border:0 !important;
+  box-shadow:none !important;
+  color:var(--tala-text) !important;
+  overflow:hidden;
+}
+
+.section-light{
+  background:
+    radial-gradient(circle at 10% 25%, rgba(46,139,87,.28), transparent 31%),
+    radial-gradient(circle at 86% 10%, rgba(23,105,170,.24), transparent 30%),
+    radial-gradient(circle at 62% 90%, rgba(212,173,61,.10), transparent 25%),
+    linear-gradient(135deg,#164a39 0%,#123b55 48%,#0d2d45 100%) !important;
+}
+.section-soft{
+  background:
+    radial-gradient(circle at 14% 72%, rgba(23,105,170,.24), transparent 30%),
+    radial-gradient(circle at 84% 35%, rgba(46,139,87,.28), transparent 34%),
+    linear-gradient(120deg,#0e314a 0%,#145345 55%,#1b5d40 100%) !important;
+}
+.section-green{
+  background:
+    radial-gradient(circle at 18% 20%, rgba(23,105,170,.22), transparent 28%),
+    radial-gradient(circle at 82% 78%, rgba(212,173,61,.12), transparent 26%),
+    linear-gradient(145deg,#123b31 0%,#2e8b57 56%,#1769aa 100%) !important;
+}
+.cta{
+  background:
+    radial-gradient(circle at 18% 18%, rgba(212,173,61,.13), transparent 28%),
+    radial-gradient(circle at 80% 78%, rgba(46,139,87,.25), transparent 35%),
+    linear-gradient(135deg,#071a2a 0%,#123e56 56%,#173f31 100%) !important;
+}
+
+/* Soft blended boundary glow makes adjacent sections flow into one another. */
+.section::after,
+.cta::after{
+  content:"";
+  position:absolute;
+  left:-8%;right:-8%;bottom:-22%;height:42%;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(118,199,154,.11),rgba(23,105,170,.07),transparent);
+  filter:blur(30px);
+}
+
+/* Keep headings visible even over busy gradients. */
+.section-head,
+.vision,
+.leader-copy,
+.cta-box,
+.about-grid,
+.solutions-grid,
+.projects-grid,
+.pillars{
+  position:relative;
+  z-index:2;
+}
+.section-title,
+.vision h2,
+.leader-copy h2,
+.cta-box h2,
+.section h3{
+  color:#eef6f2 !important;
+  text-shadow:0 3px 22px rgba(0,0,0,.24);
+}
+.section-intro,
+.section p,
+.vision p,
+.leader-copy p,
+.cta-box p{
+  color:var(--tala-muted) !important;
+}
+.kicker,.section-label,.eyebrow{
+  color:var(--tala-gold-soft) !important;
+}
+
+/* Header: white text, gold reserved for active/interaction accents. */
+.site-header,
+.site-header .brand-wordmark,
+.site-header .brand-tag,
+.nav-links a,
+.menu-toggle{
+  color:#eef6f2 !important;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--tala-gold-soft) !important}
+.site-header.scrolled{
+  background:rgba(7,26,42,.86) !important;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(118,199,154,.14);
+}
+.nav-cta{
+  color:#eef6f2 !important;
+  border-color:rgba(118,199,154,.45) !important;
+  background:linear-gradient(135deg,rgba(46,139,87,.27),rgba(23,105,170,.18)) !important;
+}
+
+/* Typing line: exactly one phrase on screen at a time. */
+.typing-heading{min-height:1.32em}
+.typing-text{display:inline}
+.typing-cursor{background:var(--tala-gold) !important}
+
+/* Footer: dark blue-green field with readable content and the actual brand line. */
+.footer{
+  background:
+    radial-gradient(circle at 15% 20%,rgba(46,139,87,.24),transparent 32%),
+    radial-gradient(circle at 84% 78%,rgba(23,105,170,.24),transparent 32%),
+    linear-gradient(135deg,#061724 0%,#10374b 52%,#16432f 100%) !important;
+  border-top:1px solid rgba(118,199,154,.16) !important;
+  color:#eef6f2 !important;
+}
+.footer .brand-wordmark,
+.footer .brand-tag,
+.footer .footer-pillars{color:#eef6f2 !important}
+.footer .footer-links a{color:#c9d9d2 !important}
+.footer .footer-links a:hover{color:var(--tala-gold-soft) !important}
+.footer-brand p{color:#aac4b8 !important}
+.footer-brand small{color:#8db8a1}
+
+/* Pillar cards stay green-forward without introducing white cards. */
+.section-green .pillar,
+.section-light .panel,
+.section-light .solution,
+.section-soft .panel,
+.section-soft .solution,
+.section-light .project,
+.section-soft .project{
+  background:linear-gradient(145deg,rgba(9,35,42,.62),rgba(32,91,68,.54)) !important;
+  border-color:rgba(118,199,154,.18) !important;
+  box-shadow:0 20px 50px rgba(0,0,0,.16) !important;
+  color:#eef6f2 !important;
+}
+.section-green .pillar strong,
+.section-light .panel h3,
+.section-soft .panel h3,
+.section-light .solution h3,
+.section-soft .solution h3,
+.section-light .project h3,
+.section-soft .project h3{color:#eef6f2 !important}
+.section-green .pillar span,
+.section-light .panel p,
+.section-soft .panel p,
+.section-light .solution p,
+.section-soft .solution p,
+.section-light .project p,
+.section-soft .project p{color:#bed3c9 !important}
+.section-light .project-label,.section-soft .project-label{color:var(--tala-green-light) !important}
+.section-light .solution a,.section-soft .solution a{color:var(--tala-blue-light) !important}
+.section-light .solution-index,.section-soft .solution-index{color:var(--tala-gold-soft) !important}
+
+/* More dynamic but restrained scroll transitions. */
+.reveal{
+  opacity:0;
+  transform:translateY(34px) scale(.985);
+  filter:blur(4px);
+  transition:
+    opacity .72s cubic-bezier(.2,.8,.2,1),
+    transform .86s cubic-bezier(.16,1,.3,1),
+    filter .72s ease;
+}
+.reveal.in{opacity:1;transform:none;filter:none}
+.delay-1{transition-delay:.08s}.delay-2{transition-delay:.16s}.delay-3{transition-delay:.24s}
+
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;filter:none;transition:none}
+}
+
+/* =========================================================
+   Tala Systems V3.4 — FINAL VISUAL OVERRIDES
+   These rules intentionally live in the stylesheet actually
+   referenced by index.html: css/main.css.
+   ========================================================= */
+:root {
+  --tala-bg: #071a28;
+  --tala-blue-deep: #0b2f49;
+  --tala-blue: #1f78b4;
+  --tala-blue-bright: #49a9dc;
+  --tala-green-deep: #153f30;
+  --tala-green: #2f8b59;
+  --tala-green-bright: #6fc391;
+  --tala-gold: #d4ad3d;
+  --tala-gold-bright: #e6cc73;
+  --tala-text: #eef8f2;
+  --tala-muted: #bfd5ca;
+  --tala-line: rgba(190, 225, 211, .14);
+}
+
+html { background: var(--tala-bg); }
+body {
+  background: var(--tala-bg) !important;
+  color: var(--tala-text) !important;
+}
+
+/* Continuous brand environment: blue + green + restrained gold. */
+.site-bg {
+  background:
+    radial-gradient(circle at 78% 8%, rgba(73,169,220,.16), transparent 30%),
+    radial-gradient(circle at 15% 38%, rgba(47,139,89,.18), transparent 32%),
+    radial-gradient(circle at 62% 72%, rgba(212,173,61,.07), transparent 28%),
+    linear-gradient(180deg, #061823 0%, #0a2a40 33%, #153f30 63%, #0b2f44 100%) !important;
+}
+.site-bg::before {
+  opacity: .12;
+  background-image:
+    linear-gradient(rgba(73,169,220,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73,169,220,.08) 1px, transparent 1px);
+}
+
+/* Header text is white; gold is reserved for subtle emphasis. */
+.site-header,
+.site-header a,
+.brand-wordmark,
+.nav-links,
+.nav-links a,
+.menu-toggle {
+  color: var(--tala-text) !important;
+}
+.site-header.scrolled {
+  background: linear-gradient(180deg, rgba(6,24,35,.90), rgba(11,47,68,.82)) !important;
+  border-bottom: 1px solid var(--tala-line) !important;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--tala-gold-bright) !important; }
+.brand-tag { color: var(--tala-green-bright) !important; }
+.nav-cta {
+  color: var(--tala-text) !important;
+  border-color: rgba(111,195,145,.42) !important;
+  background: rgba(47,139,89,.14) !important;
+}
+
+/* Intro: predominantly logo-color blue, then naturally flowing into green. */
+.intro {
+  background:
+    radial-gradient(circle at 50% 40%, rgba(212,173,61,.10), transparent 22%),
+    radial-gradient(circle at 50% 60%, rgba(73,169,220,.18), transparent 38%),
+    linear-gradient(180deg, #04121d 0%, #092c43 58%, #153f30 100%) !important;
+}
+.intro-grid {
+  opacity: .8 !important;
+  background-image:
+    linear-gradient(rgba(73,169,220,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(73,169,220,.08) 1px, transparent 1px) !important;
+}
+.intro-line { color: var(--tala-gold-bright) !important; }
+
+/* HERO: blue foundation, green/gold atmospheric transition, never white. */
+.hero {
+  background:
+    radial-gradient(circle at 78% 25%, rgba(73,169,220,.14), transparent 30%),
+    radial-gradient(circle at 40% 100%, rgba(47,139,89,.19), transparent 34%),
+    linear-gradient(180deg, rgba(7,26,40,.28) 0%, rgba(9,46,69,.42) 55%, rgba(21,63,48,.50) 100%) !important;
+}
+.hero .eyebrow { color: var(--tala-gold-bright) !important; }
+.hero h1,
+.hero .lead,
+.hero .hero-subtitle,
+.hero .typing-heading,
+.hero .typing-text { color: var(--tala-text) !important; }
+.hero-copy .lead { color: var(--tala-muted) !important; }
+.btn-primary {
+  color: #082016 !important;
+  background: linear-gradient(135deg, #e4c45d, #cc9f2f) !important;
+  box-shadow: 0 14px 36px rgba(212,173,61,.18) !important;
+}
+.btn-secondary {
+  border-color: rgba(73,169,220,.34) !important;
+  background: rgba(31,120,180,.10) !important;
+  color: var(--tala-text) !important;
+}
+
+/* Section rhythm: blended, never hard-separated. */
+.section,
+.section-light,
+.section-soft,
+.section-green,
+.section-blue,
+.section-dark,
+.light-section,
+.green-section,
+.blue-section,
+.dark-section,
+.section-white {
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--tala-text) !important;
+  position: relative;
+  isolation: isolate;
+}
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 10% 25%, rgba(47,139,89,.16), transparent 28%),
+    radial-gradient(circle at 86% 24%, rgba(73,169,220,.12), transparent 30%),
+    linear-gradient(180deg, rgba(7,27,39,.10), rgba(18,63,48,.18), rgba(10,40,59,.18));
+}
+.section::after {
+  content: "";
+  position: absolute;
+  left: -5%; right: -5%; bottom: -24%; height: 48%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(47,139,89,.16), transparent 58%),
+    radial-gradient(ellipse at 70% 40%, rgba(31,120,180,.14), transparent 58%),
+    radial-gradient(ellipse at 52% 50%, rgba(212,173,61,.05), transparent 52%);
+  filter: blur(22px);
+}
+
+/* Content surfaces remain dark translucent, not white. */
+.panel,
+.solution,
+.project,
+.pillar,
+.card,
+.timeline,
+.vision,
+.cta-box {
+  background: linear-gradient(145deg, rgba(11,48,68,.78), rgba(18,63,48,.60)) !important;
+  border-color: var(--tala-line) !important;
+}
+.panel p,
+.section-intro,
+.solution p,
+.project p,
+.leader-copy p,
+.cta-box p,
+.stat span,
+.timeline-item span { color: var(--tala-muted) !important; }
+.section-title,
+.section h2,
+.section h3,
+.project h3,
+.solution h3,
+.pillar h3,
+.vision h2,
+.leader-copy h2,
+.cta-box h2 { color: var(--tala-text) !important; }
+.kicker { color: var(--tala-gold-bright) !important; }
+.statement span,
+.green-accent { color: var(--tala-green-bright) !important; }
+.blue-accent { color: var(--tala-blue-bright) !important; }
+.gold-accent { color: var(--tala-gold-bright) !important; }
+
+/* Make the foundation / leadership / vision titles readable over their visual fields. */
+.section-title,
+.section-head h2,
+.kicker,
+.vision h2,
+.leader-copy h2,
+.cta-box h2 {
+  text-shadow: 0 5px 24px rgba(0,0,0,.28);
+}
+
+/* Footer: rich blue-green field with gold identity. */
+.footer {
+  border-top: 0 !important;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(47,139,89,.22), transparent 30%),
+    radial-gradient(circle at 84% 12%, rgba(31,120,180,.24), transparent 34%),
+    linear-gradient(135deg, #071d2c 0%, #0c3a53 48%, #164c39 100%) !important;
+  color: var(--tala-text) !important;
+}
+.footer p,
+.footer-links,
+.footer-bottom { color: var(--tala-muted) !important; }
+.footer-pillars,
+.footer .brand-tag { color: var(--tala-gold-bright) !important; }
+
+/* One clean typing system: a single text node, no simultaneous rendering. */
+.typing-heading {
+  display: block;
+  min-height: 2.2em;
+}
+.typing-text {
+  display: inline;
+  color: var(--tala-text) !important;
+}
+.typing-cursor {
+  display: inline-block;
+  width: .07em;
+  height: .92em;
+  margin-left: .10em;
+  vertical-align: -.05em;
+  background: var(--tala-gold-bright);
+  animation: talaCursor .85s steps(1) infinite;
+}
+@keyframes talaCursor { 50% { opacity: 0; } }
+
+/* Better scroll transitions: directional + scale + blur + stagger. */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 38px, 0) scale(.985);
+  filter: blur(7px);
+  transition:
+    opacity .78s cubic-bezier(.22,1,.36,1),
+    transform .78s cubic-bezier(.22,1,.36,1),
+    filter .78s cubic-bezier(.22,1,.36,1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+.delay-1 { transition-delay: .10s !important; }
+.delay-2 { transition-delay: .18s !important; }
+.delay-3 { transition-delay: .26s !important; }
+
+/* Selected cards get subtle brand-energy on hover, not noisy animation. */
+.solution:hover,
+.project:hover,
+.pillar:hover,
+.panel:hover {
+  border-color: rgba(111,195,145,.24) !important;
+  box-shadow: 0 26px 70px rgba(0,0,0,.24), 0 0 28px rgba(31,120,180,.08) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .typing-cursor { animation: none; }
+  .reveal { opacity: 1; transform: none; filter: none; transition: none !important; }
+  .hero-logo { animation: none !important; }
+}
+
+/* =========================================================
+   TALA SYSTEMS FINAL V2 REFINEMENTS
+   ========================================================= */
+
+/* Keep the hero composition stable while typing text changes. */
+.typing-heading {
+  display: block;
+  min-height: var(--typing-block-height, 2.16em);
+  max-width: 860px;
+  overflow: visible;
+}
+.typing-text {
+  display: inline;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.typing-cursor {
+  flex: 0 0 auto;
+  display: inline-block;
+  vertical-align: .03em;
+}
+
+/* Faster but still calm brand motion. */
+.hero-logo {
+  animation: floatTorchFinal 4.8s cubic-bezier(.45,.05,.55,.95) infinite;
+  border-radius: 28px;
+}
+@keyframes floatTorchFinal {
+  0%, 100% { transform: translate3d(0,0,0) rotate(0deg) scale(1); }
+  25% { transform: translate3d(0,-7px,0) rotate(.28deg) scale(1.008); }
+  50% { transform: translate3d(0,-12px,0) rotate(-.42deg) scale(1.014); }
+  75% { transform: translate3d(0,-5px,0) rotate(.25deg) scale(1.006); }
+}
+.intro-logo { border-radius: 24px; }
+
+/* Continuous blue/green/gold transitions; no hard color boundaries. */
+main {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(46,139,87,.10), transparent 30%),
+    radial-gradient(circle at 86% 40%, rgba(23,105,170,.11), transparent 32%),
+    radial-gradient(circle at 48% 75%, rgba(212,173,61,.05), transparent 24%),
+    linear-gradient(180deg, #071c2a 0%, #103449 28%, #174b39 57%, #103449 78%, #071c2a 100%);
+}
+.section,
+.section-light,
+.section-soft,
+.section-green,
+.vision,
+.cta {
+  border: 0 !important;
+  background: transparent !important;
+}
+.section::before,
+.section::after {
+  opacity: .75;
+  pointer-events: none;
+}
+.section-light::before,
+.section-soft::before,
+.section-green::before {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(46,139,87,.16), transparent 34%),
+    radial-gradient(circle at 80% 30%, rgba(23,105,170,.14), transparent 36%),
+    radial-gradient(circle at 50% 90%, rgba(212,173,61,.06), transparent 26%);
+}
+
+/* Ensure section headings stay readable over mixed gradients. */
+.section-title,
+.section-head h2,
+.section-head .section-title,
+.section h2,
+.section h3 {
+  color: #e8f5ec !important;
+  text-shadow: 0 5px 20px rgba(0,0,0,.28);
+}
+.kicker,
+.eyebrow {
+  color: var(--tala-gold-soft, #e4cc70) !important;
+}
+
+/* Header text: white, gold reserved for interaction. */
+.site-header .nav-links a,
+.site-header .brand-wordmark,
+.site-header .brand-tag {
+  color: #e8f5ec !important;
+}
+.site-header .nav-links a:hover,
+.site-header .nav-links a.active,
+.site-header .nav-cta:hover {
+  color: var(--tala-gold-soft, #e4cc70) !important;
+}
+
+/* Footer: strong readable blue/green background. */
+.footer {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(46,139,87,.22), transparent 31%),
+    radial-gradient(circle at 84% 22%, rgba(23,105,170,.20), transparent 32%),
+    linear-gradient(135deg, #061923 0%, #10364d 50%, #173f2f 100%) !important;
+  border-top: 1px solid rgba(232,245,236,.10) !important;
+}
+.footer-brand .brand-tag,
+.footer-brand p,
+.footer-links a,
+.footer-bottom,
+.footer-pillars {
+  color: #c6dad0 !important;
+}
+.footer-brand .brand-tag { color: #e8f5ec !important; }
+.footer-brand small { color: var(--tala-gold-soft, #e4cc70); }
+
+/* Shared logo corner treatment. */
+.brand img,
+.leader-photo img,
+.intro-logo,
+.hero-logo {
+  border-radius: 24px;
+}
+
+@media (max-width: 620px) {
+  .typing-heading { min-height: var(--typing-block-height, 4.25em); }
+  .hero-logo { animation-duration: 4.4s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo { animation: none !important; }
+}
+
+/* Final homepage responsive harmony */
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:30px}.hero-stage{min-height:420px}.section-head{flex-direction:column;align-items:flex-start}.solutions-grid{grid-template-columns:repeat(2,1fr)}.about-grid{grid-template-columns:1fr}.projects-grid{grid-template-columns:1fr}.project-stack{display:grid;grid-template-columns:1fr 1fr;gap:16px}}
+@media(max-width:620px){.container{width:calc(100% - 28px)}.hero{padding:130px 0 60px}.hero-stage{min-height:330px}.hero-logo{width:min(330px,82vw)}.hero-chip{font-size:.64rem;padding:8px 10px}.chip-one{top:7%;right:0}.chip-two{bottom:7%;left:0}.chip-three{bottom:22%;right:0}.typing-heading{min-height:3.1em;align-items:flex-start}.typing-text{max-width:100%;overflow-wrap:anywhere}.solutions-grid,.project-stack,.mini-stat{grid-template-columns:1fr}.section{padding:80px 0}.section-title{font-size:clamp(2rem,9vw,3.2rem)}.section-intro{font-size:.96rem}.nav{width:calc(100% - 28px)}}
